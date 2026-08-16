@@ -1,0 +1,244 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  NODE_VERSION: '20'
+  DART_VERSION: '3.5.0'
+  FLUTTER_VERSION: '3.24.0'
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            admin/package-lock.json
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: Lint Backend
+        run: |
+          cd backend
+          npm ci
+          npm run lint
+
+      - name: Type Check Backend
+        run: |
+          cd backend
+          npm run build
+
+      - name: Lint Flutter App
+        run: |
+          cd app
+          flutter analyze
+
+      - name: Format Check Flutter
+        run: |
+          cd app
+          flutter format --set-exit-if-changed lib/
+
+  test-backend:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Run unit tests
+        run: |
+          cd backend
+          npm run test -- --coverage
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./backend/coverage/lcov.info
+          flags: backend
+
+  test-admin:
+    name: Admin Panel Tests
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: admin/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd admin
+          npm ci
+
+      - name: Run lint
+        run: |
+          cd admin
+          npm run lint
+
+      - name: Run tests
+        run: |
+          cd admin
+          npm run test -- --coverage
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3000
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./admin/coverage/lcov.info
+          flags: admin
+
+  test-flutter:
+    name: Flutter Tests
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: Install dependencies
+        run: |
+          cd app
+          flutter pub get
+
+      - name: Run tests
+        run: |
+          cd app
+          flutter test --coverage
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./app/coverage/lcov.info
+          flags: flutter
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy results to GitHub Security
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+  docker-build:
+    name: Docker Build Test
+    runs-on: ubuntu-latest
+    needs: lint-and-typecheck
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          dockerfile: ./docker/Dockerfile.backend
+          push: false
+          tags: homepulse-backend:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build admin image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./admin
+          dockerfile: ./docker/Dockerfile.admin
+          push: false
+          tags: homepulse-admin:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  build-all:
+    name: Build All Services
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-admin, test-flutter, security-scan, docker-build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Build backend
+        run: |
+          cd backend
+          npm ci
+          npm run build
+
+      - name: Build admin
+        run: |
+          cd admin
+          npm ci
+          npm run build
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+
+      - name: Build Flutter web
+        run: |
+          cd app
+          flutter pub get
+          flutter build web --release
