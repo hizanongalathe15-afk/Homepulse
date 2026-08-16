@@ -1,0 +1,62 @@
+import 'package:flutter/material.dart';
+import 'package:homepulse/core/theme/app_colors.dart';
+import 'package:homepulse/widgets/app_card.dart';
+
+class MpesaPaymentWidget extends StatelessWidget {
+  final String phoneNumber;
+  final double? amount;
+  final String? propertyId;
+  final VoidCallback? onPay;
+
+  const MpesaPaymentWidget({
+    super.key,
+    required this.phoneNumber,
+    this.amount,
+    this.propertyId,
+    this.onPay,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.success.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Icon(Icons.phone_android, color: AppColors.success),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('M-Pesa', style: const TextStyle(fontWeight: FontWeight.w600)),
+                Text(phoneNumber, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+              ],
+            ),
+          ),
+          if (amount != null)
+            Text(
+              'KES ${amount!.toStringAsFixed(0)}',
+              style: const TextStyle(fontWeight: FontWeight.w600),
+            ),
+          const SizedBox(width: 8),
+          ElevatedButton(
+            onPressed: onPay,
+            style: ElevatedButton(
+              backgroundColor: AppColors.success,
+              foregroundColor: Colors.white,
+            ).copyWith(minimumSize: const MaterialStatePropertyAll(Size(80, 36))),
+            child: const Text('Pay', style: TextStyle(fontSize: 12)),
+          ),
+        ],
+      ),
+    );
+  }
+}
