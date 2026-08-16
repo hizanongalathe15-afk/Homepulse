@@ -11,6 +11,7 @@
 |   |   |   `-- .gitkeep
 |   |   `-- images
 |   |       `-- .gitkeep
+|   |-- README.md
 |   |-- src
 |   |   |-- app
 |   |   |   |-- (auth)
@@ -639,6 +640,7 @@
 |   |       |-- user_avatar.dart
 |   |       `-- verified_badge.dart
 |   |-- pubspec.yaml
+|   |-- README.md
 |   `-- test
 |       |-- integration
 |       |-- unit
@@ -652,6 +654,7 @@
 |   |   |-- migrations
 |   |   |-- schema.prisma
 |   |   `-- seed.ts
+|   |-- README.md
 |   |-- src
 |   |   |-- app.ts
 |   |   |-- config
@@ -807,12 +810,14 @@
 |   |-- Dockerfile.backend
 |   |-- Dockerfile.nginx
 |   |-- Dockerfile.redis
-|   `-- Dockerfile.worker
+|   |-- Dockerfile.worker
+|   `-- README.md
 |-- docs
 |   |-- API_DOCS.md
 |   |-- DATABASE_SCHEMA.md
 |   |-- DEPLOYMENT.md
 |   |-- QR_SYSTEM.md
+|   |-- README.md
 |   |-- SAFETY_TRUST_POLICY.md
 |   `-- USER_FLOWS.md
 |-- .github
@@ -821,10 +826,12 @@
 |       |-- deploy-production.yml
 |       `-- deploy-staging.yml
 |-- .gitignore
+|-- how   to run.md
 |-- infra
 |   |-- configmap.yaml
 |   |-- deployment.yaml
 |   |-- ingress.yaml
+|   |-- README.md
 |   `-- service.yaml
 |-- LICENSE
 |-- Makefile
@@ -835,12 +842,14 @@
 |   |-- backup.sh
 |   |-- deploy.sh
 |   |-- generate-qr.sh
+|   |-- README.md
 |   `-- seed.sh
 `-- shared
+    |-- README.md
     |-- types
     |   `-- shared.types.ts
     `-- utils
         |-- formatters.ts
         `-- validators.ts
 
-194 directories, 650 files
+194 directories, 659 files
