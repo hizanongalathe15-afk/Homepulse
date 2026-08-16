@@ -25,6 +25,7 @@ export function AdminRadarChart({ data, dataKey, angleKey, height = 300, color =
             borderRadius: '0.5rem',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}
+          wrapperClassName="recharts-tooltip-animate"
         />
       </RadarChart>
     </ResponsiveContainer>

@@ -2,7 +2,7 @@
 
 export function LoadingSkeleton({ className }: { className?: string }) {
   return (
-    <div className={`animate-pulse bg-slate-200 rounded ${className || 'h-4 w-full'}`} />
+    <div className={`animate-pulse bg-white/10 rounded ${className || 'h-4 w-full'}`} />
   )
 }
 

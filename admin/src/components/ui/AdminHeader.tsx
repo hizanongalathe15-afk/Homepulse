@@ -16,16 +16,16 @@ export function AdminHeader({ title, description, actions, breadcrumbs }: AdminH
   return (
     <div className="space-y-4">
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <nav className="flex items-center gap-2 text-sm text-slate-500">
+        <nav className="flex items-center gap-2 text-sm text-muted-foreground">
           {breadcrumbs.map((crumb, index) => (
             <span key={index} className="flex items-center gap-2">
               {index > 0 && <span>/</span>}
               {crumb.href ? (
-                <a href={crumb.href} className="hover:text-slate-700">
+                <a href={crumb.href} className="hover:text-foreground transition-colors">
                   {crumb.label}
                 </a>
               ) : (
-                <span className="text-slate-900 font-medium">{crumb.label}</span>
+                <span className="text-foreground font-medium">{crumb.label}</span>
               )}
             </span>
           ))}
@@ -33,8 +33,8 @@ export function AdminHeader({ title, description, actions, breadcrumbs }: AdminH
       )}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-          {description && <p className="mt-1 text-sm text-slate-600">{description}</p>}
+          <h1 className="text-2xl font-bold text-foreground">{title}</h1>
+          {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
         </div>
         {actions && <div className="flex items-center gap-3">{actions}</div>}
       </div>

@@ -1,7 +1,5 @@
 'use client'
 
-import { Heatmap, HeatmapSeries, HeatmapCell } from 'recharts'
-
 interface HeatmapChartProps {
   data: Array<{
     x: string
@@ -19,15 +17,14 @@ export function AdminHeatmap({
   xKey = 'x',
   yKey = 'y',
   valueKey = 'value',
-  height = 300
+  height = 300,
 }: HeatmapChartProps) {
-  const xAxis = Array.from(new Set(data.map((d) => d[xKey as keyof typeof d] as string)))
-  const yAxis = Array.from(new Set(data.map((d) => d[yKey as keyof typeof d] as string)))
-
-  const maxValue = Math.max(...data.map((d) => d[valueKey as keyof typeof d] as number))
+  const xAxis = Array.from(new Set(data.map((d) => String(d[xKey as keyof typeof d]))))
+  const yAxis = Array.from(new Set(data.map((d) => String(d[yKey as keyof typeof d]))))
+  const maxValue = Math.max(...data.map((d) => Number(d[valueKey as keyof typeof d]) || 0), 1)
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto" style={{ height }}>
       <div className="inline-grid gap-1" style={{ gridTemplateColumns: `auto repeat(${xAxis.length}, minmax(40px, 1fr))` }}>
         <div />
         {xAxis.map((x) => (
@@ -35,15 +32,17 @@ export function AdminHeatmap({
             {x}
           </div>
         ))}
+
         {yAxis.map((y) => (
           <>
             <div key={`label-${y}`} className="text-xs text-slate-500 py-2 font-medium flex items-center">
               {y}
             </div>
             {xAxis.map((x) => {
-              const cell = data.find((d) => d[xKey as keyof typeof d] === x && d[yKey as keyof typeof d] === y)
-              const value = cell?.[valueKey as keyof typeof cell] as number || 0
-              const opacity = value / maxValue
+              const cell = data.find((d) => String(d[xKey as keyof typeof d]) === x && String(d[yKey as keyof typeof d]) === y)
+              const value = Number(cell?.[valueKey as keyof typeof cell] as number | undefined) || 0
+              const opacity = Math.min(value / maxValue, 1)
+
               return (
                 <div
                   key={`${x}-${y}`}

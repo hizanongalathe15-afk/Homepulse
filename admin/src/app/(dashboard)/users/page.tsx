@@ -1,17 +1,26 @@
+import { AdminHeader } from '@/components/ui/AdminHeader'
+import UserTable from './components/UserTable'
+import UserFilters from './components/UserFilters'
+import UserExport from './components/UserExport'
+import UserBulkActions from './components/UserBulkActions'
+
 export default function UsersPage() {
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900">User Management</h1>
-        <p className="text-slate-600">Manage and monitor all users on the platform.</p>
-      </div>
+      <AdminHeader
+        title="User Management"
+        description="Manage and monitor all users on the platform."
+      />
       <div className="admin-card">
-        <div className="admin-card-header flex items-center justify-between">
-          <h2 className="text-lg font-semibold">All Users</h2>
-          <button className="admin-btn-primary">Add User</button>
+        <div className="admin-card-header flex flex-wrap items-center justify-between gap-3">
+          <UserFilters />
+          <div className="flex items-center gap-2">
+            <UserBulkActions />
+            <UserExport />
+          </div>
         </div>
-        <div className="admin-card-body">
-          <p className="text-slate-500">User table will be rendered here.</p>
+        <div className="admin-card-body p-0">
+          <UserTable />
         </div>
       </div>
     </div>

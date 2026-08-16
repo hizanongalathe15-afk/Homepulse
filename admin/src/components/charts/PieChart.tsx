@@ -35,6 +35,7 @@ export function AdminPieChart({ data, colors = DEFAULT_COLORS, height = 300 }: P
             borderRadius: '0.5rem',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}
+          wrapperClassName="recharts-tooltip-animate"
         />
         <Legend />
       </PieChart>

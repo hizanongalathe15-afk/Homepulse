@@ -4,8 +4,8 @@ export interface Admin {
   name: string
   role: 'super_admin' | 'admin' | 'moderator'
   permissions: string[]
-  lastLoginAt: Date
-  createdAt: Date
+  lastLoginAt?: string | Date | null
+  createdAt?: string | Date | null
 }
 
 export interface PaginatedResponse<T> {

@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/apiClient'
+import type { Admin } from '@/types/admin.types'
 
 export interface LoginCredentials {
   email: string
@@ -7,13 +8,7 @@ export interface LoginCredentials {
 
 export interface AuthResponse {
   token: string
-  admin: {
-    id: string
-    email: string
-    name: string
-    role: string
-    permissions: string[]
-  }
+  admin: Admin
 }
 
 export const adminAuthService = {

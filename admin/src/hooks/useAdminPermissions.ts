@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo } from 'react'
-import { useAdminAuth } from '@/contexts/AdminAuthProvider'
+import { useAdminAuth } from '@/contexts/AdminAuthContext'
 import { hasPermission, ROLE_PERMISSIONS, PERMISSIONS } from '@/utils/admin.permissions'
 import type { Admin } from '@/types/admin.types'
 

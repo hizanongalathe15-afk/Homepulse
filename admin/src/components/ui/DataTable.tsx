@@ -62,12 +62,12 @@ export function DataTable<T>({
         <div className="admin-card-body p-0">
           <div className="overflow-x-auto">
             <table className="admin-table">
-              <thead className="admin-table-header bg-slate-50">
+              <thead className="admin-table-header">
                 <tr>
                   {columns.map((col) => (
                     <th
                       key={col.key}
-                      className={cn('admin-table-cell text-left font-medium text-slate-500', col.sortable && 'cursor-pointer select-none')}
+                      className={cn('admin-table-cell text-left font-medium text-muted-foreground', col.sortable && 'cursor-pointer select-none')}
                       onClick={() => col.sortable && handleSort(col.key)}
                     >
                       <div className="flex items-center gap-1">
@@ -86,14 +86,14 @@ export function DataTable<T>({
                     <tr key={i}>
                       {columns.map((col) => (
                         <td key={col.key} className="admin-table-cell">
-                          <div className="h-4 bg-slate-100 rounded animate-pulse" />
+                          <div className="h-4 bg-white/5 rounded animate-pulse" />
                         </td>
                       ))}
                     </tr>
                   ))
                 ) : data.length === 0 ? (
                   <tr>
-                    <td colSpan={columns.length} className="admin-table-cell text-center py-12 text-slate-500">
+                    <td colSpan={columns.length} className="admin-table-cell text-center py-12 text-muted-foreground">
                       No data found
                     </td>
                   </tr>
@@ -105,7 +105,7 @@ export function DataTable<T>({
                       onClick={() => onRowClick?.(item)}
                     >
                       {columns.map((col) => (
-                        <td key={col.key} className="admin-table-cell text-slate-900">
+                        <td key={col.key} className="admin-table-cell text-foreground">
                           {col.render ? col.render(item) : (item as Record<string, unknown>)[col.key] as React.ReactNode}
                         </td>
                       ))}

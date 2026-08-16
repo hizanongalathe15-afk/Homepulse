@@ -1,3 +1,5 @@
+import type { Admin } from '@/types/admin.types'
+
 export const PERMISSIONS = {
   USERS_READ: 'users:read',
   USERS_WRITE: 'users:write',
@@ -18,6 +20,12 @@ export const PERMISSIONS = {
   AUDIT_READ: 'audit:read',
   CONTENT_WRITE: 'content:write',
 } as const
+
+export const hasPermission = (admin: Admin | null, permission: string): boolean => {
+  if (!admin) return false
+  if (admin.role === 'super_admin') return true
+  return admin.permissions.includes(permission)
+}
 
 export const ROLE_PERMISSIONS = {
   super_admin: Object.values(PERMISSIONS),

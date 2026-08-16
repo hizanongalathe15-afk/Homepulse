@@ -18,7 +18,7 @@ export function AdminTable<T>({ data, columns, onRowClick, isLoading }: AdminTab
         <div className="admin-card-body">
           <div className="animate-pulse space-y-4">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-12 bg-slate-100 rounded" />
+              <div key={i} className="h-12 bg-white/5 rounded" />
             ))}
           </div>
         </div>
@@ -30,10 +30,10 @@ export function AdminTable<T>({ data, columns, onRowClick, isLoading }: AdminTab
     <div className="admin-card overflow-hidden">
       <div className="overflow-x-auto">
         <table className="admin-table">
-          <thead className="admin-table-header bg-slate-50">
+          <thead className="admin-table-header">
             <tr>
               {columns.map((col) => (
-                <th key={col.key} className="admin-table-cell text-left font-medium text-slate-500">
+                <th key={col.key} className="admin-table-cell text-left font-medium text-muted-foreground">
                   {col.header}
                 </th>
               ))}
@@ -47,7 +47,7 @@ export function AdminTable<T>({ data, columns, onRowClick, isLoading }: AdminTab
                 onClick={() => onRowClick?.(item)}
               >
                 {columns.map((col) => (
-                  <td key={col.key} className="admin-table-cell text-slate-900">
+                  <td key={col.key} className="admin-table-cell text-foreground">
                     {col.render ? col.render(item) : (item as Record<string, unknown>)[col.key] as React.ReactNode}
                   </td>
                 ))}

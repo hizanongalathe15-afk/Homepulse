@@ -4,6 +4,12 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { ThemeSwitcher } from '@/components/features/ThemeSwitcher'
+import { CommandPalette } from '@/components/features/CommandPalette'
+import { PulseAI } from '@/components/features/PulseAI'
+import { SoundToggle } from '@/components/ui/SoundToggle'
+import { CursorGlow } from '@/components/features/CursorGlow'
+import { soundEngine } from '@/utils/admin.sound'
 import {
   LayoutDashboard,
   Users,
@@ -25,6 +31,7 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  Command,
 } from 'lucide-react'
 
 const navigation = [
@@ -55,22 +62,28 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-command-bg">
+      <CursorGlow />
+      <CommandPalette />
+      <PulseAI />
       <aside
         className={cn(
-          'bg-slate-900 text-white transition-all duration-300 flex flex-col',
+          'bg-slate-900 text-white transition-all duration-300 flex flex-col border-r border-white/10',
           sidebarOpen ? 'w-64' : 'w-16'
         )}
       >
-        <div className="h-16 flex items-center justify-between px-4 border-b border-slate-800">
+        <div className="h-16 flex items-center justify-between px-4 border-b border-white/10">
           {sidebarOpen && (
-            <Link href="/overview" className="text-lg font-bold">
+            <Link href="/overview" className="text-lg font-bold text-glow-cyan">
               HomePulse
             </Link>
           )}
           <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="p-1 rounded-md hover:bg-slate-800 transition-colors"
+            onClick={() => {
+              setSidebarOpen(!sidebarOpen)
+              soundEngine.play('switch')
+            }}
+            className="p-1 rounded-md hover:bg-white/10 transition-colors"
           >
             {sidebarOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
           </button>
@@ -83,11 +96,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               <Link
                 key={item.name}
                 href={item.href}
+                onClick={() => soundEngine.play('click')}
                 className={cn(
-                  'flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                  'flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-all duration-200',
                   isActive
-                    ? 'bg-slate-800 text-white'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-800'
+                    ? 'bg-white/10 text-white border border-white/10'
+                    : 'text-slate-300 hover:text-white hover:bg-white/5'
                 )}
               >
                 <item.icon size={20} />
@@ -97,10 +111,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-slate-800">
+        <div className="p-4 border-t border-white/10">
           <Link
             href="/login"
-            className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 rounded-md transition-colors"
+            onClick={() => soundEngine.play('click')}
+            className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 rounded-md transition-colors"
           >
             <LogOut size={20} />
             {sidebarOpen && <span>Logout</span>}
@@ -109,12 +124,24 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-40">
-          <h1 className="text-xl font-semibold text-slate-900 capitalize">
+        <header className="h-16 glass-panel flex items-center justify-between px-6 sticky top-0 z-40">
+          <h1 className="text-xl font-semibold text-foreground capitalize">
             {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Dashboard'}
           </h1>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-slate-500">Admin User</span>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => {
+                document.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, ctrlKey: true }))
+                soundEngine.play('switch')
+              }}
+              className="hidden md:flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-muted-foreground bg-secondary border border-border rounded-lg hover:bg-secondary/80 transition-colors"
+            >
+              <Command size={12} />
+              <span>Search</span>
+              <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-border text-muted-foreground">⌘K</kbd>
+            </button>
+            <ThemeSwitcher />
+            <SoundToggle />
           </div>
         </header>
 

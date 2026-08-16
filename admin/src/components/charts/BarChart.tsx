@@ -24,6 +24,7 @@ export function AdminBarChart({ data, xKey, yKeys, colors = ['#0ea5e9', '#10b981
             borderRadius: '0.5rem',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}
+          wrapperClassName="recharts-tooltip-animate"
         />
         {yKeys.map((key, index) => (
           <Bar key={key} dataKey={key} fill={colors[index % colors.length]} radius={[4, 4, 0, 0]} />

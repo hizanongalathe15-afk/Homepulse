@@ -24,6 +24,7 @@ export function AdminLineChart({ data, xKey, yKeys, colors = ['#0ea5e9', '#10b98
             borderRadius: '0.5rem',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}
+          wrapperClassName="recharts-tooltip-animate"
         />
         {yKeys.map((key, index) => (
           <Line

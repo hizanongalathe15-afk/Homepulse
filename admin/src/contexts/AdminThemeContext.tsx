@@ -1,45 +1,58 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
-import { AdminThemeContext } from './AdminThemeContext'
 
-export function AdminThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<'light' | 'dark' | 'system'>('light')
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+export type CommandTheme = 'cyber-dark' | 'clean-glass-light' | 'high-contrast-tactical'
+
+export interface CommandThemeContextValue {
+  theme: CommandTheme
+  setTheme: (theme: CommandTheme) => void
+}
+
+export const CommandThemeContext = createContext<CommandThemeContextValue | undefined>(undefined)
+
+const THEME_STORAGE_KEY = 'homepulse-admin-theme'
+
+export function CommandThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState<CommandTheme>('cyber-dark')
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    const root = window.document.documentElement
-    root.classList.remove('light', 'dark')
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-      root.classList.add(systemTheme)
-    } else {
-      root.classList.add(theme)
-    }
-  }, [theme])
+    setMounted(true)
+    try {
+      const stored = localStorage.getItem(THEME_STORAGE_KEY)
+      if (stored === 'cyber-dark' || stored === 'clean-glass-light' || stored === 'high-contrast-tactical') {
+        setTheme(stored)
+      }
+    } catch {}
+  }, [])
 
-  const toggleSidebar = () => {
-    setSidebarCollapsed((prev) => !prev)
-  }
+  useEffect(() => {
+    if (!mounted) return
+    const root = window.document.documentElement
+    root.classList.remove('theme-cyber-dark', 'theme-clean-glass-light', 'theme-high-contrast-tactical')
+    root.classList.add(`theme-${theme}`)
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme)
+    } catch {}
+  }, [theme, mounted])
 
   return (
-    <AdminThemeContext.Provider
+    <CommandThemeContext.Provider
       value={{
         theme,
-        sidebarCollapsed,
         setTheme,
-        toggleSidebar,
       }}
     >
       {children}
-    </AdminThemeContext.Provider>
+    </CommandThemeContext.Provider>
   )
 }
 
-export function useAdminTheme() {
-  const context = useContext(AdminThemeContext)
+export function useCommandTheme() {
+  const context = useContext(CommandThemeContext)
   if (context === undefined) {
-    throw new Error('useAdminTheme must be used within an AdminThemeProvider')
+    throw new Error('useCommandTheme must be used within a CommandThemeProvider')
   }
   return context
 }

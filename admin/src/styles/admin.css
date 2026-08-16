@@ -11,11 +11,25 @@
 }
 
 .admin-sidebar-link {
-  @apply flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition-colors;
+  @apply flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200 relative overflow-hidden;
+}
+
+.admin-sidebar-link::before {
+  content: '';
+  @apply absolute left-0 top-1/2 -translate-y-1/2 w-0 h-0 bg-cyan-400 rounded-r transition-all duration-200;
+}
+
+.admin-sidebar-link:hover::before,
+.admin-sidebar-link-active::before {
+  @apply w-1 h-6;
 }
 
 .admin-sidebar-link-active {
-  @apply bg-slate-800 text-white;
+  @apply bg-slate-800/80 text-white shadow-[0_0_15px_rgba(6,182,212,0.15)];
+}
+
+.admin-sidebar-link-active::before {
+  @apply w-1 h-6;
 }
 
 .admin-header {
@@ -23,11 +37,42 @@
 }
 
 .admin-card {
-  @apply bg-white rounded-lg shadow-sm border border-slate-200;
+  background: var(--card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.05);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.admin-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple), var(--neon-emerald));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.admin-card:hover::before {
+  opacity: 0.6;
+}
+
+.admin-card:hover {
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.08), 0 0 60px rgba(168, 85, 247, 0.04);
+  transform: translateY(-2px);
 }
 
 .admin-card-header {
-  @apply px-6 py-4 border-b border-slate-100;
+  @apply px-6 py-4 border-b border-white/10;
 }
 
 .admin-card-body {
@@ -35,19 +80,19 @@
 }
 
 .admin-btn-primary {
-  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2;
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-md hover:shadow-primary/20 h-10 px-4 py-2;
 }
 
 .admin-btn-secondary {
-  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2;
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary hover:shadow-sm h-10 px-4 py-2;
 }
 
 .admin-btn-destructive {
-  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2;
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive hover:shadow-md hover:shadow-red-500/20 h-10 px-4 py-2;
 }
 
 .admin-input {
-  @apply flex h-10 w-full rounded-md border border-slate-200 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+  @apply flex h-10 w-full rounded-md border border-white/10 bg-input px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200;
 }
 
 .admin-table {
@@ -63,9 +108,122 @@
 }
 
 .admin-table-row {
-  @apply border-b border-slate-100 transition-colors hover:bg-slate-50 data-[state=selected]:bg-slate-100;
+  @apply border-b border-white/10 transition-all duration-200 hover:bg-white/5 data-[state=selected]:bg-white/10;
 }
 
 .admin-table-cell {
   @apply p-4 align-middle [&:has([role=checkbox])]:pr-0;
+}
+
+.metric-flicker {
+  animation: metricFlicker 0.6s ease-out;
+}
+
+@keyframes metricFlicker {
+  0% {
+    background-color: rgba(16, 185, 129, 0.08);
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.15), 0 0 12px rgba(16, 185, 129, 0.1);
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 1px transparent, 0 0 0 transparent;
+  }
+}
+
+.stat-card-hover {
+  @apply transition-all duration-200 hover:scale-[1.02] hover:shadow-md hover:shadow-primary/5 hover:border-primary/20;
+}
+
+.stat-card-glow {
+  @apply relative overflow-hidden;
+}
+
+.stat-card-glow::after {
+  content: '';
+  @apply absolute inset-0 rounded-lg opacity-0 transition-opacity duration-200 pointer-events-none;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.05), rgba(139, 92, 246, 0.05));
+}
+
+.stat-card-glow:hover::after {
+  @apply opacity-100;
+}
+
+.nav-link-glow {
+  @apply relative overflow-hidden;
+}
+
+.nav-link-glow::after {
+  content: '';
+  @apply absolute inset-0 opacity-0 transition-opacity duration-200 pointer-events-none;
+  background: linear-gradient(90deg, rgba(6, 182, 212, 0.1), transparent);
+}
+
+.nav-link-glow:hover::after,
+.nav-link-glow.active::after {
+  @apply opacity-100;
+}
+
+.nav-link-glow.active {
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+}
+
+.progress-bar-hover {
+  @apply transition-all duration-200;
+}
+
+.progress-bar-hover:hover {
+  filter: brightness(1.1);
+}
+
+.recharts-tooltip-animate {
+  animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-interactive {
+  @apply transition-all duration-200 hover:scale-[1.02] active:scale-[0.98];
+}
+
+.btn-interactive:active {
+  @apply shadow-inner;
+}
+
+.row-interactive {
+  @apply transition-all duration-200;
+}
+
+.row-interactive:hover {
+  @apply bg-slate-50;
+}
+
+.row-interactive:active {
+  @apply bg-slate-100;
+}
+
+.border-glow-cyan {
+  @apply transition-all duration-200;
+  box-shadow: 0 0 0 0 rgba(6, 182, 212, 0);
+}
+
+.border-glow-cyan:hover {
+  box-shadow: 0 0 12px 2px rgba(6, 182, 212, 0.15);
+}
+
+.border-glow-primary {
+  @apply transition-all duration-200;
+  box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
+}
+
+.border-glow-primary:hover {
+  box-shadow: 0 0 12px 2px rgba(14, 165, 233, 0.15);
 }

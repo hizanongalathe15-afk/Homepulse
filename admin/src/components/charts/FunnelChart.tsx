@@ -20,6 +20,7 @@ export function AdminFunnelChart({ data, height = 300 }: FunnelChartProps) {
             borderRadius: '0.5rem',
             boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
           }}
+          wrapperClassName="recharts-tooltip-animate"
         />
         <Funnel dataKey="value" data={data} isAnimationActive>
           <LabelList position="center" fill="white" className="text-xs font-medium" />

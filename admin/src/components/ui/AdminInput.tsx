@@ -12,16 +12,16 @@ const AdminInput = forwardRef<HTMLInputElement, AdminInputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-slate-700 mb-1">
+          <label className="block text-sm font-medium text-foreground mb-1">
             {label}
           </label>
         )}
         <input
-          className={`admin-input ${error ? 'border-red-500 focus-visible:ring-red-500' : ''} ${className}`}
+          className={`admin-input ${error ? 'border-command-crimson focus-visible:ring-command-crimson' : ''} ${className}`}
           ref={ref}
           {...props}
         />
-        {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        {error && <p className="mt-1 text-sm text-command-crimson">{error}</p>}
       </div>
     )
   }

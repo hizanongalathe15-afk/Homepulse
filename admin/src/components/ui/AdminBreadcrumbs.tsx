@@ -12,17 +12,17 @@ interface AdminBreadcrumbsProps {
 
 export function AdminBreadcrumbs({ items }: AdminBreadcrumbsProps) {
   return (
-    <nav className="flex items-center gap-2 text-sm text-slate-500">
+    <nav className="flex items-center gap-2 text-sm text-muted-foreground">
       {items.map((item, index) => (
         <span key={index} className="flex items-center gap-2">
-          {index > 0 && <span className="text-slate-300">/</span>}
+          {index > 0 && <span className="text-white/20">/</span>}
           {item.icon && <item.icon size={14} />}
           {item.href ? (
-            <a href={item.href} className="hover:text-slate-700 transition-colors">
+            <a href={item.href} className="hover:text-foreground transition-colors">
               {item.label}
             </a>
           ) : (
-            <span className="text-slate-900 font-medium">{item.label}</span>
+            <span className="text-foreground font-medium">{item.label}</span>
           )}
         </span>
       ))}
