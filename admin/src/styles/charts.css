@@ -1,0 +1,16 @@
+.recharts-default-tooltip {
+  @apply bg-white border border-slate-200 rounded-md shadow-md px-3 py-2 text-sm;
+}
+
+.recharts-tooltip-label {
+  @apply font-semibold text-slate-900 mb-1;
+}
+
+.chart-container {
+  @apply w-full h-full;
+}
+
+.chart-grid-line {
+  stroke: #e2e8f0;
+  stroke-dasharray: 3 3;
+}

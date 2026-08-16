@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.admin-sidebar {
+  @apply w-64 h-screen bg-slate-900 text-white flex flex-col fixed left-0 top-0 z-50;
+}
+
+.admin-sidebar-nav {
+  @apply flex-1 overflow-y-auto py-4 px-3 space-y-1;
+}
+
+.admin-sidebar-link {
+  @apply flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-slate-300 hover:text-white hover:bg-slate-800 transition-colors;
+}
+
+.admin-sidebar-link-active {
+  @apply bg-slate-800 text-white;
+}
+
+.admin-header {
+  @apply h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 sticky top-0 z-40;
+}
+
+.admin-card {
+  @apply bg-white rounded-lg shadow-sm border border-slate-200;
+}
+
+.admin-card-header {
+  @apply px-6 py-4 border-b border-slate-100;
+}
+
+.admin-card-body {
+  @apply p-6;
+}
+
+.admin-btn-primary {
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2;
+}
+
+.admin-btn-secondary {
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2;
+}
+
+.admin-btn-destructive {
+  @apply inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2;
+}
+
+.admin-input {
+  @apply flex h-10 w-full rounded-md border border-slate-200 bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.admin-table {
+  @apply w-full caption-bottom text-sm;
+}
+
+.admin-table-header {
+  @apply [&_tr]:border-b;
+}
+
+.admin-table-body {
+  @apply [&_tr:last-child]:border-0;
+}
+
+.admin-table-row {
+  @apply border-b border-slate-100 transition-colors hover:bg-slate-50 data-[state=selected]:bg-slate-100;
+}
+
+.admin-table-cell {
+  @apply p-4 align-middle [&:has([role=checkbox])]:pr-0;
+}

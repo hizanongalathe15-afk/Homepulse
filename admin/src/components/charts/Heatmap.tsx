@@ -1,0 +1,63 @@
+'use client'
+
+import { Heatmap, HeatmapSeries, HeatmapCell } from 'recharts'
+
+interface HeatmapChartProps {
+  data: Array<{
+    x: string
+    y: string
+    value: number
+  }>
+  xKey?: string
+  yKey?: string
+  valueKey?: string
+  height?: number
+}
+
+export function AdminHeatmap({
+  data,
+  xKey = 'x',
+  yKey = 'y',
+  valueKey = 'value',
+  height = 300
+}: HeatmapChartProps) {
+  const xAxis = Array.from(new Set(data.map((d) => d[xKey as keyof typeof d] as string)))
+  const yAxis = Array.from(new Set(data.map((d) => d[yKey as keyof typeof d] as string)))
+
+  const maxValue = Math.max(...data.map((d) => d[valueKey as keyof typeof d] as number))
+
+  return (
+    <div className="overflow-x-auto">
+      <div className="inline-grid gap-1" style={{ gridTemplateColumns: `auto repeat(${xAxis.length}, minmax(40px, 1fr))` }}>
+        <div />
+        {xAxis.map((x) => (
+          <div key={x} className="text-xs text-slate-500 text-center py-2 font-medium">
+            {x}
+          </div>
+        ))}
+        {yAxis.map((y) => (
+          <>
+            <div key={`label-${y}`} className="text-xs text-slate-500 py-2 font-medium flex items-center">
+              {y}
+            </div>
+            {xAxis.map((x) => {
+              const cell = data.find((d) => d[xKey as keyof typeof d] === x && d[yKey as keyof typeof d] === y)
+              const value = cell?.[valueKey as keyof typeof cell] as number || 0
+              const opacity = value / maxValue
+              return (
+                <div
+                  key={`${x}-${y}`}
+                  className="w-10 h-10 rounded flex items-center justify-center text-xs font-medium text-white"
+                  style={{ backgroundColor: `rgba(14, 165, 233, ${opacity})` }}
+                  title={`${x}, ${y}: ${value}`}
+                >
+                  {value}
+                </div>
+              )
+            })}
+          </>
+        ))}
+      </div>
+    </div>
+  )
+}
