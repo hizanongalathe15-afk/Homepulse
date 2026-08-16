@@ -1,0 +1,1029 @@
+// ============================================================
+// HOMEPULSE — COMPLETE DATABASE SCHEMA
+// ============================================================
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum UserRole {
+  TENANT
+  LANDLORD
+  ADMIN
+  GUARANTOR
+  MODERATOR
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+  PENDING_VERIFICATION
+  INACTIVE
+  DEACTIVATED
+}
+
+enum PropertyStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+  DELETED
+  DRAFT
+  PUBLISHED
+  EXPIRED
+  ACTIVE
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  STUDIO
+  BEDSITTER
+  MAISONETTE
+  TOWNHOUSE
+  VILLA
+  COMMERCIAL
+  LAND
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+  CANCELLED
+  REVERSED
+  TIMEOUT
+}
+
+enum PaymentMethod {
+  MPESA
+  STRIPE
+  BANK_TRANSFER
+  CASH
+  QR_CODE
+  CARD
+  ESCROW
+}
+
+enum EscrowStatus {
+  PENDING
+  HELD
+  RELEASED
+  REFUNDED
+  DISPUTED
+  CANCELLED
+}
+
+enum DisputeStatus {
+  OPEN
+  IN_REVIEW
+  RESOLVED
+  CLOSED
+  REJECTED
+  APPEALED
+}
+
+enum DisputePriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum DisputeType {
+  PAYMENT
+  PROPERTY
+  LANDLORD
+  TENANT
+  MAINTENANCE
+  OTHER
+}
+
+enum NotificationChannel {
+  IN_APP
+  PUSH
+  SMS
+  EMAIL
+}
+
+enum NotificationType {
+  GENERAL
+  PAYMENT
+  PROPERTY
+  MESSAGE
+  DISPUTE
+  PROMOTIONAL
+  SYSTEM
+  SAFETY
+}
+
+enum ChatMessageType {
+  TEXT
+  IMAGE
+  VIDEO
+  VOICE
+  DOCUMENT
+  NEGOTIATION
+  QR_CODE
+  LOCATION
+}
+
+enum SOSStatus {
+  ACTIVE
+  RESOLVED
+  FALSE_ALARM
+  CANCELLED
+}
+
+enum SOSAlertType {
+  PANIC
+  MEDICAL
+  FIRE
+  CRIME
+  OTHER
+}
+
+enum SafetyReportStatus {
+  OPEN
+  IN_REVIEW
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+  REJECTED
+}
+
+enum SafetyReportType {
+  CRIME
+  HARASSMENT
+  SCAM
+  UNSAFE_CONDITIONS
+  NOISE
+  OTHER
+}
+
+enum CommunityRole {
+  MEMBER
+  MODERATOR
+  ADMIN
+  CREATOR
+}
+
+enum CommunityPostType {
+  TEXT
+  IMAGE
+  VIDEO
+  POLL
+  EVENT
+  ANNOUNCEMENT
+}
+
+enum MaintenancePriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+  EMERGENCY
+}
+
+enum MaintenanceStatus {
+  PENDING
+  APPROVED
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+  CANCELLED
+  NEEDS_PARTS
+  WAITING
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  EXPIRED
+  NEEDS_REVIEW
+  VERIFIED
+}
+
+enum ReferralStatus {
+  PENDING
+  QUALIFIED
+  PAID
+  VOID
+  EXPIRED
+  REDEEMED
+}
+
+enum ReferralRewardType {
+  CREDITS
+  DISCOUNT
+  CASH
+  VIP
+}
+
+enum BannerStatus {
+  DRAFT
+  PENDING
+  ACTIVE
+  PAUSED
+  ENDED
+  EXPIRED
+  REJECTED
+}
+
+enum CampaignStatus {
+  DRAFT
+  PENDING
+  ACTIVE
+  PAUSED
+  ENDED
+  COMPLETED
+  CANCELLED
+}
+
+enum QRStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+  REVOKED
+  USED
+  EXHAUSTED
+}
+
+enum IdentityType {
+  NATIONAL_ID
+  PASSPORT
+  DRIVING_LICENSE
+  BIRTH_CERTIFICATE
+  OTHER
+}
+
+// ============================================================
+// MODELS
+// ============================================================
+
+// ---------- USERS ----------
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  phone        String     @unique
+  firstName    String
+  lastName     String
+  password     String?
+  role         UserRole   @default(TENANT)
+  status       UserStatus @default(ACTIVE)
+  isVerified   Boolean    @default(false)
+  isActive     Boolean    @default(true)
+  city         String?
+  profileImage String?
+  bio          String?
+  lastLoginAt  DateTime?
+  resetToken   String?
+  deletedAt    DateTime?
+
+  // Relationships
+  properties            Property[]             @relation("LandlordProperties")
+  payments              Payment[]
+  maintenanceRequests   MaintenanceRequest[]   @relation("RequestedBy")
+  assignedMaintenance   MaintenanceRequest[]   @relation("AssignedTo")
+  reviews               Review[]               @relation("ReviewAuthor")
+  notifications         Notification[]
+  chatMessages          ChatMessage[]          @relation("ChatSender")
+  receivedMessages      ChatMessage[]          @relation("ChatReceiver")
+  sosAlerts             SOSAlert[]
+  safetyReports         SafetyReport[]
+  roommateProfile       RoommateProfile?       @relation("RoommateUser")
+  referralsMade         Referral[]             @relation("Referrer")
+  referralsReceived     Referral[]             @relation("Referee")
+  escrowTransactions    EscrowTransaction[]    @relation("EscrowPayer")
+  escrowReceived        EscrowTransaction[]    @relation("EscrowPayee")
+  settings              Setting?               @relation("UserSettings")
+  communityMembers      Community[]            @relation("CommunityMembers")
+  createdCommunities    Community[]            @relation("CommunityCreator")
+  communityPosts        CommunityPost[]
+  communityEvents       CommunityEvent[]       @relation("EventOrganizer")
+  identityVerifications IdentityVerification[]
+  qrCodes               QRCode[]
+  bannerViews           BannerView[]
+  savedSearches         SavedSearch[]
+  bannersCreated        Banner[]               @relation("BannerCreator")
+  disputes              Dispute[]              @relation("DisputeRaisedBy")
+  disputeAssignments    Dispute[]              @relation("DisputeAssignedTo")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([phone])
+  @@index([role])
+  @@index([status])
+  @@index([city])
+  @@index([deletedAt])
+  @@map("users")
+}
+
+// ---------- PROPERTIES ----------
+model Property {
+  id               String         @id @default(uuid())
+  title            String
+  description      String?
+  type             PropertyType   @default(APARTMENT)
+  status           PropertyStatus @default(PENDING)
+  price            Float
+  currency         String         @default("KES")
+  city             String
+  neighborhood     String?
+  address          String?
+  bedrooms         Int?
+  bathrooms        Int?
+  area             Float?
+  images           String[]
+  amenities        String[]
+  latitude         Float?
+  longitude        Float?
+  isFurnished      Boolean        @default(false)
+  hasParking       Boolean        @default(false)
+  hasSecurity      Boolean        @default(false)
+  hasBackupPower   Boolean        @default(false)
+  hasWaterTank     Boolean        @default(false)
+  isStudentOnly    Boolean        @default(false)
+  isFamilyFriendly Boolean        @default(false)
+  isPetFriendly    Boolean        @default(false)
+  isVerified       Boolean        @default(false)
+  views            Int            @default(0)
+  likes            Int            @default(0)
+  landlordId       String
+  landlord         User           @relation("LandlordProperties", fields: [landlordId], references: [id], onDelete: Cascade)
+  approvedById     String?
+  rejectionReason  String?
+  deletedAt        DateTime?
+  publishedAt      DateTime?
+
+  // Relationships
+  qrCodes             QRCode[]
+  reviews             Review[]             @relation("PropertyReviews")
+  maintenanceRequests MaintenanceRequest[] @relation("PropertyRequests")
+  escrowTransactions  EscrowTransaction[]  @relation("PropertyEscrows")
+  savedSearches       SavedSearch[]
+  banner              Banner?              @relation("PropertyBanner")
+  disputes            Dispute[]            @relation("PropertyDisputes")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([city])
+  @@index([status])
+  @@index([landlordId])
+  @@index([price])
+  @@index([type])
+  @@index([createdAt])
+  @@index([deletedAt])
+  @@map("properties")
+}
+
+// ---------- PAYMENTS ----------
+model Payment {
+  id            String        @id @default(uuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id])
+  amount        Float
+  currency      String        @default("KES")
+  method        PaymentMethod @default(MPESA)
+  status        PaymentStatus @default(PENDING)
+  type          String        @db.VarChar(50) // rent, deposit, fee, refund
+  transactionId String?       @unique
+  reference     String?
+  metadata      Json?
+  escrowId      String?
+  receiptUrl    String?
+  deletedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([method])
+  @@index([type])
+  @@index([createdAt])
+  @@index([deletedAt])
+  @@map("payments")
+}
+
+// ---------- ESCROW ----------
+model EscrowTransaction {
+  id            String       @id @default(uuid())
+  propertyId    String
+  property      Property     @relation("PropertyEscrows", fields: [propertyId], references: [id])
+  payerId       String
+  payer         User         @relation("EscrowPayer", fields: [payerId], references: [id])
+  payeeId       String
+  payee         User         @relation("EscrowPayee", fields: [payeeId], references: [id])
+  amount        Float
+  currency      String       @default("KES")
+  status        EscrowStatus @default(PENDING)
+  releaseDate   DateTime?
+  holdDays      Int          @default(14)
+  transactionId String?      @unique
+  releasedAt    DateTime?
+  releasedById  String?
+  disputeId     String?
+  deletedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([propertyId])
+  @@index([payerId])
+  @@index([payeeId])
+  @@index([status])
+  @@index([deletedAt])
+  @@map("escrow_transactions")
+}
+
+// ---------- QR CODES ----------
+model QRCode {
+  id            String    @id @default(uuid())
+  propertyId    String
+  property      Property  @relation(fields: [propertyId], references: [id])
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+  code          String    @unique
+  secretKey     String
+  expiresAt     DateTime
+  scans         Int       @default(0)
+  maxScans      Int       @default(100)
+  status        QRStatus  @default(ACTIVE)
+  lastScannedAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([code])
+  @@index([propertyId])
+  @@index([status])
+  @@map("qr_codes")
+}
+
+// ---------- BANNERS ----------
+model Banner {
+  id             String       @id @default(uuid())
+  title          String
+  description    String?
+  imageUrl       String
+  linkUrl        String?
+  targetAudience String[]
+  priority       Int          @default(0)
+  status         BannerStatus @default(DRAFT)
+  views          Int          @default(0)
+  clicks         Int          @default(0)
+  startDate      DateTime?
+  endDate        DateTime?
+  propertyId     String?      @unique
+  property       Property?    @relation("PropertyBanner", fields: [propertyId], references: [id])
+  createdById    String
+  creator        User         @relation("BannerCreator", fields: [createdById], references: [id])
+  deletedAt      DateTime?
+
+  // Relationships
+  bannerViews BannerView[] @relation("BannerViews")
+  campaigns   Campaign[]   @relation("BannerCampaigns")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+  @@index([deletedAt])
+  @@map("banners")
+}
+
+// ---------- BANNER VIEWS ----------
+model BannerView {
+  id        String   @id @default(uuid())
+  bannerId  String
+  banner    Banner   @relation("BannerViews", fields: [bannerId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  viewedAt  DateTime @default(now())
+  ipAddress String?
+  userAgent String?
+
+  @@index([bannerId])
+  @@index([userId])
+  @@map("banner_views")
+}
+
+// ---------- CAMPAIGNS ----------
+model Campaign {
+  id             String         @id @default(uuid())
+  title          String
+  description    String?
+  bannerId       String
+  banner         Banner         @relation("BannerCampaigns", fields: [bannerId], references: [id], onDelete: Cascade)
+  startDate      DateTime
+  endDate        DateTime
+  budget         Float
+  spent          Float          @default(0)
+  status         CampaignStatus @default(DRAFT)
+  conversions    Int            @default(0)
+  targetAudience String[]
+  goals          Json?
+  deletedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([bannerId])
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+  @@index([deletedAt])
+  @@map("campaigns")
+}
+
+// ---------- DISPUTES ----------
+model Dispute {
+  id           String          @id @default(uuid())
+  type         DisputeType     @default(OTHER)
+  status       DisputeStatus   @default(OPEN)
+  priority     DisputePriority @default(MEDIUM)
+  title        String
+  description  String?
+  evidence     String[]
+  raisedById   String
+  raisedBy     User            @relation("DisputeRaisedBy", fields: [raisedById], references: [id])
+  assignedToId String?
+  assignedTo   User?           @relation("DisputeAssignedTo", fields: [assignedToId], references: [id])
+  resolution   String?
+  resolvedAt   DateTime?
+  propertyId   String?
+  property     Property?       @relation("PropertyDisputes", fields: [propertyId], references: [id])
+  deletedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([raisedById])
+  @@index([assignedToId])
+  @@index([deletedAt])
+  @@map("disputes")
+}
+
+// ---------- NOTIFICATIONS ----------
+model Notification {
+  id          String              @id @default(uuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id])
+  type        NotificationType    @default(GENERAL)
+  title       String
+  message     String
+  channel     NotificationChannel @default(IN_APP)
+  isRead      Boolean             @default(false)
+  readAt      DateTime?
+  data        Json?
+  sentAt      DateTime?           @default(now())
+  deliveredAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([type])
+  @@index([createdAt])
+  @@map("notifications")
+}
+
+// ---------- CHAT MESSAGES ----------
+model ChatMessage {
+  id             String          @id @default(uuid())
+  conversationId String
+  senderId       String
+  sender         User            @relation("ChatSender", fields: [senderId], references: [id])
+  receiverId     String
+  receiver       User            @relation("ChatReceiver", fields: [receiverId], references: [id])
+  content        String
+  type           ChatMessageType @default(TEXT)
+  mediaUrl       String?
+  isRead         Boolean         @default(false)
+  readAt         DateTime?
+  deletedAt      DateTime?
+  editedAt       DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId])
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+  @@index([deletedAt])
+  @@map("chat_messages")
+}
+
+// ---------- SOS ALERTS ----------
+model SOSAlert {
+  id         String       @id @default(uuid())
+  userId     String
+  user       User         @relation(fields: [userId], references: [id])
+  type       SOSAlertType @default(PANIC)
+  status     SOSStatus    @default(ACTIVE)
+  location   String?
+  latitude   Float?
+  longitude  Float?
+  message    String?
+  resolvedAt DateTime?
+  resolvedBy String?
+  deletedAt  DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("sos_alerts")
+}
+
+// ---------- SAFETY REPORTS ----------
+model SafetyReport {
+  id           String             @id @default(uuid())
+  userId       String
+  user         User               @relation(fields: [userId], references: [id])
+  type         SafetyReportType   @default(OTHER)
+  status       SafetyReportStatus @default(OPEN)
+  title        String
+  description  String?
+  location     String?
+  images       String[]
+  assignedToId String?
+  resolvedAt   DateTime?
+  resolution   String?
+  deletedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([type])
+  @@index([deletedAt])
+  @@map("safety_reports")
+}
+
+// ---------- COMMUNITIES ----------
+model Community {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  city        String
+  location    String
+  imageUrl    String?
+  members     String[]
+  createdBy   String
+  creator     User      @relation("CommunityCreator", fields: [createdBy], references: [id])
+  memberUsers User[]    @relation("CommunityMembers")
+  deletedAt   DateTime?
+
+  posts  CommunityPost[]
+  events CommunityEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([city])
+  @@index([createdBy])
+  @@index([deletedAt])
+  @@map("communities")
+}
+
+// ---------- COMMUNITY POSTS ----------
+model CommunityPost {
+  id             String            @id @default(uuid())
+  communityId    String
+  community      Community         @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  authorId       String
+  author         User              @relation(fields: [authorId], references: [id])
+  content        String
+  type           CommunityPostType @default(TEXT)
+  mediaUrls      String[]
+  pollOptions    String[]
+  tags           String[]
+  likes          Int               @default(0)
+  likedBy        String[]
+  comments       Int               @default(0)
+  isPinned       Boolean           @default(false)
+  isAnnouncement Boolean           @default(false)
+  deletedAt      DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([communityId])
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([deletedAt])
+  @@map("community_posts")
+}
+
+// ---------- COMMUNITY EVENTS ----------
+model CommunityEvent {
+  id           String    @id @default(uuid())
+  communityId  String
+  community    Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  organizerId  String
+  organizer    User      @relation("EventOrganizer", fields: [organizerId], references: [id])
+  title        String
+  description  String?
+  eventDate    DateTime
+  location     String
+  maxAttendees Int?
+  imageUrl     String?
+  attendees    String[]
+  deletedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([communityId])
+  @@index([organizerId])
+  @@index([eventDate])
+  @@index([deletedAt])
+  @@map("community_events")
+}
+
+// ---------- REVIEWS ----------
+model Review {
+  id         String       @id @default(uuid())
+  targetId   String
+  targetType String       @db.VarChar(50) // user, property, landlord
+  propertyId String?
+  property   Property?    @relation("PropertyReviews", fields: [propertyId], references: [id])
+  authorId   String
+  author     User         @relation("ReviewAuthor", fields: [authorId], references: [id])
+  rating     Int
+  comment    String?
+  images     String[]
+  helpful    Int          @default(0)
+  status     ReviewStatus @default(PENDING)
+  deletedAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([targetId])
+  @@index([targetType])
+  @@index([authorId])
+  @@index([propertyId])
+  @@index([status])
+  @@index([deletedAt])
+  @@map("reviews")
+}
+
+// ---------- MAINTENANCE REQUESTS ----------
+model MaintenanceRequest {
+  id                 String              @id @default(uuid())
+  propertyId         String
+  property           Property            @relation("PropertyRequests", fields: [propertyId], references: [id])
+  requestedById      String
+  requestedBy        User                @relation("RequestedBy", fields: [requestedById], references: [id])
+  assignedToId       String?
+  assignedTo         User?               @relation("AssignedTo", fields: [assignedToId], references: [id])
+  title              String
+  description        String?
+  priority           MaintenancePriority @default(MEDIUM)
+  status             MaintenanceStatus   @default(PENDING)
+  images             String[]
+  notes              String?
+  completionNotes    String?
+  completionImages   String[]
+  completedAt        DateTime?
+  cancellationReason String?
+  deletedAt          DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([propertyId])
+  @@index([requestedById])
+  @@index([assignedToId])
+  @@index([status])
+  @@index([priority])
+  @@index([deletedAt])
+  @@map("maintenance_requests")
+}
+
+// ---------- ROOMMATE PROFILES ----------
+model RoommateProfile {
+  id          String    @id @default(uuid())
+  userId      String    @unique
+  user        User      @relation("RoommateUser", fields: [userId], references: [id])
+  preferences Json?
+  budgetMin   Float?
+  budgetMax   Float?
+  moveInDate  DateTime?
+  duration    String?
+  lifestyle   String[]
+  bio         String?
+  isActive    Boolean   @default(true)
+  deletedAt   DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([isActive])
+  @@index([deletedAt])
+  @@map("roommate_profiles")
+}
+
+// ---------- SAVED SEARCHES ----------
+model SavedSearch {
+  id             String    @id @default(uuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id])
+  propertyId     String
+  property       Property  @relation(fields: [propertyId], references: [id])
+  name           String?
+  filters        Json?
+  alertsEnabled  Boolean   @default(true)
+  lastNotifiedAt DateTime?
+  deletedAt      DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([propertyId])
+  @@index([deletedAt])
+  @@map("saved_searches")
+}
+
+// ---------- SETTINGS ----------
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     Json
+  userId    String?  @unique
+  user      User?    @relation("UserSettings", fields: [userId], references: [id])
+  updatedAt DateTime @updatedAt
+
+  @@index([key])
+  @@map("settings")
+}
+
+// ---------- ANALYTICS ----------
+model Analytics {
+  id         String  @id @default(uuid())
+  eventType  String  @db.VarChar(50)
+  entityType String? @db.VarChar(50)
+  entityId   String?
+  userId     String?
+  metadata   Json?
+  ipAddress  String?
+  userAgent  String?
+  sessionId  String?
+  value      Float?
+
+  createdAt DateTime @default(now())
+
+  @@index([eventType])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("analytics")
+}
+
+// ---------- IDENTITY VERIFICATIONS ----------
+model IdentityVerification {
+  id              String             @id @default(uuid())
+  userId          String
+  user            User               @relation(fields: [userId], references: [id])
+  idType          IdentityType       @default(NATIONAL_ID)
+  idNumber        String
+  idImage         String?
+  selfieImage     String?
+  status          VerificationStatus @default(PENDING)
+  verifiedAt      DateTime?
+  verifiedById    String?
+  rejectionReason String?
+  notes           String?
+  deletedAt       DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([idType])
+  @@index([deletedAt])
+  @@map("identity_verifications")
+}
+
+// ---------- REFERRALS ----------
+model Referral {
+  id           String             @id @default(uuid())
+  referrerId   String
+  referrer     User               @relation("Referrer", fields: [referrerId], references: [id])
+  refereeId    String?
+  referee      User?              @relation("Referee", fields: [refereeId], references: [id])
+  code         String             @unique
+  status       ReferralStatus     @default(PENDING)
+  rewardType   ReferralRewardType @default(CREDITS)
+  rewardAmount Float?
+  redeemedAt   DateTime?
+  expiresAt    DateTime?
+  deletedAt    DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([referrerId])
+  @@index([refereeId])
+  @@index([code])
+  @@index([status])
+  @@index([deletedAt])
+  @@map("referrals")
+}
+
+// ---------- FRAUD REPORTS ----------
+model FraudReport {
+  id           String    @id @default(uuid())
+  reportedById String
+  entityType   String    @db.VarChar(50)
+  entityId     String
+  reason       String
+  details      String?
+  status       String    @default("OPEN") @db.VarChar(50)
+  resolvedAt   DateTime?
+  resolvedById String?
+  deletedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([reportedById])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([status])
+  @@index([deletedAt])
+  @@map("fraud_reports")
+}
+
+// ---------- AUDIT LOGS ----------
+model AuditLog {
+  id         String  @id @default(uuid())
+  userId     String?
+  action     String
+  entityType String
+  entityId   String
+  changes    Json?
+  ipAddress  String?
+  userAgent  String?
+  metadata   Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// ---------- SYSTEM LOGS ----------
+model SystemLog {
+  id        String  @id @default(uuid())
+  level     String  @db.VarChar(20) // INFO, WARNING, ERROR, DEBUG
+  message   String
+  source    String? // backend, admin, app
+  stack     String?
+  metadata  Json?
+  ipAddress String?
+  userId    String?
+
+  createdAt DateTime @default(now())
+
+  @@index([level])
+  @@index([source])
+  @@index([createdAt])
+  @@map("system_logs")
+}
