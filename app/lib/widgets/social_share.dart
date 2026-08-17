@@ -18,7 +18,7 @@ class SocialShare extends StatelessWidget {
     this.filePaths,
     this.semanticLabel,
     this.onShareComplete,
-  }) : assert(text != null || url != null || (filePaths != null && filePaths!.isNotEmpty));
+  }) : assert(text != null || url != null || (filePaths != null && filePaths.isNotEmpty));
 
   static Future<void> share({
     String? text,
@@ -27,12 +27,10 @@ class SocialShare extends StatelessWidget {
     List<String>? filePaths,
   }) async {
     final shareText = [text, url].whereType<String>().join('\n');
-    final params = ShareParams(
-      text: shareText.isNotEmpty ? shareText : null,
+    final result = await Share.share(
+      shareText.isNotEmpty ? shareText : '',
       subject: subject,
-      files: filePaths,
     );
-    await Share.shareWithResult(params);
   }
 
   @override

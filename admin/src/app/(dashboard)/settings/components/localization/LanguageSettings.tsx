@@ -1,6 +1,6 @@
 'use client'
 
-import { Globe, Languages, CheckCircle2 } from 'lucide-react'
+import { Globe, Languages, CheckCircle2, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
@@ -8,7 +8,16 @@ import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Languages', value: '5', trend: 'up', trendValue: '1', icon: Languages, sub: 'supported' },
   { label: 'Translations', value: '2,840', trend: 'up', trendValue: '12%', icon: CheckCircle2, sub: 'completed' },
   { label: 'Coverage', value: '94%', trend: 'up', trendValue: '2%', icon: Globe, sub: 'keys translated' },

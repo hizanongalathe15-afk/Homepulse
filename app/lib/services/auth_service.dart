@@ -2,12 +2,13 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/network/api_client.dart';
 import 'package:homepulse/core/network/api_exception.dart';
+import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/user.dart';
 import 'package:homepulse/models/auth_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-  late final ApiClient _api = ApiClient(baseUrl: 'https://api.homepulse.app');
+  late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
 
   Future<User?> getCurrentUser(String token) async {
     try {
@@ -65,17 +66,17 @@ class AuthService {
 
   Future<void> storeToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('auth_token', token);
+    await prefs.setString(Constants.sessionTokenKey, token);
   }
 
   Future<String?> getStoredToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('auth_token');
+    return prefs.getString(Constants.sessionTokenKey);
   }
 
   Future<void> clearToken() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('auth_token');
+    await prefs.remove(Constants.sessionTokenKey);
   }
 }
 

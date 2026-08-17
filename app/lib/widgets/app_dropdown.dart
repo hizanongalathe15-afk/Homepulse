@@ -112,7 +112,7 @@ class _AppDropdownState<T> extends State<AppDropdown<T>> {
             controller: TextEditingController(text: selectedLabel),
             focusNode: widget.focusNode,
             decoration: inputDecoration,
-            validator: widget.validator,
+            validator: widget.validator as FormFieldValidator<String>?,
             enabled: widget.enabled,
           ),
         ),

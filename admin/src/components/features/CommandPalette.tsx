@@ -31,7 +31,7 @@ import {
 interface CommandItem {
   label: string
   href?: string
-  icon: React.ReactNode
+  icon?: React.ReactNode
   category: string
   action?: () => void
 }

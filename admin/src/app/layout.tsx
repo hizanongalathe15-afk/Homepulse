@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { AdminLayout } from '@/components/layouts/AdminLayout'
 import { AdminAuthProvider } from '@/contexts/AdminAuthProvider'
 import { AdminThemeProvider } from '@/contexts/AdminThemeProvider'
 import './globals.css'
@@ -21,7 +20,7 @@ export default function RootLayout({
       <body className="antialiased">
         <AdminAuthProvider>
           <AdminThemeProvider>
-            <AdminLayout>{children}</AdminLayout>
+            {children}
           </AdminThemeProvider>
         </AdminAuthProvider>
       </body>

@@ -2,8 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/models/app_notification.dart';
 import '../services/notification_service.dart';
 
-final notificationServiceProvider = Provider<NotificationService>((ref) => NotificationService());
-
 class NotificationNotifier extends AsyncNotifier<List<AppNotification>> {
   late final NotificationService _notificationService = ref.read(notificationServiceProvider);
 

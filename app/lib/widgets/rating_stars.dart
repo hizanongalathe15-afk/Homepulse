@@ -31,7 +31,7 @@ class RatingStars extends StatelessWidget {
     final stars = List.generate(starCount, (index) {
       final starValue = index + 1;
       return _StarWidget(
-        value: starValue,
+        value: starValue.toDouble(),
         rating: rating,
         size: size,
         filledColor: filledColor,

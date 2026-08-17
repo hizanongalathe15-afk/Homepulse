@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/chat_message.dart';
 import 'package:homepulse/models/conversation.dart';
 import '../services/chat_service.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-
-final chatServiceProvider = Provider<ChatService>((ref) => ChatService());
-
 class ChatNotifier extends AsyncNotifier<List<Conversation>> {
   late final ChatService _chatService = ref.read(chatServiceProvider);
   StreamSubscription? _subscription;
@@ -46,7 +44,7 @@ class ChatNotifier extends AsyncNotifier<List<Conversation>> {
   }
 
   void connectRealtime(String userId) {
-    _channel = WebSocketChannel.connect(Uri.parse('wss://api.homepulse.app/ws'));
+    _channel = WebSocketChannel.connect(Uri.parse('${Constants.socketUrl}/ws'));
     _subscription = _channel!.stream.listen((data) {
       final decoded = data as String;
       final event = decoded.split(':').first;

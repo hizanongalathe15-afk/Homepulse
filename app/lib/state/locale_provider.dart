@@ -5,7 +5,7 @@ final localeProvider = StateProvider<Locale>((ref) {
   return const Locale('en');
 });
 
-final localeNotifierProvider = NotifierProvider<LocaleNotifier, Locale>((ref) {
+final localeNotifierProvider = NotifierProvider<LocaleNotifier, Locale>(() {
   return LocaleNotifier();
 });
 

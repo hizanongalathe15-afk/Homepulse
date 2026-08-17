@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/network/api_client.dart';
 import 'package:homepulse/core/network/api_exception.dart';
+import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/identity_verification.dart';
+import 'package:dio/dio.dart';
 
 class IdVerificationNotifier extends AsyncNotifier<List<IdentityVerification>> {
-  late final ApiClient _api = ApiClient(baseUrl: 'https://api.homepulse.app');
+  late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
 
   @override
   Future<List<IdentityVerification>> build() async {

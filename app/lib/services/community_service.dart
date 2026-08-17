@@ -2,12 +2,13 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/network/api_client.dart';
 import 'package:homepulse/core/network/api_exception.dart';
+import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/neighborhood.dart';
 import 'package:homepulse/models/community_event.dart';
 import 'package:homepulse/models/community_discussion.dart';
 
 class CommunityNotifier extends AsyncNotifier<List<Neighborhood>> {
-  late final ApiClient _api = ApiClient(baseUrl: 'https://api.homepulse.app');
+  late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
 
   @override
   Future<List<Neighborhood>> build() async {

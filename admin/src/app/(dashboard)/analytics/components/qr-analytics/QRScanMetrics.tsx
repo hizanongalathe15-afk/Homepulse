@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { QrCode, ScanLine, MousePointerClick, Percent } from 'lucide-react'
+import { QrCode, ScanLine, MousePointerClick, Percent, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { useRegisterLiveMetric, useLiveMetric } from '@/contexts/LiveMetricsContext'
 
@@ -65,7 +65,24 @@ const metrics = [
   },
 ]
 
-function MetricCard(props: (typeof metrics)[number]) {
+interface MetricCardProps {
+  id: string
+  label: string
+  initialValue: number
+  prefix?: string
+  suffix?: string
+  decimals: number
+  min: number
+  max: number
+  volatility: number
+  isLive: boolean
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+function MetricCard(props: MetricCardProps) {
   useRegisterLiveMetric(props.id, {
     initialValue: props.initialValue,
     prefix: props.prefix,

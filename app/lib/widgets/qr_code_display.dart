@@ -6,7 +6,7 @@ class QRCodeDisplay extends StatelessWidget {
   final double size;
   final Color backgroundColor;
   final Color foregroundColor;
-  final QrErrorCorrectionLevel errorCorrectionLevel;
+  final int errorCorrectionLevel;
   final String? semanticLabel;
 
   const QRCodeDisplay({
@@ -15,7 +15,7 @@ class QRCodeDisplay extends StatelessWidget {
     this.size = 200.0,
     this.backgroundColor = Colors.white,
     this.foregroundColor = Colors.black,
-    this.errorCorrectionLevel = QrErrorCorrectionLevel.M,
+    this.errorCorrectionLevel = QrErrorCorrectLevel.M,
     this.semanticLabel,
   });
 

@@ -1,9 +1,88 @@
 'use client'
 
 import { useEffect } from 'react'
-import { DollarSign, Users, Home, AlertTriangle } from 'lucide-react'
+import { DollarSign, Users, Home, AlertTriangle, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { useRegisterLiveMetric, useLiveMetric } from '@/contexts/LiveMetricsContext'
+
+interface StatCardWrapperProps {
+  id: string
+  label: string
+  initialValue: number
+  prefix?: string
+  suffix?: string
+  decimals: number
+  min: number
+  max: number
+  volatility: number
+  isLive: boolean
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+function StatCardWrapper(props: StatCardWrapperProps) {
+  const {
+    id,
+    label,
+    initialValue,
+    prefix,
+    suffix,
+    decimals,
+    min,
+    max,
+    volatility,
+    isLive,
+    trend,
+    trendValue,
+    icon,
+    sub,
+  } = props
+
+  useRegisterLiveMetric(id, {
+    initialValue,
+    prefix,
+    suffix,
+    decimals,
+    min,
+    max,
+    volatility,
+    isLive,
+  })
+  const metric = useLiveMetric(id)
+
+  if (!metric) {
+    return (
+      <StatCard
+        label={label}
+        value={prefix ? `${prefix}${initialValue.toLocaleString()}${suffix ?? ''}` : initialValue.toLocaleString()}
+        trend={trend}
+        trendValue={trendValue}
+        icon={icon}
+        sub={sub}
+        live={isLive}
+      />
+    )
+  }
+
+  return (
+    <StatCard
+      label={label}
+      value={metric.value}
+      prefix={prefix}
+      suffix={suffix}
+      decimals={decimals}
+      trend={trend}
+      trendValue={trendValue}
+      icon={icon}
+      sub={sub}
+      animated
+      live={metric.isLive}
+      flickering={metric.flickering}
+    />
+  )
+}
 
 const stats = [
   {
@@ -64,66 +143,6 @@ const stats = [
     sub: 'requires attention',
   },
 ]
-
-function StatCardWrapper({
-  id,
-  label,
-  initialValue,
-  prefix,
-  suffix,
-  decimals,
-  min,
-  max,
-  volatility,
-  isLive,
-  trend,
-  trendValue,
-  icon,
-  sub,
-}: (typeof stats)[number]) {
-  useRegisterLiveMetric(id, {
-    initialValue,
-    prefix,
-    suffix,
-    decimals,
-    min,
-    max,
-    volatility,
-    isLive,
-  })
-  const metric = useLiveMetric(id)
-
-  if (!metric) {
-    return (
-      <StatCard
-        label={label}
-        value={prefix ? `${prefix}${initialValue.toLocaleString()}${suffix ?? ''}` : initialValue.toLocaleString()}
-        trend={trend}
-        trendValue={trendValue}
-        icon={icon}
-        sub={sub}
-        live={isLive}
-      />
-    )
-  }
-
-  return (
-    <StatCard
-      label={label}
-      value={metric.value}
-      prefix={prefix}
-      suffix={suffix}
-      decimals={decimals}
-      trend={trend}
-      trendValue={trendValue}
-      icon={icon}
-      sub={sub}
-      animated
-      live={isLive}
-      flickering={metric.flickering}
-    />
-  )
-}
 
 export default function StatsGrid() {
   return (

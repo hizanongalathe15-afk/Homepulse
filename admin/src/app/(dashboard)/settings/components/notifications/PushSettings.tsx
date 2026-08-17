@@ -1,6 +1,6 @@
 'use client'
 
-import { Bell, Smartphone, MessageSquare } from 'lucide-react'
+import { Bell, Smartphone, MessageSquare, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
@@ -8,7 +8,16 @@ import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Push Sent', value: '42,100', trend: 'up', trendValue: '8%', icon: Smartphone, sub: '30 days' },
   { label: 'Open Rate', value: '38%', trend: 'up', trendValue: '2%', icon: Bell, sub: 'push opens' },
   { label: 'Opt-outs', value: '1.8%', trend: 'down', trendValue: '0.4%', icon: MessageSquare, sub: 'disabled' },

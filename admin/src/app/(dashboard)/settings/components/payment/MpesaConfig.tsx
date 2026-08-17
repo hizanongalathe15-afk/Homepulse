@@ -1,13 +1,22 @@
 'use client'
 
-import { Phone, Webhook, DollarSign } from 'lucide-react'
+import { Phone, Webhook, DollarSign, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
 import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'M-Pesa Volume', value: '$128,400', trend: 'up', trendValue: '4.2%', icon: DollarSign, sub: '30 days' },
   { label: 'STK Pushes', value: '3,402', trend: 'up', trendValue: '2%', icon: Phone, sub: 'sent' },
   { label: 'Failed Pushes', value: '89', trend: 'down', trendValue: '15%', icon: Webhook, sub: 'retryable' },

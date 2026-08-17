@@ -1,6 +1,6 @@
 'use client'
 
-import { Wrench, AlertTriangle, ShieldCheck } from 'lucide-react'
+import { Wrench, AlertTriangle, ShieldCheck, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
@@ -8,10 +8,19 @@ import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Uptime', value: '99.98%', trend: 'up', trendValue: '0.02%', icon: ShieldCheck, sub: 'last 30 days' },
   { label: 'Incidents', value: '2', trend: 'down', trendValue: '1', icon: AlertTriangle, sub: 'this month' },
-] as const
+]
 
 const maintenanceLog = [
   { id: '1', date: '2026-08-10', duration: '15 min', reason: 'Database migration', status: 'completed' },

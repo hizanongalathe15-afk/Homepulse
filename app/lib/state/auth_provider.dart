@@ -3,8 +3,6 @@ import 'package:homepulse/models/user.dart';
 import 'package:homepulse/models/auth_response.dart';
 import '../services/auth_service.dart';
 
-final authServiceProvider = Provider<AuthService>((ref) => AuthService());
-
 enum AuthStatus { unknown, authenticated, unauthenticated }
 
 class AuthNotifier extends AsyncNotifier<User?> {

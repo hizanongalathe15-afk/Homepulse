@@ -1,18 +1,27 @@
 'use client'
 
-import { Shield, Lock, KeyRound, Ban } from 'lucide-react'
+import { Shield, Lock, KeyRound, Ban, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
 import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Failed Logins', value: '128', trend: 'down', trendValue: '5%', icon: Shield, sub: 'last 24h' },
   { label: 'Active Sessions', value: '1,024', trend: 'up', trendValue: '8%', icon: Lock, sub: 'across app' },
   { label: '2FA Adoption', value: '87%', trend: 'up', trendValue: '2%', icon: KeyRound, sub: 'enrolled users' },
   { label: 'Blocked IPs', value: '42', trend: 'neutral', trendValue: '3', icon: Ban, sub: 'active rules' },
-] as const
+]
 
 export default function SecuritySettings() {
   return (

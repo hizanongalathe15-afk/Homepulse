@@ -1,11 +1,13 @@
 import 'dart:async';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/network/api_client.dart';
 import 'package:homepulse/core/network/api_exception.dart';
+import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/property.dart';
 import 'package:homepulse/models/saved_search.dart';
 
 class SearchService {
-  late final ApiClient _api = ApiClient(baseUrl: 'https://api.homepulse.app');
+  late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
 
   Future<List<Property>> getAllProperties() async {
     final response = await _api.get('/properties');

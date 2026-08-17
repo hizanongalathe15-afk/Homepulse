@@ -18,7 +18,7 @@ class MpesaConfig {
   static String get transactionType => 'CustomerPayBillOnline';
   static String get partyA => '254700000000';
   static String get partyB => Constants.mpesaShortcode;
-  static String get resultUrl => 'https://api.homepulse.co.ke/v1/mpesa/result';
-  static String get queueUrl => 'https://api.homepulse.co.ke/v1/mpesa/queue';
+  static String get resultUrl => '${Constants.apiUrl}/mpesa/result';
+  static String get queueUrl => '${Constants.apiUrl}/mpesa/queue';
   static bool get useSandbox => Constants.isDebug;
 }

@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../features/feed/screens/feed_screen.dart';
-import '../features/landlord/screens/landlord_home_screen.dart';
-import '../features/qr_scanner/screens/scanner_screen.dart';
-import '../features/auth/screens/login_screen.dart';
-import '../features/auth/screens/register_screen.dart';
-import '../features/auth/screens/forgot_password_screen.dart';
-import '../features/auth/screens/verify_otp_screen.dart';
-import '../features/auth/screens/verify_id_screen.dart';
-import '../features/profile/screens/profile_screen.dart';
-import '../features/search/screens/search_screen.dart';
-import '../features/map/screens/map_screen.dart';
-import '../features/messages/screens/messages_screen.dart';
-import '../features/messages/screens/chat_screen.dart';
-import '../features/roommates/screens/roommates_screen.dart';
-import '../state/auth_provider.dart';
+import '../../features/feed/screens/feed_screen.dart';
+import '../../features/landlord/screens/landlord_home_screen.dart';
+import '../../features/qr_scanner/screens/scanner_screen.dart';
+import '../../features/auth/screens/login_screen.dart';
+import '../../features/auth/screens/register_screen.dart';
+import '../../features/auth/screens/forgot_password_screen.dart';
+import '../../features/auth/screens/verify_otp_screen.dart';
+import '../../features/auth/screens/verify_id_screen.dart';
+import '../../features/profile/screens/profile_screen.dart';
+import '../../features/search/screens/search_screen.dart';
+import '../../features/map/screens/map_screen.dart';
+import '../../features/messages/screens/messages_screen.dart';
+import '../../features/messages/screens/chat_screen.dart';
+import '../../features/roommates/screens/roommates_screen.dart';
+import '../../state/auth_provider.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);

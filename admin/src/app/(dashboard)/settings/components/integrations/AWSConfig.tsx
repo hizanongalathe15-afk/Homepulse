@@ -1,6 +1,6 @@
 'use client'
 
-import { Cloud } from 'lucide-react'
+import { Cloud, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
@@ -8,7 +8,16 @@ import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Storage Used', value: '2.4 TB', trend: 'up', trendValue: '12%', icon: Cloud, sub: 'of 5 TB' },
   { label: 'Requests (24h)', value: '840K', trend: 'up', trendValue: '5%', icon: Cloud, sub: 'S3 + CloudFront' },
   { label: 'Errors', value: '0.02%', trend: 'neutral', trendValue: '0%', icon: Cloud, sub: 'availability' },

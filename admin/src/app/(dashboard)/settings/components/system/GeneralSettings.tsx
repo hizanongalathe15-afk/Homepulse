@@ -1,18 +1,27 @@
 'use client'
 
-import { Building2, Mail, Clock, Globe } from 'lucide-react'
+import { Building2, Mail, Clock, Globe, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
 import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Active Listings', value: '12,458', trend: 'up', trendValue: '3.2%', icon: Building2, sub: 'this month' },
   { label: 'Support Inbox', value: '34', trend: 'down', trendValue: '12%', icon: Mail, sub: 'unread' },
   { label: 'Avg Response', value: '2.4h', trend: 'neutral', trendValue: '0.1h', icon: Clock, sub: 'last 7 days' },
   { label: 'Active Regions', value: '8', trend: 'up', trendValue: '1', icon: Globe, sub: 'countries' },
-] as const
+]
 
 export default function GeneralSettings() {
   return (

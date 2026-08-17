@@ -1,13 +1,22 @@
 'use client'
 
-import { Cloud, Puzzle, CheckCircle2, AlertTriangle } from 'lucide-react'
+import { Cloud, Puzzle, CheckCircle2, AlertTriangle, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminButton } from '@/components/ui/AdminButton'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 import { Toggle } from '@/components/features/Toggle'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Active Integrations', value: '7', trend: 'up', trendValue: '1', icon: Puzzle, sub: 'connected' },
   { label: 'API Calls (24h)', value: '1.2M', trend: 'up', trendValue: '8%', icon: Cloud, sub: 'all services' },
   { label: 'Errors', value: '12', trend: 'down', trendValue: '5', icon: AlertTriangle, sub: 'last 24h' },

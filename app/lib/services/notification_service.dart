@@ -1,11 +1,13 @@
 import 'dart:async';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/network/api_client.dart';
 import 'package:homepulse/core/network/api_exception.dart';
+import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/app_notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class NotificationService {
-  late final ApiClient _api = ApiClient(baseUrl: 'https://api.homepulse.app');
+  late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
 
   Future<List<AppNotification>> getNotifications({int page = 1, int limit = 20}) async {
     final response = await _api.get('/notifications', queryParameters: {'page': page, 'limit': limit});

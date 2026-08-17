@@ -4,8 +4,6 @@ import 'package:homepulse/models/property.dart';
 import 'package:geolocator/geolocator.dart';
 import '../services/map_service.dart';
 
-final mapServiceProvider = Provider<MapService>((ref) => MapService());
-
 class MapNotifier extends AsyncNotifier<List<Property>> {
   late final MapService _mapService = ref.read(mapServiceProvider);
 

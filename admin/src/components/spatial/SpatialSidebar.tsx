@@ -66,7 +66,7 @@ export function SpatialSidebar({
     if (idx >= 0) setActiveIndex(idx)
   }, [pathname, currentNav, onBreadcrumbChange])
 
-  const handleWheel = useCallback((e: React.WheelEvent) => {
+  const handleWheel = useCallback((e: WheelEvent) => {
     e.preventDefault()
     setRotation((prev) => prev + e.deltaY * 0.15)
   }, [])

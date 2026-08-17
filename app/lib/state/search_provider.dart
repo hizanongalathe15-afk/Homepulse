@@ -3,8 +3,6 @@ import 'package:homepulse/models/property.dart';
 import 'package:homepulse/models/saved_search.dart';
 import '../services/search_service.dart';
 
-final searchServiceProvider = Provider<SearchService>((ref) => SearchService());
-
 class SearchNotifier extends AsyncNotifier<List<Property>> {
   late final SearchService _searchService = ref.read(searchServiceProvider);
 

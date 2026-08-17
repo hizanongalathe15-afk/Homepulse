@@ -73,9 +73,10 @@ class _AnimatedModalSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final effectiveHeightRatio = heightRatio;
     return Container(
       constraints: BoxConstraints(
-        maxHeight: heightRatio != null ? MediaQuery.of(context).size.height * heightRatio! : null,
+        maxHeight: effectiveHeightRatio != null ? MediaQuery.of(context).size.height * effectiveHeightRatio : null,
       ),
       decoration: const BoxDecoration(
         color: Colors.white,

@@ -1,6 +1,6 @@
 'use client'
 
-import { CreditCard, Webhook, RefreshCcw } from 'lucide-react'
+import { CreditCard, Webhook, RefreshCcw, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
@@ -8,7 +8,16 @@ import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Stripe Volume', value: '$482,100', trend: 'up', trendValue: '6.8%', icon: CreditCard, sub: '30 days' },
   { label: 'Webhooks', value: '1,204', trend: 'up', trendValue: '3%', icon: Webhook, sub: 'delivered' },
   { label: 'Failed Charges', value: '23', trend: 'down', trendValue: '8%', icon: RefreshCcw, sub: 'retryable' },

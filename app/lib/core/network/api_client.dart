@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:homepulse/core/config/constants.dart';
 import 'api_exception.dart';
 
 class ApiClient {
@@ -84,11 +85,11 @@ class ApiClient {
 
   Future<String?> _getStoredToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('auth_token');
+    return prefs.getString(Constants.sessionTokenKey);
   }
 
   Future<void> _clearToken() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('auth_token');
+    await prefs.remove(Constants.sessionTokenKey);
   }
 }

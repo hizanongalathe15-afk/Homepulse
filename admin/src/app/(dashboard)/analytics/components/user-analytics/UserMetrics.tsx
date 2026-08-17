@@ -1,9 +1,74 @@
 'use client'
 
 import { useEffect } from 'react'
-import { Users, UserPlus, Activity, Repeat } from 'lucide-react'
+import { Users, UserPlus, Activity, Repeat, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { useRegisterLiveMetric, useLiveMetric } from '@/contexts/LiveMetricsContext'
+
+interface MetricCardProps {
+  id: string
+  label: string
+  initialValue: number
+  prefix?: string
+  suffix?: string
+  decimals: number
+  min: number
+  max: number
+  volatility: number
+  isLive: boolean
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+function MetricCard(props: MetricCardProps) {
+  useRegisterLiveMetric(props.id, {
+    initialValue: props.initialValue,
+    prefix: props.prefix,
+    suffix: props.suffix,
+    decimals: props.decimals,
+    min: props.min,
+    max: props.max,
+    volatility: props.volatility,
+    isLive: props.isLive,
+  })
+  const metric = useLiveMetric(props.id)
+
+  if (!metric) {
+    const display = props.prefix
+      ? `${props.prefix}${props.initialValue.toLocaleString()}${props.suffix ?? ''}`
+      : props.initialValue.toLocaleString()
+    return (
+      <StatCard
+        label={props.label}
+        value={display}
+        trend={props.trend}
+        trendValue={props.trendValue}
+        icon={props.icon}
+        sub={props.sub}
+        live={props.isLive}
+      />
+    )
+  }
+
+  return (
+    <StatCard
+      label={props.label}
+      value={metric.value}
+      prefix={props.prefix}
+      suffix={props.suffix}
+      decimals={props.decimals}
+      trend={props.trend}
+      trendValue={props.trendValue}
+      icon={props.icon}
+      sub={props.sub}
+      animated
+      live={metric.isLive}
+      flickering={metric.flickering}
+    />
+  )
+}
 
 const metrics = [
   {
@@ -64,54 +129,6 @@ const metrics = [
     sub: '90-day cohort',
   },
 ]
-
-function MetricCard(props: (typeof metrics)[number]) {
-  useRegisterLiveMetric(props.id, {
-    initialValue: props.initialValue,
-    prefix: props.prefix,
-    suffix: props.suffix,
-    decimals: props.decimals,
-    min: props.min,
-    max: props.max,
-    volatility: props.volatility,
-    isLive: props.isLive,
-  })
-  const metric = useLiveMetric(props.id)
-
-  if (!metric) {
-    const display = props.prefix
-      ? `${props.prefix}${props.initialValue.toLocaleString()}${props.suffix ?? ''}`
-      : props.initialValue.toLocaleString()
-    return (
-      <StatCard
-        label={props.label}
-        value={display}
-        trend={props.trend}
-        trendValue={props.trendValue}
-        icon={props.icon}
-        sub={props.sub}
-        live={props.isLive}
-      />
-    )
-  }
-
-  return (
-    <StatCard
-      label={props.label}
-      value={metric.value}
-      prefix={props.prefix}
-      suffix={props.suffix}
-      decimals={props.decimals}
-      trend={props.trend}
-      trendValue={props.trendValue}
-      icon={props.icon}
-      sub={props.sub}
-      animated
-      live={metric.isLive}
-      flickering={metric.flickering}
-    />
-  )
-}
 
 export default function UserMetrics() {
   return (

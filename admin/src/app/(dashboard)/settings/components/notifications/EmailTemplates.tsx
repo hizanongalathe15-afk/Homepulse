@@ -1,6 +1,6 @@
 'use client'
 
-import { Mail, Send, Eye } from 'lucide-react'
+import { Mail, Send, Eye, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
@@ -8,7 +8,16 @@ import { AdminButton } from '@/components/ui/AdminButton'
 import { DataTable } from '@/components/ui/DataTable'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'Emails Sent', value: '84,210', trend: 'up', trendValue: '5.4%', icon: Send, sub: '30 days' },
   { label: 'Open Rate', value: '62%', trend: 'up', trendValue: '3%', icon: Eye, sub: 'average' },
   { label: 'Bounces', value: '1.2%', trend: 'down', trendValue: '0.3%', icon: Mail, sub: 'hard bounces' },

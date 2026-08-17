@@ -1,6 +1,6 @@
 'use client'
 
-import { MessageSquare, Send, AlertTriangle } from 'lucide-react'
+import { MessageSquare, Send, AlertTriangle, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
 import { SectionCard } from '@/components/features/SectionCard'
 import { AdminInput } from '@/components/ui/AdminInput'
@@ -8,7 +8,16 @@ import { AdminButton } from '@/components/ui/AdminButton'
 import { Toggle } from '@/components/features/Toggle'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 
-const stats = [
+interface StatItem {
+  label: string
+  value: string
+  trend: 'up' | 'down' | 'neutral'
+  trendValue: string
+  icon: LucideIcon
+  sub: string
+}
+
+const stats: StatItem[] = [
   { label: 'SMS Sent', value: '28,400', trend: 'up', trendValue: '4%', icon: Send, sub: '30 days' },
   { label: 'Delivery Rate', value: '97%', trend: 'up', trendValue: '1%', icon: MessageSquare, sub: 'delivered' },
   { label: 'Failed', value: '142', trend: 'down', trendValue: '6%', icon: AlertTriangle, sub: 'to retry' },

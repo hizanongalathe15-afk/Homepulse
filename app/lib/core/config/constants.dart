@@ -5,14 +5,15 @@ class Constants {
 
   static const String appName = 'Homepulse';
   static const String appVersion = '1.0.0';
-  static const String apiUrl = 'https://api.homepulse.co.ke/v1';
+  static const String apiUrl = 'http://localhost:3000/api/v1';
   static const String apiKey = '';
-  static const String mapboxToken = '';
+  static const String mapboxToken = 'pk.placeholder';
   static const String mpesaShortcode = '174379';
   static const String mpesaPasskey = '';
   static const String mpesaConsumerKey = '';
   static const String mpesaConsumerSecret = '';
-  static const String mpesaCallbackUrl = 'https://api.homepulse.co.ke/v1/mpesa/callback';
+  static const String mpesaCallbackUrl = 'http://localhost:3000/api/v1/mpesa/callback';
+  static const String socketUrl = 'http://localhost:3000';
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
   static const int sendTimeout = 30000;

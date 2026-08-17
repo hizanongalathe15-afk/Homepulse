@@ -15,7 +15,7 @@ class AppSkeleton extends StatefulWidget {
     this.isCircle = false,
   });
 
-  const AppSkeleton.circle({
+  AppSkeleton.circle({
     super.key,
     double size = 40,
   })  : width = size,
