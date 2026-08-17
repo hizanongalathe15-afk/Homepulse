@@ -57,4 +57,28 @@ router.put('/:id', authenticate, validateBody([
 
 router.delete('/:id', authenticate, controller.deleteProperty);
 
+router.post('/:id/images', authenticate, validateBody([
+  body('url').notEmpty().withMessage('Image URL is required'),
+  body('isPrimary').optional().isBoolean(),
+  body('order').optional().isInt(),
+]), controller.addPropertyImage);
+
+router.get('/:id/images', authenticate, controller.getPropertyImages);
+
+router.delete('/:id/images/:imageId', authenticate, controller.deletePropertyImage);
+
+router.post('/:id/videos', authenticate, validateBody([
+  body('url').notEmpty().withMessage('Video URL is required'),
+  body('thumbnailUrl').optional().isString(),
+  body('caption').optional().isString(),
+]), controller.addPropertyVideo);
+
+router.get('/:id/videos', authenticate, controller.getPropertyVideos);
+
+router.delete('/:id/videos/:videoId', authenticate, controller.deletePropertyVideo);
+
+router.post('/:id/view', optionalAuthenticate, controller.trackPropertyView);
+
+router.get('/:id/views', authenticate, controller.getPropertyViews);
+
 export default router;

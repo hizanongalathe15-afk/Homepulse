@@ -10,6 +10,7 @@ import 'package:homepulse/widgets/user_avatar.dart';
 import 'package:homepulse/widgets/verified_badge.dart';
 import 'package:homepulse/widgets/loading_spinner.dart';
 import 'package:homepulse/core/utils/formatters.dart';
+import 'package:homepulse/widgets/comment_section.dart';
 import 'property_gallery.dart';
 import 'virtual_tour.dart';
 import 'landlord_profile.dart';
@@ -174,11 +175,13 @@ class PropertyDetailScreen extends ConsumerWidget {
                         const SizedBox(height: 24),
                         RentNegotiation(propertyId: propertyId, currentPrice: property.price),
                         const SizedBox(height: 24),
-                        PropertyQrCode(propertyId: propertyId),
-                        const SizedBox(height: 24),
-                        QnaSection(propertyId: propertyId),
-                        const SizedBox(height: 24),
-                        AppButton(
+                         PropertyQrCode(propertyId: propertyId),
+                         const SizedBox(height: 24),
+                         QnaSection(propertyId: propertyId),
+                         const SizedBox(height: 24),
+                         CommentSection(propertyId: propertyId),
+                         const SizedBox(height: 24),
+                         AppButton(
                           text: 'Contact Landlord',
                           onPressed: () =>
                               context.push('/messages?propertyId=$propertyId'),

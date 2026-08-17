@@ -99,6 +99,60 @@ async function main() {
     },
   });
 
+  await prisma.subscriptionPlan.upsert({
+    where: { id: 'basic-plan' },
+    update: {},
+    create: {
+      id: 'basic-plan',
+      name: 'Basic Listing',
+      description: 'List up to 5 properties',
+      price: 500,
+      currency: 'KES',
+      billingCycle: 'monthly',
+      maxListings: 5,
+      features: ['Basic listing management', 'Standard support'],
+      isActive: true,
+      isFeatured: false,
+      sortOrder: 1,
+    },
+  });
+
+  await prisma.subscriptionPlan.upsert({
+    where: { id: 'pro-plan' },
+    update: {},
+    create: {
+      id: 'pro-plan',
+      name: 'Pro Listing',
+      description: 'List up to 20 properties with featured placement',
+      price: 1500,
+      currency: 'KES',
+      billingCycle: 'monthly',
+      maxListings: 20,
+      features: ['Featured placement', 'Priority support', 'Analytics dashboard', 'Verified badge'],
+      isActive: true,
+      isFeatured: true,
+      sortOrder: 2,
+    },
+  });
+
+  await prisma.subscriptionPlan.upsert({
+    where: { id: 'enterprise-plan' },
+    update: {},
+    create: {
+      id: 'enterprise-plan',
+      name: 'Enterprise',
+      description: 'Unlimited listings with premium features',
+      price: 5000,
+      currency: 'KES',
+      billingCycle: 'monthly',
+      maxListings: null,
+      features: ['Unlimited listings', 'Premium placement', '24/7 priority support', 'Custom analytics', 'API access', 'Verified badge'],
+      isActive: true,
+      isFeatured: false,
+      sortOrder: 3,
+    },
+  });
+
   logger.info('Database seeded successfully');
 }
 

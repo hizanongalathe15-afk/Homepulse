@@ -19,6 +19,7 @@ import SMSSettings from './components/notifications/SMSSettings'
 import ThirdPartyIntegrations from './components/integrations/ThirdPartyIntegrations'
 import MapboxConfig from './components/integrations/MapboxConfig'
 import AWSConfig from './components/integrations/AWSConfig'
+import CookieSettings from './components/system/CookieSettings'
 
 export default function SettingsPage() {
   return (
@@ -61,6 +62,7 @@ export default function SettingsPage() {
         <MapboxConfig />
         <AWSConfig />
       </div>
+      <CookieSettings />
     </div>
   )
 }

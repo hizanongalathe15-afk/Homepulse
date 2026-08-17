@@ -7,7 +7,12 @@ export default function RootPage() {
   const router = useRouter()
 
   useEffect(() => {
-    router.replace('/overview')
+    const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : null
+    if (token) {
+      router.replace('/overview')
+    } else {
+      router.replace('/landing')
+    }
   }, [router])
 
   return null

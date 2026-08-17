@@ -144,7 +144,7 @@ class _PaymentsScreenState extends ConsumerState<PaymentsScreen> with SingleTick
               _QuickActionCard(
                 icon: Icons.qr_code_scanner,
                 label: 'QR Pay',
-                color: AppColors.accent,
+                color: AppColors.tertiary,
                 onTap: () => _showPaymentSheet(const QrCodePayment()),
               ),
             ],
@@ -253,7 +253,7 @@ class _PaymentsScreenState extends ConsumerState<PaymentsScreen> with SingleTick
               ),
               const Divider(),
               ListTile(
-                leading: const Icon(Icons.account_balance_wallet, color: AppColors.accent),
+                leading: const Icon(Icons.account_balance_wallet, color: AppColors.tertiary),
                 title: const Text('Escrow Deposit'),
                 subtitle: const Text('Deposit funds to secure a property'),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),

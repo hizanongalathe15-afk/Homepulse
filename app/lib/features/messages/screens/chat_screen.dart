@@ -9,6 +9,7 @@ import '../../../../state/chat_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/app_toast.dart';
+import '../../../../widgets/conversation_action_bar.dart';
 import './widgets/chat_window.dart';
 import './widgets/negotiation_panel.dart';
 import './widgets/qr_share.dart';
@@ -34,6 +35,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   List<ChatMessage> _messages = const [];
   bool _isLoading = false;
   bool _showNegotiationPanel = false;
+  Conversation? _conversation;
 
   @override
   void initState() {
@@ -80,6 +82,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
       }
     });
+  }
+
+  void _handleReplyTo(String? text) {
+    if (text != null) {
+      _messageController.text = '';
+      _messageController.text = text;
+    }
   }
 
   @override
@@ -132,28 +141,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             icon: const Icon(Icons.videocam_outlined),
             tooltip: 'Video Call',
           ),
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              if (value == 'negotiate') {
-                setState(() => _showNegotiationPanel = !_showNegotiationPanel);
-              } else if (value == 'qr') {
-                showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                builder: (context) => DraggableScrollableSheet(
-                  initialChildSize: 0.6,
-                  minChildSize: 0.4,
-                  maxChildSize: 0.9,
-                  expand: false,
-                  builder: (context, scrollController) => QRShare(),
-                ),
-                );
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(value: 'negotiate', child: Text('Negotiate Rent')),
-              const PopupMenuItem(value: 'qr', child: Text('Share QR Code')),
-            ],
+          ConversationActionBar(
+            conversation: _conversation ?? Conversation(
+              id: widget.conversationId,
+              participantIds: [],
+              createdAt: DateTime.now(),
+              updatedAt: DateTime.now(),
+            ),
+            currentUserId: 'me',
           ),
         ],
       ),
@@ -180,7 +175,44 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     controller: _scrollController,
                     onSend: _sendMessage,
                     messageController: _messageController,
+                    currentUserId: 'me',
+                    conversationId: widget.conversationId,
+                    onReplyTo: _handleReplyTo,
                   ),
+          ),
+          if (_messages.isNotEmpty)
+            _buildSeenByInfo(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSeenByInfo() {
+    final lastMessage = _messages.last;
+    if (!lastMessage.isRead && lastMessage.seenAt == null) {
+      return const SizedBox.shrink();
+    }
+
+    final time = lastMessage.readAt ?? lastMessage.seenAt;
+    final timeStr = time != null
+        ? '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}'
+        : '';
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(top: BorderSide(color: AppColors.divider)),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'Seen $timeStr',
+            style: TextStyle(
+              color: AppColors.textTertiary,
+              fontSize: 12,
+            ),
           ),
         ],
       ),

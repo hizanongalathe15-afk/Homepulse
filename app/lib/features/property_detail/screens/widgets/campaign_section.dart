@@ -39,10 +39,10 @@ class CampaignSectionWidget extends StatelessWidget {
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                color: AppColors.accent.withOpacity(0.1),
+                color: AppColors.tertiary.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Icon(Icons.local_offer, color: AppColors.accent),
+              child: const Icon(Icons.local_offer, color: AppColors.tertiary),
             ),
             const SizedBox(width: 12),
           ],

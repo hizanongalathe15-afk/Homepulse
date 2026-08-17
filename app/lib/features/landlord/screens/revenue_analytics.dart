@@ -37,10 +37,10 @@ class RevenueAnalyticsScreen extends ConsumerWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          _AnalyticsStat(label: 'Views', value: '${analytics.views}'),
-                          _AnalyticsStat(label: 'Inquiries', value: '${analytics.inquiries}'),
-                          _AnalyticsStat(label: 'Saves', value: '${analytics.saves}'),
-                          _AnalyticsStat(label: 'Shares', value: '${analytics.shares}'),
+                          _AnalyticsStat(label: 'Views', value: '${analytics['views'] ?? 0}'),
+                           _AnalyticsStat(label: 'Inquiries', value: '${analytics['inquiries'] ?? 0}'),
+                           _AnalyticsStat(label: 'Saves', value: '${analytics['saves'] ?? 0}'),
+                           _AnalyticsStat(label: 'Shares', value: '${analytics['shares'] ?? 0}'),
                         ],
                       ),
                     ],

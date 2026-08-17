@@ -1,79 +1,65 @@
-import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/network/api_client.dart';
-import 'package:homepulse/core/network/api_exception.dart';
 import 'package:homepulse/core/config/constants.dart';
-import 'package:homepulse/models/analytics_snapshot.dart';
 
 class AnalyticsService {
-  late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
+  final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
 
-  Future<AnalyticsSnapshot?> getSummary() async {
+  Future<void> recordEvent({
+    required String eventType,
+    String? entityType,
+    String? entityId,
+    Map<String, dynamic>? metadata,
+  }) async {
     try {
-      final response = await _api.get('/analytics/summary');
-      return AnalyticsSnapshot.fromJson(response.data as Map<String, dynamic>);
-    } on ApiException {
-      return null;
+      await _api.post('/analytics/events', data: {
+        'eventType': eventType,
+        'entityType': entityType,
+        'entityId': entityId,
+        'metadata': metadata,
+      });
+    } catch (e) {
+      // Silently ignore analytics errors - don't break UX
     }
   }
 
-  Future<AnalyticsSnapshot> getRevenue(String landlordId) async {
-    final response = await _api.get('/analytics/revenue', queryParameters: {'landlord_id': landlordId});
-    return AnalyticsSnapshot.fromJson(response.data as Map<String, dynamic>);
+  Future<void> trackPageView(String page) async {
+    await recordEvent(
+      eventType: 'PAGE_VIEWED',
+      entityType: 'page',
+      entityId: page,
+      metadata: {'platform': 'mobile'},
+    );
   }
 
-  Future<void> trackEvent(String eventName, Map<String, dynamic> properties) async {
-    await _api.post('/analytics/events', data: {
-      'event_name': eventName,
-      'properties': properties,
-    });
+  Future<void> trackPropertyView(String propertyId) async {
+    await recordEvent(
+      eventType: 'PROPERTY_VIEWED',
+      entityType: 'property',
+      entityId: propertyId,
+    );
   }
 
-  Future<void> trackScreenView(String screenName) async {
-    await trackEvent('screen_view', {'screen_name': screenName});
+  Future<void> trackPropertySave(String propertyId) async {
+    await recordEvent(
+      eventType: 'PROPERTY_SAVED',
+      entityType: 'property',
+      entityId: propertyId,
+    );
+  }
+
+  Future<void> trackPropertyLike(String propertyId) async {
+    await recordEvent(
+      eventType: 'PROPERTY_LIKED',
+      entityType: 'property',
+      entityId: propertyId,
+    );
+  }
+
+  Future<Map<String, dynamic>> getRevenue(String landlordId) async {
+    final response = await _api.get('/analytics/revenue?landlordId=$landlordId');
+    return response.data as Map<String, dynamic>;
   }
 }
 
 final analyticsServiceProvider = Provider<AnalyticsService>((ref) => AnalyticsService());
-
-class AnalyticsNotifier extends AsyncNotifier<AnalyticsSnapshot?> {
-  late final AnalyticsService _analyticsService = ref.read(analyticsServiceProvider);
-  final List<AnalyticsEvent> _buffer = [];
-
-  @override
-  Future<AnalyticsSnapshot?> build() async {
-    return _analyticsService.getSummary();
-  }
-
-  Future<void> trackEvent(String eventName, Map<String, dynamic> properties) async {
-    final event = AnalyticsEvent(
-      id: '',
-      userId: '',
-      eventName: eventName,
-      properties: properties,
-      timestamp: DateTime.now(),
-    );
-    _buffer.add(event);
-    if (_buffer.length >= 10) {
-      await _flush();
-    }
-  }
-
-  Future<void> trackScreenView(String screenName) async {
-    await trackEvent('screen_view', {'screen_name': screenName});
-  }
-
-  Future<void> _flush() async {
-    if (_buffer.isEmpty) return;
-    try {
-      await _analyticsService.trackEvent('batch_flush', {'events': _buffer.map((e) => e.toJson()).toList()});
-      _buffer.clear();
-    } on ApiException catch (_) {}
-  }
-
-  Future<AnalyticsSnapshot?> getSummary() async {
-    return _analyticsService.getSummary();
-  }
-}
-
-final analyticsProvider = AsyncNotifierProvider<AnalyticsNotifier, AnalyticsSnapshot?>(() => AnalyticsNotifier());

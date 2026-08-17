@@ -21,4 +21,19 @@ export const adminAnalyticsService = {
     const response = await apiClient.get(`/analytics/properties?from=${dateFrom}&to=${dateTo}`)
     return response.data
   },
+
+  async getMostVisitedPages(limit: number = 20): Promise<Array<{ page: string; visits: number }>> {
+    const response = await apiClient.get(`/analytics/most-visited?limit=${limit}`)
+    return response.data
+  },
+
+  async getVisitTrends(days: number = 30): Promise<Array<{ date: string; visits: number }>> {
+    const response = await apiClient.get(`/analytics/visit-trends?days=${days}`)
+    return response.data
+  },
+
+  async getMostFollowedProperties(limit: number = 10): Promise<Array<{ propertyId: string; saves: number }>> {
+    const response = await apiClient.get(`/analytics/most-followed?limit=${limit}`)
+    return response.data
+  },
 }

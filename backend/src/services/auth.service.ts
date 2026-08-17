@@ -148,7 +148,7 @@ export class AuthService {
 
       await this.prisma.user.update({
         where: { id: user.id },
-        data: { lastLoginAt: new Date() },
+        data: { lastSeen: new Date() },
       });
 
       logger.info(`User logged in: ${user.email}`);

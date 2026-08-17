@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../models/property.dart';
 import '../../../../widgets/rating_stars.dart';
+import '../../../../widgets/property_like_button.dart';
 
 class VideoActions extends StatelessWidget {
   final Property property;
@@ -24,10 +25,10 @@ class VideoActions extends StatelessWidget {
 
     return Column(
       children: [
-        _ActionButton(
-          icon: Icons.favorite_border_rounded,
-          label: 'Like',
-          onTap: onLike,
+        PropertyLikeButton(
+          propertyId: property.id,
+          initialLikesCount: property.metrics?.saves ?? 0,
+          size: 48,
         ),
         const SizedBox(height: 16),
         _ActionButton(

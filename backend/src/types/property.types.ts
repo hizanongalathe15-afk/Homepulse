@@ -11,7 +11,26 @@ export interface PropertyType {
   address?: string;
   bedrooms?: number;
   bathrooms?: number;
-  area?: number;
+  squareMeters?: number;
+  yearBuilt?: number;
+  furnishedLevel?: string;
+  floorNumber?: string;
+  totalFloors?: number;
+  parkingSpaces?: number;
+  isPetFriendly?: boolean;
+  isWheelchairAccessible?: boolean;
+  airConditioning?: boolean;
+  balcony?: boolean;
+  terrace?: boolean;
+  garden?: boolean;
+  pool?: boolean;
+  gym?: boolean;
+  elevator?: boolean;
+  laundry?: boolean;
+  dishwasher?: boolean;
+  wifi?: boolean;
+  security?: boolean;
+  fencing?: boolean;
   images: string[];
   amenities: string[];
   latitude?: number;
@@ -29,6 +48,9 @@ export interface PropertyFilters {
   maxPrice?: number;
   bedrooms?: number;
   bathrooms?: number;
+  squareMeters?: number;
+  furnishedLevel?: string;
+  amenities?: string[];
   page?: number;
   limit?: number;
 }
@@ -44,10 +66,57 @@ export interface CreatePropertyData {
   address?: string;
   bedrooms?: number;
   bathrooms?: number;
-  area?: number;
+  squareMeters?: number;
+  yearBuilt?: number;
+  furnishedLevel?: string;
+  floorNumber?: string;
+  totalFloors?: number;
+  parkingSpaces?: number;
+  isPetFriendly?: boolean;
+  isWheelchairAccessible?: boolean;
+  airConditioning?: boolean;
+  balcony?: boolean;
+  terrace?: boolean;
+  garden?: boolean;
+  pool?: boolean;
+  gym?: boolean;
+  elevator?: boolean;
+  laundry?: boolean;
+  dishwasher?: boolean;
+  wifi?: boolean;
+  security?: boolean;
+  fencing?: boolean;
   images?: string[];
   amenities?: string[];
   latitude?: number;
   longitude?: number;
   landlordId: string;
+}
+
+export interface PropertyImageType {
+  id: string;
+  propertyId: string;
+  url: string;
+  caption?: string;
+  isPrimary: boolean;
+  order: number;
+  createdAt: Date;
+}
+
+export interface PropertyVideoType {
+  id: string;
+  propertyId: string;
+  url: string;
+  thumbnailUrl?: string;
+  caption?: string;
+  createdAt: Date;
+}
+
+export interface PropertyViewType {
+  id: string;
+  propertyId: string;
+  userId?: string;
+  ipAddress?: string;
+  userAgent?: string;
+  createdAt: Date;
 }

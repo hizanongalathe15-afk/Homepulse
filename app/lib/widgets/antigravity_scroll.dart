@@ -76,10 +76,11 @@ class _ParallaxScrollState extends State<_ParallaxScroll> {
   }
 }
 
-class AntigravityListItem extends StatelessWidget {
+class AntigravityListItem extends StatefulWidget {
   final int index;
   final int total;
   final double stagger;
+  final double distance;
   final Widget child;
 
   const AntigravityListItem({
@@ -87,19 +88,68 @@ class AntigravityListItem extends StatelessWidget {
     required this.index,
     required this.total,
     this.stagger = 0.1,
+    this.distance = 30,
     required this.child,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final opacity = 1.0;
-    final offset = 0.0;
+  State<AntigravityListItem> createState() => _AntigravityListItemState();
+}
 
-    return Opacity(
-      opacity: opacity,
-      child: Transform.translate(
-        offset: Offset(0, offset),
-        child: child,
+class _AntigravityListItemState extends State<AntigravityListItem>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _opacity;
+  late final Animation<double> _translateY;
+  late final Animation<double> _scale;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 600),
+      vsync: this,
+    );
+
+    final delay = widget.index * widget.stagger;
+    final intervalEnd = (delay + 0.4).clamp(0.0, 1.0);
+
+    _opacity = CurvedAnimation(
+      parent: _controller,
+      curve: Interval(delay, intervalEnd, curve: Curves.easeOut),
+    );
+    _translateY = Tween<double>(begin: widget.distance, end: 0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(delay, intervalEnd, curve: Curves.easeOutCubic),
+      ),
+    );
+    _scale = Tween<double>(begin: 0.95, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Interval(delay, intervalEnd, curve: Curves.easeOutCubic),
+      ),
+    );
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scale,
+      child: FadeTransition(
+        opacity: _opacity,
+        child: Transform.translate(
+          offset: Offset(0, _translateY.value),
+          child: widget.child,
+        ),
       ),
     );
   }
@@ -161,14 +211,24 @@ class _AntigravityListViewState extends State<AntigravityListView> {
       itemBuilder: (context, index) {
         final itemScrollOffset = index * 100.0 * widget.staggerDelay;
         final relativeScroll = (_scrollY - itemScrollOffset).clamp(0.0, double.infinity);
-        final parallaxFactor = (relativeScroll / 200).clamp(0.0, 1.0);
+        final parallaxFactor = (relativeScroll / 300).clamp(0.0, 1.0);
         final translateY = parallaxFactor * 20 * widget.floatIntensity;
+        final scale = 1.0 - parallaxFactor * 0.02;
 
-        return Opacity(
-          opacity: 1.0 - (parallaxFactor * 0.1),
-          child: Transform.translate(
-            offset: Offset(0, -translateY),
-            child: widget.children[index],
+        return Transform.translate(
+          offset: Offset(0, -translateY),
+          child: Transform.scale(
+            scale: scale,
+            child: Opacity(
+              opacity: 1.0 - (parallaxFactor * 0.15),
+              child: AntigravityListItem(
+                index: index,
+                total: widget.children.length,
+                stagger: widget.staggerDelay,
+                distance: 40,
+                child: widget.children[index],
+              ),
+            ),
           ),
         );
       },

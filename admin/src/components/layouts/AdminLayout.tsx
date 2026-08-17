@@ -45,6 +45,7 @@ const navigation = [
   { name: 'Banner Management', href: '/banner-management', icon: Image },
   { name: 'Escrow Management', href: '/escrow-management', icon: Wallet },
   { name: 'Payments', href: '/payments', icon: Wallet },
+  { name: 'Ad Campaigns', href: '/ads', icon: Megaphone },
   { name: 'Campaigns', href: '/campaigns', icon: Megaphone },
   { name: 'Content Management', href: '/content-management', icon: FileText },
   { name: 'Reports', href: '/reports', icon: FileBarChart },

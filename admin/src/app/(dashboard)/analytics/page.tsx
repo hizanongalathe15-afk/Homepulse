@@ -31,6 +31,9 @@ import IncidentMetrics from './components/safety-analytics/IncidentMetrics'
 import SOSAlertTrends from './components/safety-analytics/SOSAlertTrends'
 import SafetyScoreTrends from './components/safety-analytics/SafetyScoreTrends'
 
+import MostVisitedPages from './components/page-analytics/MostVisitedPages'
+import SubscriptionAnalytics from './components/subscription-analytics/SubscriptionAnalytics'
+
 import { LiveMetricsProvider } from '@/contexts/LiveMetricsContext'
 
 function SectionHeading({ title, subtitle }: { title: string; subtitle: string }) {
@@ -50,6 +53,16 @@ export default function AnalyticsPage() {
           title="Analytics Suite"
           description="Track platform performance across users, properties, revenue, campaigns, QR codes and safety."
         />
+
+        <section className="space-y-4">
+          <SectionHeading title="Page Visit Analytics" subtitle="Most visited pages and traffic patterns" />
+          <MostVisitedPages />
+        </section>
+
+        <section className="space-y-4">
+          <SectionHeading title="Monetization Analytics" subtitle="Revenue, subscriptions and plan performance" />
+          <SubscriptionAnalytics />
+        </section>
 
         <section className="space-y-4">
           <SectionHeading title="User Analytics" subtitle="Growth, retention and segment insights" />

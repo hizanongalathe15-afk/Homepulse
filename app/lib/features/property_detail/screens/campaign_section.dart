@@ -39,15 +39,15 @@ class CampaignSection extends ConsumerWidget {
               children: [
                 Row(
                   children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: AppColors.accent.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Icon(Icons.local_offer, color: AppColors.accent),
-                    ),
+                     Container(
+                       width: 40,
+                       height: 40,
+                       decoration: BoxDecoration(
+                         color: AppColors.tertiary.withOpacity(0.1),
+                         borderRadius: BorderRadius.circular(8),
+                       ),
+                       child: const Icon(Icons.local_offer, color: AppColors.tertiary),
+                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(

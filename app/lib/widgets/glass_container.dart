@@ -17,6 +17,7 @@ class GlassContainer extends StatelessWidget {
   final VoidCallback? onTap;
   final double? width;
   final double? height;
+  final double elevation;
 
   const GlassContainer({
     super.key,
@@ -34,6 +35,7 @@ class GlassContainer extends StatelessWidget {
     this.onTap,
     this.width,
     this.height,
+    this.elevation = 1,
   });
 
   @override
@@ -52,8 +54,8 @@ class GlassContainer extends StatelessWidget {
     final resolvedBoxShadow = boxShadow ??
         BoxShadow(
           color: Colors.black.withOpacity(isDark ? 0.3 : 0.08),
-          blurRadius: 24,
-          offset: const Offset(0, 8),
+          blurRadius: elevation * 2,
+          offset: Offset(0, elevation),
         );
 
     final resolvedGlow = withGlow

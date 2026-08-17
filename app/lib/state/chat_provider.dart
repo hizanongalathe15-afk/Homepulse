@@ -5,6 +5,7 @@ import 'package:homepulse/models/chat_message.dart';
 import 'package:homepulse/models/conversation.dart';
 import '../services/chat_service.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
 class ChatNotifier extends AsyncNotifier<List<Conversation>> {
   late final ChatService _chatService = ref.read(chatServiceProvider);
   StreamSubscription? _subscription;
@@ -26,6 +27,102 @@ class ChatNotifier extends AsyncNotifier<List<Conversation>> {
   Future<ChatMessage> sendMessage(String conversationId, String content, {String? attachmentUrl}) async {
     try {
       return await _chatService.sendMessage(conversationId, content, attachmentUrl: attachmentUrl);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<ChatMessage> editMessage(String messageId, String newContent) async {
+    try {
+      return await _chatService.editMessage(messageId, newContent);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteMessage(String messageId) async {
+    try {
+      await _chatService.deleteMessage(messageId);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<ChatMessage> forwardMessage(String messageId, String toConversationId) async {
+    try {
+      return await _chatService.forwardMessage(messageId, toConversationId);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<ChatMessage> starMessage(String messageId) async {
+    try {
+      return await _chatService.starMessage(messageId);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<ChatMessage> unstarMessage(String messageId) async {
+    try {
+      return await _chatService.unstarMessage(messageId);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> reportMessage(String messageId, String reason) async {
+    try {
+      await _chatService.reportMessage(messageId, reason);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> muteConversation(String conversationId, {Duration? duration}) async {
+    try {
+      await _chatService.muteConversation(conversationId, duration: duration);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> unmuteConversation(String conversationId) async {
+    try {
+      await _chatService.unmuteConversation(conversationId);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<Conversation> pinConversation(String conversationId) async {
+    try {
+      return await _chatService.pinConversation(conversationId);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> archiveConversation(String conversationId) async {
+    try {
+      await _chatService.archiveConversation(conversationId);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> markConversationAsRead(String conversationId) async {
+    try {
+      await _chatService.markConversationAsRead(conversationId);
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<int> getUnreadCount() async {
+    try {
+      return await _chatService.getUnreadCount();
     } on Exception catch (_) {
       rethrow;
     }

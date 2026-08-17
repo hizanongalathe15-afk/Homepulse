@@ -6,6 +6,10 @@ class Conversation {
   final int unreadCount;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final bool isMuted;
+  final DateTime? mutedUntil;
+  final bool isPinned;
+  final bool isArchived;
 
   Conversation({
     required this.id,
@@ -15,6 +19,10 @@ class Conversation {
     this.unreadCount = 0,
     required this.createdAt,
     required this.updatedAt,
+    this.isMuted = false,
+    this.mutedUntil,
+    this.isPinned = false,
+    this.isArchived = false,
   });
 
   factory Conversation.fromJson(Map<String, dynamic> json) {
@@ -26,6 +34,10 @@ class Conversation {
       unreadCount: json['unread_count'] as int? ?? 0,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
+      isMuted: json['is_muted'] as bool? ?? false,
+      mutedUntil: json['muted_until'] != null ? DateTime.parse(json['muted_until'] as String) : null,
+      isPinned: json['is_pinned'] as bool? ?? false,
+      isArchived: json['is_archived'] as bool? ?? false,
     );
   }
 
@@ -38,6 +50,10 @@ class Conversation {
       'unread_count': unreadCount,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
+      'is_muted': isMuted,
+      'muted_until': mutedUntil?.toIso8601String(),
+      'is_pinned': isPinned,
+      'is_archived': isArchived,
     };
   }
 }

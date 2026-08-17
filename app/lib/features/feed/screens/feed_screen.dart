@@ -7,6 +7,9 @@ import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/antigravity_scroll.dart';
 import '../../../../widgets/profile_dropdown.dart';
 import '../../../../state/feed_provider.dart';
+import '../../../../services/analytics_service.dart';
+import '../../../../core/theme/app_theme.dart';
+import '../../../../core/theme/app_colors.dart';
 import 'video_card.dart';
 import 'video_filters.dart';
 import 'video_skeleton.dart';
@@ -25,6 +28,9 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_onScroll);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(analyticsServiceProvider).trackPageView('/feed');
+    });
   }
 
   @override
@@ -45,9 +51,9 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Homepulse'),
+        title: Text('Homepulse', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded)),
           const ProfileDropdown(showInAppBar: false),
         ],
       ),
@@ -58,23 +64,46 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
             child: feedAsync.when(
               loading: () => const VideoSkeleton(),
               error: (error, _) => Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 48, color: Colors.red),
-                    const SizedBox(height: 16),
-                    Text('Error loading feed', style: Theme.of(context).textTheme.titleMedium),
-                    const SizedBox(height: 8),
-                    ElevatedButton(onPressed: () => ref.read(feedProvider.notifier).loadFeed(), child: const Text('Retry')),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: AppColors.error.withOpacity(0.1),
+                          borderRadius: AppTheme.borderRadiusXl,
+                        ),
+                        child: const Icon(Icons.error_outline_rounded, size: 48, color: AppColors.error),
+                      ),
+                      const SizedBox(height: 16),
+                      Text('Error loading feed', style: Theme.of(context).textTheme.titleMedium),
+                      const SizedBox(height: 8),
+                      ElevatedButton(
+                        onPressed: () => ref.read(feedProvider.notifier).loadFeed(),
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               data: (properties) {
                 if (properties.isEmpty) {
-                  return const Center(child: Text('No properties found'));
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.home_outlined, size: 64, color: AppColors.textTertiary),
+                        const SizedBox(height: 16),
+                        Text('No properties found', style: Theme.of(context).textTheme.titleMedium),
+                      ],
+                    ),
+                  );
                 }
                 return RefreshIndicator(
                   onRefresh: () => ref.read(feedProvider.notifier).loadFeed(),
+                  color: AppColors.primary,
                   child: AntigravityListView(
                     controller: _scrollController,
                     staggerDelay: 0.1,

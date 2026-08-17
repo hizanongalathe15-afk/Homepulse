@@ -4,6 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../models/property.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/rating_stars.dart';
+import '../../../../widgets/property_like_button.dart';
 
 class PropertyCard extends StatelessWidget {
   final Property property;
@@ -65,6 +66,12 @@ class PropertyCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    PropertyLikeButton(
+                      propertyId: property.id,
+                      initialLikesCount: property.metrics?.saves ?? 0,
+                      size: 32,
+                    ),
+                    const SizedBox(width: 4),
                     IconButton(
                       onPressed: onClose,
                       icon: const Icon(Icons.close, size: 20),

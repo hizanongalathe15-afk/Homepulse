@@ -2,6 +2,19 @@ import express, { Request, Response, NextFunction } from 'express';
 import { authenticate, optionalAuthenticate } from '../middleware/auth.middleware';
 import { validateBody, validateQuery, validateParams } from '../middleware/validation.middleware';
 import { body, param, query } from 'express-validator';
+import { PropertyService } from '../services/property.service';
+import { SearchService } from '../services/search.service';
+import { PrismaClient } from '@prisma/client';
+import { EmailService } from '../services/email.service';
+import { SmsService } from '../services/sms.service';
+import { NotificationService } from '../services/notification.service';
+
+const prisma = new PrismaClient();
+const emailService = new EmailService();
+const smsService = new SmsService();
+const notificationService = new NotificationService(prisma, emailService, smsService);
+const searchService = new SearchService(prisma, notificationService);
+const propertyService = new PropertyService(prisma, searchService, notificationService);
 
 const router = express.Router();
 
@@ -28,6 +41,17 @@ router.get('/:id', optionalAuthenticate, validateParams([
     timestamp: new Date().toISOString(),
     path: req.path,
   });
+});
+
+router.get('/:id/profile', optionalAuthenticate, validateParams([
+  param('id').isString().withMessage('User ID is required'),
+]), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await propertyService.getLandlordPublicProfile(req.params.id as string);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.put('/:id', authenticate, validateParams([

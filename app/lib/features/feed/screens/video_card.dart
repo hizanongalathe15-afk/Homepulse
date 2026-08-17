@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../models/property.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/user_avatar.dart';
 import '../../../../widgets/rating_stars.dart';
 import '../../../../widgets/verified_badge.dart';
+import '../../../../widgets/social_share_popup.dart';
 import '../../../../core/utils/formatters.dart';
 import 'video_actions.dart';
 import 'trust_badge_overlay.dart';
@@ -33,14 +35,20 @@ class VideoCard extends StatelessWidget {
         children: [
           Stack(
             children: [
-              Container(
-                height: 220,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  image: DecorationImage(
-                    image: NetworkImage(property.imageUrls.first),
-                    fit: BoxFit.cover,
+              GestureDetector(
+                onTap: () => context.push('/property/${property.id}'),
+                child: Hero(
+                  tag: 'property-${property.id}',
+                  child: Container(
+                    height: 220,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      image: DecorationImage(
+                        image: NetworkImage(property.imageUrls.first),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -119,7 +127,16 @@ class VideoCard extends StatelessWidget {
           VideoActions(
             onLike: onLike,
             onSave: onSave,
-            onShare: onShare,
+            onShare: () {
+              SocialSharePopup(
+                title: property.title,
+                description: property.description,
+                url: 'https://homepulse.app/property/${property.id}',
+                imageUrl: property.imageUrls.isNotEmpty
+                    ? property.imageUrls.first
+                    : null,
+              ).show(context);
+            },
             onComment: () {
               showModalBottomSheet(
                 context: context,

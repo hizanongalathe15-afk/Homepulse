@@ -12,6 +12,7 @@ import { logger } from './config/logger.config';
 import { errorHandler } from './middleware/errorHandler.middleware';
 import { rateLimiter } from './middleware/rateLimiter.middleware';
 import { loggerMiddleware } from './middleware/logger.middleware';
+import { pageVisitTracker } from './middleware/pageVisitTracker.middleware';
 
 import authRoutes from './routes/auth.routes';
 import usersRoutes from './routes/users.routes';
@@ -42,6 +43,11 @@ import aiRoutes from './routes/ai.routes';
 import pushRoutes from './routes/push.routes';
 import weatherRoutes from './routes/weather.routes';
 import leaseRoutes from './routes/lease.routes';
+import subscriptionRoutes from './routes/subscription.routes';
+import adRoutes from './routes/ad.routes';
+import commentRoutes from './routes/comment.routes';
+import chatManagementRoutes from './routes/chatManagement.routes';
+import socialRoutes from './routes/social.routes';
 
 import { initializeAllSockets } from './sockets';
 import { initializeWorker } from './workers/index.worker';
@@ -68,6 +74,7 @@ app.use(express.urlencoded({ extended: true, limit: process.env['BODY_LIMIT'] ||
 app.use(morgan('combined', { stream: { write: (message) => logger.info(message.trim()) } }));
 app.use(loggerMiddleware);
 app.use(rateLimiter);
+app.use(pageVisitTracker);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -102,6 +109,11 @@ app.use(`/api/${apiVersion}/ai`, aiRoutes);
 app.use(`/api/${apiVersion}/push`, pushRoutes);
 app.use(`/api/${apiVersion}/weather`, weatherRoutes);
 app.use(`/api/${apiVersion}/leases`, leaseRoutes);
+app.use(`/api/${apiVersion}/subscriptions`, subscriptionRoutes);
+app.use(`/api/${apiVersion}/ads`, adRoutes);
+app.use(`/api/${apiVersion}/comments`, commentRoutes);
+app.use(`/api/${apiVersion}/chat-management`, chatManagementRoutes);
+app.use(`/api/${apiVersion}/social`, socialRoutes);
 
 app.use('*', (req, res) => {
   res.status(404).json({

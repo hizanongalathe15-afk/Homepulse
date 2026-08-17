@@ -154,12 +154,12 @@ class DashboardScreen extends ConsumerWidget {
               color: AppColors.secondary,
               onTap: () {},
             ),
-            _DashboardTile(
-              icon: Icons.search,
-              label: 'Saved Searches',
-              color: AppColors.accent,
-              onTap: () {},
-            ),
+              _DashboardTile(
+                icon: Icons.search,
+                label: 'Saved Searches',
+                color: AppColors.tertiary,
+                onTap: () {},
+              ),
             _DashboardTile(
               icon: Icons.event_outlined,
               label: 'Viewing Requests',

@@ -15,7 +15,14 @@ import '../../features/map/screens/map_screen.dart';
 import '../../features/messages/screens/messages_screen.dart';
 import '../../features/messages/screens/chat_screen.dart';
 import '../../features/roommates/screens/roommates_screen.dart';
+import '../../features/property/screens/property_detail_screen.dart';
+import '../../screens/privacy_settings_screen.dart';
+import '../../screens/history_screen.dart';
+import '../../screens/followers_screen.dart';
+import '../../screens/following_screen.dart';
+import '../../screens/blocked_users_screen.dart';
 import '../../state/auth_provider.dart';
+import '../transitions/transitions.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);
@@ -35,26 +42,122 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       return null;
     },
     routes: [
-      GoRoute(path: '/feed', builder: (context, state) => const FeedScreen()),
-      GoRoute(path: '/landlord', builder: (context, state) => const LandlordHomeScreen()),
-      GoRoute(path: '/scanner', builder: (context, state) => const ScannerScreen()),
-      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
-      GoRoute(path: '/forgot-password', builder: (context, state) => const ForgotPasswordScreen()),
-      GoRoute(path: '/verify-otp', builder: (context, state) {
-        final phone = state.uri.queryParameters['phone'] ?? '';
-        return VerifyOtpScreen(phoneNumber: phone);
-      }),
-      GoRoute(path: '/verify-id', builder: (context, state) => const VerifyIdScreen()),
-      GoRoute(path: '/profile', builder: (context, state) => const ProfileScreen()),
-      GoRoute(path: '/search', builder: (context, state) => const SearchScreen()),
-      GoRoute(path: '/map', builder: (context, state) => const MapScreen()),
-      GoRoute(path: '/messages', builder: (context, state) => const MessagesScreen()),
-      GoRoute(path: '/chat/:conversationId', builder: (context, state) {
-        final id = state.pathParameters['conversationId'] ?? '';
-        return ChatScreen(conversationId: id);
-      }),
-      GoRoute(path: '/roommates', builder: (context, state) => const RoommatesScreen()),
+      GoRoute(
+        path: '/feed',
+        pageBuilder: (context, state) =>
+            fadeScaleTransition(child: const FeedScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/landlord',
+        pageBuilder: (context, state) =>
+            fadeScaleTransition(child: const LandlordHomeScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/scanner',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const ScannerScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/login',
+        pageBuilder: (context, state) =>
+            fadeScaleTransition(child: const LoginScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/register',
+        pageBuilder: (context, state) =>
+            fadeScaleTransition(child: const RegisterScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/forgot-password',
+        pageBuilder: (context, state) =>
+            fadeScaleTransition(child: const ForgotPasswordScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/verify-otp',
+        pageBuilder: (context, state) {
+          final phone = state.uri.queryParameters['phone'] ?? '';
+          return fadeScaleTransition(
+            child: VerifyOtpScreen(phoneNumber: phone),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/verify-id',
+        pageBuilder: (context, state) =>
+            fadeScaleTransition(child: const VerifyIdScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/profile',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const ProfileScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/search',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const SearchScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/map',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const MapScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/messages',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const MessagesScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/chat/:conversationId',
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['conversationId'] ?? '';
+          return slideTransition(
+            begin: const Offset(0, 0.1),
+            child: ChatScreen(conversationId: id),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/property/:propertyId',
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['propertyId'] ?? '';
+          return fadeScaleTransition(
+            child: PropertyDetailScreen(propertyId: id),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/roommates',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const RoommatesScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/privacy',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const PrivacySettingsScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/history',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const HistoryScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/followers',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const FollowersScreen(users: []), state: state),
+      ),
+      GoRoute(
+        path: '/following',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const FollowingScreen(users: []), state: state),
+      ),
+      GoRoute(
+        path: '/blocked-users',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const BlockedUsersScreen(users: []), state: state),
+      ),
     ],
   );
 });

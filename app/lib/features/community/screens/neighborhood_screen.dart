@@ -210,7 +210,7 @@ class _NeighborhoodScreenState extends ConsumerState<NeighborhoodScreen> with Si
             children: [
               _StatCard(label: 'Events', value: '12', icon: Icons.event, color: AppColors.primary),
               _StatCard(label: 'Groups', value: '8', icon: Icons.group, color: AppColors.secondary),
-              _StatCard(label: 'Members', value: '1.2K', icon: Icons.people, color: AppColors.accent),
+              _StatCard(label: 'Members', value: '1.2K', icon: Icons.people, color: AppColors.tertiary),
               _StatCard(label: 'Posts', value: '345', icon: Icons.article, color: AppColors.info),
             ],
           ),

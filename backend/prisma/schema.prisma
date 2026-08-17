@@ -32,16 +32,22 @@ enum UserStatus {
   DEACTIVATED
 }
 
-enum PropertyStatus {
-  PENDING
-  APPROVED
-  REJECTED
-  FLAGGED
-  DELETED
-  DRAFT
-  PUBLISHED
-  EXPIRED
-  ACTIVE
+enum FurnishedLevel {
+  UNFURNISHED
+  SEMI_FURNISHED
+  FULLY_FURNISHED
+}
+
+enum FloorType {
+  GROUND
+  BASEMENT
+  MIDDLE
+  TOP
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
 }
 
 enum PropertyType {
@@ -54,6 +60,28 @@ enum PropertyType {
   VILLA
   COMMERCIAL
   LAND
+  NYUMBA_YA_MABATI
+  SINGLE_ROOM
+  SELF_CONTAINED
+  GUEST_HOUSE
+  HOSTEL_ROOM
+  OFFICE
+  SHOP
+  WAREHOUSE
+  FACTORY
+  AGRICULTURAL
+}
+
+enum PropertyStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+  DELETED
+  DRAFT
+  PUBLISHED
+  EXPIRED
+  ACTIVE
 }
 
 enum PaymentStatus {
@@ -283,22 +311,51 @@ enum IdentityType {
 
 // ---------- USERS ----------
 model User {
-  id           String     @id @default(uuid())
-  email        String     @unique
-  phone        String     @unique
-  firstName    String
-  lastName     String
-  password     String?
-  role         UserRole   @default(TENANT)
-  status       UserStatus @default(ACTIVE)
-  isVerified   Boolean    @default(false)
-  isActive     Boolean    @default(true)
-  city         String?
-  profileImage String?
-  bio          String?
-  lastLoginAt  DateTime?
-  resetToken   String?
-  deletedAt    DateTime?
+  id                  String     @id @default(uuid())
+  email               String     @unique
+  phone               String     @unique
+  firstName           String
+  lastName            String
+  password            String?
+  role                UserRole   @default(TENANT)
+  status              UserStatus @default(ACTIVE)
+  isVerified          Boolean    @default(false)
+  isActive            Boolean    @default(true)
+  isOnline            Boolean    @default(false)
+  lastSeen            DateTime?
+  responseTimeMinutes Int?
+  totalProperties     Int        @default(0)
+  rating              Float?
+  city                String?
+  profileImage        String?
+  bio                 String? @db.Text
+  instagram           String?
+  twitter              String?
+  facebook             String?
+  linkedin             String?
+  tiktok               String?
+  youtube              String?
+  website              String?
+  showEmail           Boolean @default(false)
+  showPhone           Boolean @default(true)
+  showLocation        Boolean @default(true)
+  showOnlineStatus    Boolean @default(true)
+  showLastSeen        Boolean @default(true)
+
+  // Social comments
+  propertyComments     PropertyComment[] @relation("CommentUser")
+  commentLikes         CommentLike[]
+
+  // Social interactions
+  propertyLikes        PropertyLike[]
+  followers            UserFollow[]     @relation("Followers")
+  following            UserFollow[]     @relation("Following")
+  blockedUsers         UserBlock[]      @relation("Blocking")
+  blockingUsers        UserBlock[]      @relation("Blocked")
+
+  // Relationships
+  resetToken          String?
+  deletedAt           DateTime?
 
   // Relationships
   properties            Property[]             @relation("LandlordProperties")
@@ -328,8 +385,11 @@ model User {
   bannersCreated        Banner[]               @relation("BannerCreator")
   disputes              Dispute[]              @relation("DisputeRaisedBy")
   disputeAssignments    Dispute[]              @relation("DisputeAssignedTo")
-  tenantLeases          Lease[]                 @relation("TenantLeases")
-  landlordLeases        Lease[]                 @relation("LandlordLeases")
+   tenantLeases          Lease[]                 @relation("TenantLeases")
+   landlordLeases        Lease[]                 @relation("LandlordLeases")
+   pageVisits            PageVisit[]
+   subscriptions         Subscription[]
+   subscriptionEvents    SubscriptionEvent[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -345,42 +405,64 @@ model User {
 
 // ---------- PROPERTIES ----------
 model Property {
-  id               String         @id @default(uuid())
-  title            String
-  description      String?
-  type             PropertyType   @default(APARTMENT)
-  status           PropertyStatus @default(PENDING)
-  price            Float
-  currency         String         @default("KES")
-  city             String
-  neighborhood     String?
-  address          String?
-  bedrooms         Int?
-  bathrooms        Int?
-  area             Float?
-  images           String[]
-  amenities        String[]
-  latitude         Float?
-  longitude        Float?
-  isFurnished      Boolean        @default(false)
-  hasParking       Boolean        @default(false)
-  hasSecurity      Boolean        @default(false)
-  hasBackupPower   Boolean        @default(false)
-  hasWaterTank     Boolean        @default(false)
-  isStudentOnly    Boolean        @default(false)
-  isFamilyFriendly Boolean        @default(false)
-  isPetFriendly    Boolean        @default(false)
-  isVerified       Boolean        @default(false)
-  views            Int            @default(0)
-  likes            Int            @default(0)
-  landlordId       String
-  landlord         User           @relation("LandlordProperties", fields: [landlordId], references: [id], onDelete: Cascade)
-  approvedById     String?
-  rejectionReason  String?
-  deletedAt        DateTime?
-  publishedAt      DateTime?
+  id                  String            @id @default(uuid())
+  title               String
+  description         String?
+  type                PropertyType      @default(APARTMENT)
+  status              PropertyStatus    @default(PENDING)
+  price               Float
+  currency            String            @default("KES")
+  city                String
+  neighborhood        String?
+  address             String?
+  bedrooms            Int?
+  bathrooms           Int?
+  area                 Float?
+  squareMeters        Float?
+  yearBuilt           Int?
+  furnishedLevel      FurnishedLevel?
+  floorNumber         String?
+  totalFloors         Int?
+  parkingSpaces       Int               @default(0)
+  isPetFriendly       Boolean           @default(false)
+  isWheelchairAccessible Boolean         @default(false)
+  airConditioning     Boolean           @default(false)
+  balcony             Boolean           @default(false)
+  terrace             Boolean           @default(false)
+  garden              Boolean           @default(false)
+  pool                Boolean           @default(false)
+  gym                 Boolean           @default(false)
+  elevator            Boolean           @default(false)
+  laundry             Boolean           @default(false)
+  dishwasher          Boolean           @default(false)
+  wifi                Boolean           @default(false)
+  security            Boolean           @default(false)
+  fencing             Boolean           @default(false)
+  images              String[]
+  amenities           String[]
+  latitude            Float?
+  longitude           Float?
+  isFurnished         Boolean           @default(false)
+  hasParking          Boolean           @default(false)
+  hasSecurity         Boolean           @default(false)
+  hasBackupPower      Boolean           @default(false)
+  hasWaterTank        Boolean           @default(false)
+  isStudentOnly       Boolean           @default(false)
+  isFamilyFriendly    Boolean           @default(false)
+  isVerified          Boolean           @default(false)
+  views               Int               @default(0)
+  likes               Int               @default(0)
+  landlordId          String
+  landlord            User              @relation("LandlordProperties", fields: [landlordId], references: [id], onDelete: Cascade)
+  approvedById        String?
+  rejectionReason     String?
+  deletedAt           DateTime?
+  publishedAt         DateTime?
 
   // Relationships
+  propertyImages      PropertyImage[]
+  propertyVideos      PropertyVideo[]
+  propertyViews        PropertyView[]
   qrCodes             QRCode[]
   reviews             Review[]             @relation("PropertyReviews")
   maintenanceRequests MaintenanceRequest[] @relation("PropertyRequests")
@@ -389,6 +471,9 @@ model Property {
   banner              Banner?              @relation("PropertyBanner")
   disputes            Dispute[]            @relation("PropertyDisputes")
   leases              Lease[]
+   propertyComments    PropertyComment[]
+   propertyLikes        PropertyLike[]
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -401,6 +486,50 @@ model Property {
   @@index([createdAt])
   @@index([deletedAt])
   @@map("properties")
+}
+
+// ---------- PROPERTY IMAGES ----------
+model PropertyImage {
+  id         String   @id @default(uuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url        String
+  caption    String?
+  isPrimary  Boolean  @default(false)
+  order      Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([propertyId])
+  @@map("property_images")
+}
+
+// ---------- PROPERTY VIDEOS ----------
+model PropertyVideo {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url         String
+  thumbnailUrl String?
+  caption     String?
+  createdAt   DateTime @default(now())
+
+  @@index([propertyId])
+  @@map("property_videos")
+}
+
+// ---------- PROPERTY VIEWS ----------
+model PropertyView {
+  id         String   @id @default(uuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId     String?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([propertyId])
+  @@index([createdAt])
+  @@map("property_views")
 }
 
 // ---------- PAYMENTS ----------
@@ -642,6 +771,104 @@ model ChatMessage {
   @@index([createdAt])
   @@index([deletedAt])
   @@map("chat_messages")
+}
+
+// ---------- PROPERTY COMMENTS ----------
+model PropertyComment {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation("CommentUser", fields: [userId], references: [id])
+  parentId    String?
+  parent      PropertyComment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     PropertyComment[] @relation("CommentReplies")
+  content     String   @db.Text
+  likesCount  Int      @default(0)
+  isEdited    Boolean  @default(false)
+  isPinned    Boolean  @default(false)
+  status      String   @default("visible")
+  likes       CommentLike[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([propertyId])
+  @@index([userId])
+  @@index([parentId])
+  @@index([createdAt])
+  @@map("property_comments")
+}
+
+// ---------- COMMENT LIKES ----------
+model CommentLike {
+  id         String   @id @default(uuid())
+  commentId  String
+  comment    PropertyComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+
+  @@unique([commentId, userId])
+  @@index([userId])
+  @@map("comment_likes")
+}
+
+// ---------- PROPERTY LIKES ----------
+model PropertyLike {
+  id         String   @id @default(uuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([propertyId, userId])
+  @@index([propertyId])
+  @@index([userId])
+  @@map("property_likes")
+}
+
+// ---------- USER FOLLOWS ----------
+model UserFollow {
+  id          String   @id @default(uuid())
+  followerId  String
+  follower    User     @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User     @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("user_follows")
+}
+
+// ---------- USER BLOCKS ----------
+model UserBlock {
+  id          String   @id @default(uuid())
+  blockerId   String
+  blocker     User     @relation("Blocking", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId   String
+  blocked     User     @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([blockerId, blockedId])
+  @@index([blockerId])
+  @@index([blockedId])
+  @@map("user_blocks")
+}
+
+// ---------- CHAT MESSAGE ACTIONS ----------
+model ChatMessageAction {
+  id          String   @id @default(uuid())
+  messageId   String
+  userId      String
+  action      String   @db.VarChar(20)
+  metadata    Json?
+  createdAt   DateTime @default(now())
+
+  @@index([messageId])
+  @@map("chat_message_actions")
 }
 
 // ---------- SOS ALERTS ----------
@@ -1063,4 +1290,137 @@ model Lease {
   @@index([status])
   @@index([deletedAt])
   @@map("leases")
+}
+
+// ---------- PAGE VISITS (ANALYTICS) ----------
+model PageVisit {
+  id            String   @id @default(uuid())
+  page          String   @db.VarChar(255)
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  ipAddress     String?
+  userAgent     String?
+  sessionId     String?
+  referrer      String?
+  duration      Int?
+  metadata      Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([page])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("page_visits")
+}
+
+// ---------- SUBSCRIPTION MONETIZATION ----------
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PAST_DUE
+  PAUSED
+}
+
+model SubscriptionPlan {
+  id            String   @id @default(uuid())
+  name          String   @db.VarChar(100)
+  description   String?
+  price         Float
+  currency      String   @default("KES")
+  billingCycle  String   @db.VarChar(20) // monthly, yearly
+  maxListings   Int?
+  features      String[] @db.Text
+  isActive      Boolean  @default(true)
+  isFeatured    Boolean  @default(false)
+  sortOrder     Int      @default(0)
+
+  subscriptions Subscription[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([isFeatured])
+  @@map("subscription_plans")
+}
+
+model Subscription {
+  id            String             @id @default(uuid())
+  userId        String
+  user          User               @relation(fields: [userId], references: [id])
+  planId        String
+  plan          SubscriptionPlan   @relation(fields: [planId], references: [id])
+  status        SubscriptionStatus @default(ACTIVE)
+  startDate     DateTime           @default(now())
+  endDate       DateTime
+  cancelledAt   DateTime?
+  paymentMethod String?            @db.VarChar(20) // MPESA, STRIPE, etc.
+  paymentProviderId String?
+  amount          Float
+  currency        String   @default("KES")
+  listingsUsed    Int      @default(0)
+  metadata        Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([planId])
+  @@index([status])
+  @@index([endDate])
+  @@map("subscriptions")
+}
+
+enum MonetizationEventType {
+  PLAN_UPGRADED
+  PLAN_DOWNGRADED
+  PAYMENT_RECEIVED
+  SUBSCRIPTION_CANCELLED
+  TRIAL_STARTED
+}
+
+model SubscriptionEvent {
+  id            String   @id @default(uuid())
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id])
+  eventType     String   @db.VarChar(50)
+  amount        Float?
+  currency      String?
+  metadata      Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([eventType])
+  @@index([createdAt])
+  @@map("subscription_events")
+}
+
+// ---------- AD CAMPAIGNS ----------
+model AdCampaign {
+  id          String   @id @default(uuid())
+  title       String   @db.VarChar(255)
+  description String?
+  imageUrl    String?
+  linkUrl     String?
+  targetPage  String?
+  targetType  String?  @db.VarChar(50) // PROPERTY, EXTERNAL, IN_APP
+  targetId    String?
+  startDate   DateTime
+  endDate     DateTime
+  budget      Float
+  spent       Float    @default(0)
+  impressions Int      @default(0)
+  clicks      Int      @default(0)
+  status      String   @default("draft") @db.VarChar(50) // draft, active, paused, completed, cancelled
+  priority    Int      @default(0)
+  createdBy   String?
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+  @@index([startDate])
+  @@index([endDate])
+  @@map("ad_campaigns")
 }
