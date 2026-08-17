@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/services/qr_service.dart';
+import 'package:homepulse/state/qr_provider.dart';
 import 'package:homepulse/widgets/app_button.dart';
 import 'package:homepulse/widgets/app_input.dart';
 import 'package:homepulse/widgets/app_card.dart';
 import 'package:homepulse/widgets/qr_code_display.dart';
+import 'package:homepulse/models/qr_code.dart';
+import 'package:homepulse/widgets/app_toast.dart';
 import 'package:homepulse/core/utils/formatters.dart';
 
 class QrCodePayment extends ConsumerStatefulWidget {
@@ -128,11 +131,13 @@ class _QrCodePaymentState extends ConsumerState<QrCodePayment> {
     setState(() => _isGenerating = true);
 
     try {
-      final qr = await ref.read(qrProvider.notifier).generate(
-        type: 'payment',
+      final qr = await ref.read(qrServiceProvider).generateQR(QRCodeData(
+        id: 'qr_${DateTime.now().millisecondsSinceEpoch}',
         propertyId: _propertyIdController.text.trim(),
-        userId: 'user_001',
-      );
+        landlordId: 'user_001',
+        url: 'https://homepulse.app/pay/${_propertyIdController.text.trim()}',
+        createdAt: DateTime.now(),
+      ));
       final payload = {'amount': amount, 'propertyId': _propertyIdController.text.trim(), 'qrId': qr.id};
       setState(() => _qrPayload = payload.toString());
       AppToast.success(context, 'QR code generated');

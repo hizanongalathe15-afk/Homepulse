@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/qr_code.dart';
 
 class QRService {
@@ -26,3 +27,5 @@ class QRService {
     await Future.delayed(const Duration(milliseconds: 200));
   }
 }
+
+final qrServiceProvider = Provider<QRService>((ref) => QRService());

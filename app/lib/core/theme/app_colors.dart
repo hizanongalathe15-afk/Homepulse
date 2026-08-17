@@ -23,4 +23,8 @@ class AppColors {
   static const Color success = Color(0xFF43A047);
   static const Color warning = Color(0xFFFFA726);
   static const Color info = Color(0xFF42A5F5);
+  static const Color like = Color(0xFFE53935);
+  static const Color save = Color(0xFFFFA726);
+  static const Color share = Color(0xFF42A5F5);
+  static const Color verified = Color(0xFF43A047);
 }

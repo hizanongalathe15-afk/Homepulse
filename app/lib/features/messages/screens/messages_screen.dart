@@ -4,15 +4,16 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/conversation.dart';
 import '../../../../services/chat_service.dart';
+import '../../../../state/chat_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/app_toast.dart';
-import 'widgets/chat_window.dart';
-import 'widgets/negotiation_panel.dart';
-import 'widgets/qr_share.dart';
-import 'widgets/typing_indicator.dart';
-import 'widgets/voice_call.dart';
-import 'widgets/video_pre_call_verify.dart';
+import './widgets/chat_window.dart';
+import './widgets/negotiation_panel.dart';
+import './widgets/qr_share.dart';
+import './widgets/typing_indicator.dart';
+import './widgets/voice_call.dart';
+import './widgets/video_pre_call_verify.dart';
 
 class MessagesScreen extends ConsumerStatefulWidget {
   const MessagesScreen({super.key});
@@ -68,7 +69,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                builder: (context) => const DraggableScrollableSheet(
+                builder: (context) => DraggableScrollableSheet(
                   initialChildSize: 0.6,
                   minChildSize: 0.4,
                   maxChildSize: 0.9,

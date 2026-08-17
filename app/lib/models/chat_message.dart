@@ -36,4 +36,28 @@ class ChatMessage {
       isRead: isRead ?? this.isRead,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'chat_id': chatId,
+      'sender_id': senderId,
+      'text': text,
+      'attachment_url': attachmentUrl,
+      'created_at': createdAt.toIso8601String(),
+      'is_read': isRead,
+    };
+  }
+
+  factory ChatMessage.fromJson(Map<String, dynamic> json) {
+    return ChatMessage(
+      id: json['id'] as String,
+      chatId: json['chat_id'] as String,
+      senderId: json['sender_id'] as String,
+      text: json['text'] as String,
+      attachmentUrl: json['attachment_url'] as String?,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      isRead: json['is_read'] as bool? ?? false,
+    );
+  }
 }

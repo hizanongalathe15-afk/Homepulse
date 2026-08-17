@@ -40,4 +40,30 @@ class User {
       createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'avatar_url': avatarUrl,
+      'role': role,
+      'is_verified': isVerified,
+      'created_at': createdAt.toIso8601String(),
+    };
+  }
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      email: json['email'] as String,
+      phone: json['phone'] as String,
+      avatarUrl: json['avatar_url'] as String? ?? '',
+      role: json['role'] as String? ?? 'tenant',
+      isVerified: json['is_verified'] as bool? ?? false,
+      createdAt: DateTime.parse(json['created_at'] as String),
+    );
+  }
 }

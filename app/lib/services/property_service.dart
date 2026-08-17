@@ -1,5 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/property.dart';
-import '../models/qr_code.dart';
 
 class PropertyService {
   Future<Property> getProperty(String id) async {

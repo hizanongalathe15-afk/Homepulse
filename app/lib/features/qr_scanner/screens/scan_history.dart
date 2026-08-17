@@ -3,6 +3,7 @@ import '../../../../models/qr_code.dart';
 import '../../../../services/qr_service.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../core/utils/formatters.dart';
+import './scan_result.dart';
 
 class ScanHistoryScreen extends StatelessWidget {
   const ScanHistoryScreen({super.key});

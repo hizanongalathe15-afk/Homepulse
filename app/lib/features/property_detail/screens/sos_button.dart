@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/services/safety_service.dart';
 import 'package:homepulse/widgets/app_button.dart';
+import 'package:homepulse/widgets/app_card.dart';
 import 'package:homepulse/widgets/app_toast.dart';
 
 class SosButton extends ConsumerWidget {

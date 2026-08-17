@@ -5,6 +5,7 @@ class UserAvatar extends StatelessWidget {
   final String? initials;
   final String? fullName;
   final double size;
+  final double? radius;
   final Color backgroundColor;
   final Color textColor;
   final bool showOnlineIndicator;
@@ -19,6 +20,7 @@ class UserAvatar extends StatelessWidget {
     this.initials,
     this.fullName,
     this.size = 40.0,
+    this.radius,
     this.backgroundColor = Colors.grey,
     this.textColor = Colors.white,
     this.showOnlineIndicator = false,
@@ -33,6 +35,7 @@ class UserAvatar extends StatelessWidget {
     final theme = Theme.of(context);
     final effectiveBackgroundColor = backgroundColor;
     final effectiveTextColor = textColor;
+    final double effectiveSize = radius != null ? radius! * 2 : size;
 
     final effectiveSemanticLabel = semanticLabel ??
         (fullName != null ? 'Profile photo of $fullName' : 'Profile photo');
@@ -41,13 +44,13 @@ class UserAvatar extends StatelessWidget {
       label: effectiveSemanticLabel,
       image: true,
       child: Container(
-        width: size,
-        height: size,
+        width: effectiveSize,
+        height: effectiveSize,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: effectiveBackgroundColor,
         ),
-        child: _buildAvatarContent(context, effectiveTextColor),
+        child: _buildAvatarContent(context, effectiveTextColor, effectiveSize),
       ),
     );
 
@@ -63,8 +66,8 @@ class UserAvatar extends StatelessWidget {
           bottom: 0,
           right: 0,
           child: Container(
-            width: size * 0.3,
-            height: size * 0.3,
+            width: effectiveSize * 0.3,
+            height: effectiveSize * 0.3,
             decoration: BoxDecoration(
               color: isOnline ? onlineIndicatorColor : offlineIndicatorColor,
               shape: BoxShape.circle,
@@ -76,7 +79,7 @@ class UserAvatar extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatarContent(BuildContext context, Color textColor) {
+  Widget _buildAvatarContent(BuildContext context, Color textColor, double size) {
     if (imageUrl != null && imageUrl!.isNotEmpty) {
       return ClipOval(
         child: Image.network(

@@ -6,6 +6,8 @@ import '../../../../models/user.dart';
 import '../../../../state/auth_provider.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_card.dart';
+import '../../../../widgets/app_input.dart';
+import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/user_avatar.dart';
 import '../../../../widgets/verified_badge.dart';
 import '../../../../widgets/loading_spinner.dart';
@@ -52,13 +54,13 @@ class ProfileScreen extends ConsumerWidget {
               ),
             );
           }
-          return _buildProfile(context, user, theme);
+          return _buildProfile(context, ref, user, theme);
         },
       ),
     );
   }
 
-  Widget _buildProfile(BuildContext context, User user, ThemeData theme) {
+  Widget _buildProfile(BuildContext context, WidgetRef ref, User user, ThemeData theme) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(

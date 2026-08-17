@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../models/property.dart';
 import '../../../../services/feed_service.dart';
-import '../../../../widgets/app_card.dart';
-import '../../../../widgets/app_skeleton.dart';
 import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/loading_spinner.dart';
 import '../../../../state/feed_provider.dart';
 import 'video_card.dart';
-import 'video_actions.dart';
-import 'trust_badge_overlay.dart';
 import 'video_filters.dart';
 import 'video_skeleton.dart';
 
@@ -22,7 +18,6 @@ class FeedScreen extends ConsumerStatefulWidget {
 
 class _FeedScreenState extends ConsumerState<FeedScreen> {
   final ScrollController _scrollController = ScrollController();
-  String _sortBy = 'latest';
 
   @override
   void initState() {
@@ -56,9 +51,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
       ),
       body: Column(
         children: [
-          VideoFilters(onSortChanged: (sort) {
-            setState(() => _sortBy = sort);
-          }),
+          VideoFilters(onSortChanged: (sort) {}),
           Expanded(
             child: feedAsync.when(
               loading: () => const VideoSkeleton(),

@@ -10,7 +10,7 @@ class SocialShare extends StatelessWidget {
   final String? semanticLabel;
   final VoidCallback? onShareComplete;
 
-  const SocialShare({
+  SocialShare({
     super.key,
     this.text,
     this.url,

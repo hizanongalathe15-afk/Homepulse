@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../models/qr_code.dart';
 import '../../../../services/qr_service.dart';
+import '../../../../state/qr_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_input.dart';

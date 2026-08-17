@@ -4,10 +4,11 @@ import '../../../../state/landlord_provider.dart';
 import '../../../../state/auth_provider.dart';
 import '../../../../models/property.dart';
 import '../../../../widgets/app_card.dart';
-import '../../../../widgets/app_button.dart';
 import '../../../../widgets/verified_badge.dart';
 import '../../../../widgets/rating_stars.dart';
+import '../../../../widgets/app_toast.dart';
 import '../../../../core/utils/formatters.dart';
+import './add_property.dart';
 
 class PropertyManager extends ConsumerWidget {
   const PropertyManager({super.key});

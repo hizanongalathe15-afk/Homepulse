@@ -2,8 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/property.dart';
 import '../services/feed_service.dart';
 
-final feedServiceProvider = Provider<FeedService>((ref) => FeedService());
-
 final feedProvider = StateNotifierProvider<FeedNotifier, AsyncValue<List<Property>>>((ref) {
   return FeedNotifier(ref.read(feedServiceProvider));
 });

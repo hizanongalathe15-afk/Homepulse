@@ -32,4 +32,26 @@ class Payment {
       createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  factory Payment.fromJson(Map<String, dynamic> json) {
+    return Payment(
+      id: json['id'] as String,
+      userId: json['user_id'] as String,
+      type: json['type'] as String,
+      amount: (json['amount'] as num).toDouble(),
+      status: json['status'] as String? ?? 'pending',
+      createdAt: DateTime.parse(json['created_at'] as String),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'user_id': userId,
+      'type': type,
+      'amount': amount,
+      'status': status,
+      'created_at': createdAt.toIso8601String(),
+    };
+  }
 }

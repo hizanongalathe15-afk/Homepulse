@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../models/qr_code.dart';
 import '../../../../services/qr_service.dart';
+import '../../../../state/qr_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_button.dart';
+import '../../../../widgets/app_input.dart';
 import '../../../../widgets/qr_code_display.dart';
 import '../../../../core/utils/formatters.dart';
 
@@ -84,7 +85,7 @@ class _QRCodeGeneratorScreenState extends ConsumerState<QRCodeGeneratorScreen> {
               Center(
                 child: AppCard(
                   padding: const EdgeInsets.all(16),
-                  child: QrCodeDisplay(data: _generatedQrUrl!, size: 200),
+                  child: QRCodeDisplay(data: _generatedQrUrl!, size: 200),
                 ),
               ),
             ],

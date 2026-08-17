@@ -7,14 +7,15 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../models/property.dart';
 import '../../../../models/saved_search.dart';
 import '../../../../state/search_provider.dart';
+import '../../../../state/auth_provider.dart';
 import '../../../../services/property_service.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/loading_spinner.dart';
-import '../screens/widgets/search_bar.dart';
-import '../screens/widgets/saved_search_list.dart';
-import '../screens/widgets/search_alerts_toggle.dart';
+import './widgets/search_bar.dart';
+import './widgets/saved_search_list.dart';
+import './widgets/search_alerts_toggle.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});

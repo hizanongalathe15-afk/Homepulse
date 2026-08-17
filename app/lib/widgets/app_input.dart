@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 class AppInput extends StatefulWidget {
   final TextEditingController? controller;
   final String? hintText;
+  final String? label;
   final String? labelText;
   final String? errorText;
   final String? helperText;
@@ -25,11 +26,13 @@ class AppInput extends StatefulWidget {
   final String? semanticLabel;
   final bool autofocus;
   final bool isMultiline;
+  final TextAlign? textAlign;
 
   const AppInput({
     super.key,
     this.controller,
     this.hintText,
+    this.label,
     this.labelText,
     this.errorText,
     this.helperText,
@@ -51,6 +54,7 @@ class AppInput extends StatefulWidget {
     this.semanticLabel,
     this.autofocus = false,
     this.isMultiline = false,
+    this.textAlign,
   });
 
   @override
@@ -91,7 +95,7 @@ class _AppInputState extends State<AppInput> {
 
     final inputDecoration = InputDecoration(
       hintText: widget.hintText,
-      labelText: widget.labelText,
+      labelText: widget.label ?? widget.labelText,
       helperText: widget.helperText,
       errorText: effectiveErrorText,
       prefixIcon: widget.prefixIcon,
@@ -126,6 +130,7 @@ class _AppInputState extends State<AppInput> {
       obscureText: widget.isPassword && _obscureText,
       keyboardType: widget.isMultiline ? TextInputType.multiline : widget.keyboardType,
       textInputAction: widget.isMultiline ? TextInputAction.newline : widget.textInputAction,
+      textAlign: widget.textAlign ?? TextAlign.start,
       validator: widget.validator,
       onChanged: widget.onChanged,
       onFieldSubmitted: widget.onSubmitted,
@@ -153,7 +158,7 @@ class _AppInputState extends State<AppInput> {
     }
 
     return Semantics(
-      label: widget.semanticLabel ?? widget.labelText ?? widget.hintText,
+      label: widget.semanticLabel ?? widget.label ?? widget.labelText ?? widget.hintText,
       textField: true,
       child: result,
     );

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../models/property.dart';
-import '../../../../services/property_service.dart';
+import '../../../../state/landlord_provider.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_input.dart';
 import '../../../../widgets/app_toast.dart';
-import '../../../../core/utils/formatters.dart';
 
 class AddPropertyScreen extends ConsumerStatefulWidget {
   final Property? property;
@@ -85,27 +84,27 @@ class _AddPropertyScreenState extends ConsumerState<AddPropertyScreen> {
           padding: const EdgeInsets.all(16),
           children: [
             AppInput(
-              label: 'Title',
+              labelText: 'Title',
               controller: _titleController,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 16),
             AppInput(
-              label: 'Description',
+              labelText: 'Description',
               controller: _descriptionController,
               isMultiline: true,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 16),
             AppInput(
-              label: 'Price (KES)',
+              labelText: 'Price (KES)',
               controller: _priceController,
               keyboardType: TextInputType.number,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
             ),
             const SizedBox(height: 16),
             AppInput(
-              label: 'Location',
+              labelText: 'Location',
               controller: _locationController,
               validator: (v) => v == null || v.isEmpty ? 'Required' : null,
             ),

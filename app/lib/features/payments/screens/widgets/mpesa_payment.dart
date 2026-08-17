@@ -49,10 +49,12 @@ class MpesaPaymentWidget extends StatelessWidget {
           const SizedBox(width: 8),
           ElevatedButton(
             onPressed: onPay,
-            style: ElevatedButton(
+            style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.success,
               foregroundColor: Colors.white,
-            ).copyWith(minimumSize: const MaterialStatePropertyAll(Size(80, 36))),
+            ).copyWith(
+              minimumSize: WidgetStatePropertyAll(const Size(80, 36)),
+            ),
             child: const Text('Pay', style: TextStyle(fontSize: 12)),
           ),
         ],

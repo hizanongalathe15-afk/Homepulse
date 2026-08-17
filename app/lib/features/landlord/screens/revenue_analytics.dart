@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../services/analytics_service.dart';
 import '../../../../services/escrow_service.dart';
+import '../../../../state/escrow_provider.dart';
 import '../../../../widgets/app_card.dart';
 
 class RevenueAnalyticsScreen extends ConsumerWidget {

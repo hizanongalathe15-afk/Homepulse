@@ -110,7 +110,7 @@ class _QnaSectionWidgetState extends State<QnaSectionWidget> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.landlord, size: 14, color: AppColors.textSecondary),
+                            Icon(Icons.person, size: 14, color: AppColors.textSecondary),
                             const SizedBox(width: 6),
                             Expanded(
                               child: Text(item['answer'],

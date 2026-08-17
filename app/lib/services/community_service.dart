@@ -4,8 +4,6 @@ import 'package:homepulse/core/network/api_client.dart';
 import 'package:homepulse/core/network/api_exception.dart';
 import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/neighborhood.dart';
-import 'package:homepulse/models/community_event.dart';
-import 'package:homepulse/models/community_discussion.dart';
 
 class CommunityNotifier extends AsyncNotifier<List<Neighborhood>> {
   late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);

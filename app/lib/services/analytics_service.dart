@@ -5,18 +5,44 @@ import 'package:homepulse/core/network/api_exception.dart';
 import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/analytics_snapshot.dart';
 
-class AnalyticsNotifier extends AsyncNotifier<AnalyticsSnapshot?> {
+class AnalyticsService {
   late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
-  final List<AnalyticsEvent> _buffer = [];
 
-  @override
-  Future<AnalyticsSnapshot?> build() async {
+  Future<AnalyticsSnapshot?> getSummary() async {
     try {
       final response = await _api.get('/analytics/summary');
       return AnalyticsSnapshot.fromJson(response.data as Map<String, dynamic>);
     } on ApiException {
       return null;
     }
+  }
+
+  Future<AnalyticsSnapshot> getRevenue(String landlordId) async {
+    final response = await _api.get('/analytics/revenue', queryParameters: {'landlord_id': landlordId});
+    return AnalyticsSnapshot.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<void> trackEvent(String eventName, Map<String, dynamic> properties) async {
+    await _api.post('/analytics/events', data: {
+      'event_name': eventName,
+      'properties': properties,
+    });
+  }
+
+  Future<void> trackScreenView(String screenName) async {
+    await trackEvent('screen_view', {'screen_name': screenName});
+  }
+}
+
+final analyticsServiceProvider = Provider<AnalyticsService>((ref) => AnalyticsService());
+
+class AnalyticsNotifier extends AsyncNotifier<AnalyticsSnapshot?> {
+  late final AnalyticsService _analyticsService = ref.read(analyticsServiceProvider);
+  final List<AnalyticsEvent> _buffer = [];
+
+  @override
+  Future<AnalyticsSnapshot?> build() async {
+    return _analyticsService.getSummary();
   }
 
   Future<void> trackEvent(String eventName, Map<String, dynamic> properties) async {
@@ -40,20 +66,13 @@ class AnalyticsNotifier extends AsyncNotifier<AnalyticsSnapshot?> {
   Future<void> _flush() async {
     if (_buffer.isEmpty) return;
     try {
-      await _api.post('/analytics/events', data: {
-        'events': _buffer.map((e) => e.toJson()).toList(),
-      });
+      await _analyticsService.trackEvent('batch_flush', {'events': _buffer.map((e) => e.toJson()).toList()});
       _buffer.clear();
     } on ApiException catch (_) {}
   }
 
   Future<AnalyticsSnapshot?> getSummary() async {
-    try {
-      final response = await _api.get('/analytics/summary');
-      return AnalyticsSnapshot.fromJson(response.data as Map<String, dynamic>);
-    } on ApiException catch (e) {
-      rethrow;
-    }
+    return _analyticsService.getSummary();
   }
 }
 

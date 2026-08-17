@@ -91,10 +91,12 @@ class EscrowDepositFlowWidget extends StatelessWidget {
               width: double.infinity,
               child: OutlinedButton(
                 onPressed: onRelease,
-                style: OutlinedButton(
+                style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.secondary,
                   side: const BorderSide(color: AppColors.secondary),
-                ).copyWith(padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 12))),
+                ).copyWith(
+                  padding: WidgetStatePropertyAll(const EdgeInsets.symmetric(vertical: 12)),
+                ),
                 child: const Text('Release Funds'),
               ),
             ),
@@ -103,10 +105,12 @@ class EscrowDepositFlowWidget extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: onDeposit,
-                style: ElevatedButton(
+                style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.secondary,
                   foregroundColor: Colors.white,
-                ).copyWith(padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 12))),
+                ).copyWith(
+                  padding: WidgetStatePropertyAll(const EdgeInsets.symmetric(vertical: 12)),
+                ),
                 child: const Text('Deposit to Escrow'),
               ),
             ),

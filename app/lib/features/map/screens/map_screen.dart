@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/property.dart';
 import '../../../../services/map_service.dart';
+import '../../../../state/map_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/app_toast.dart';

@@ -34,11 +34,10 @@ class FilterBar extends ConsumerWidget {
       child: Row(
         children: [
           AppDropdown<String?>(
-            hint: 'Type',
+            hintText: 'Type',
             value: type,
-            items: const ['apartment', 'house', 'studio', 'villa', 'townhouse']
-                .map((t) => DropdownMenuItem(value: t, child: Text(t[0].toUpperCase() + t.substring(1))))
-                .toList(),
+            items: <String?>['apartment', 'house', 'studio', 'villa', 'townhouse'],
+            itemLabelBuilder: (t) => t != null ? t[0].toUpperCase() + t.substring(1) : '',
             onChanged: (value) {
               ref.read(mapFilterTypeProvider.notifier).state = value;
               _emitFilters(ref);

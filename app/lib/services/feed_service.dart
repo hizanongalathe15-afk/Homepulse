@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/property.dart';
 
 class FeedService {
@@ -31,3 +32,5 @@ class FeedService {
     await Future.delayed(const Duration(milliseconds: 200));
   }
 }
+
+final feedServiceProvider = Provider<FeedService>((ref) => FeedService());

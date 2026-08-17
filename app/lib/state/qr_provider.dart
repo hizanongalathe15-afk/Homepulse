@@ -2,8 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/qr_code.dart';
 import '../services/qr_service.dart';
 
-final qrServiceProvider = Provider<QRService>((ref) => QRService());
-
 final qrProvider = StateNotifierProvider<QRNotifier, AsyncValue<List<QRCodeData>>>((ref) {
   return QRNotifier(ref.read(qrServiceProvider));
 });

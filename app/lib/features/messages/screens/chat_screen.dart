@@ -5,15 +5,16 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../models/conversation.dart';
 import '../../../../models/chat_message.dart';
 import '../../../../services/chat_service.dart';
+import '../../../../state/chat_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/app_toast.dart';
-import '../screens/widgets/chat_window.dart';
-import '../screens/widgets/negotiation_panel.dart';
-import '../screens/widgets/qr_share.dart';
-import '../screens/widgets/typing_indicator.dart';
-import '../screens/widgets/voice_call.dart';
-import '../screens/widgets/video_pre_call_verify.dart';
+import './widgets/chat_window.dart';
+import './widgets/negotiation_panel.dart';
+import './widgets/qr_share.dart';
+import './widgets/typing_indicator.dart';
+import './widgets/voice_call.dart';
+import './widgets/video_pre_call_verify.dart';
 
 class ChatScreen extends ConsumerStatefulWidget {
   final String conversationId;
@@ -88,8 +89,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: conversationAsync.valueOrNull != null
-            ? Text('Chat with ${conversationAsync.value!.participantIds.first}')
+        title: conversationAsync.valueOrNull != null && conversationAsync.valueOrNull!.isNotEmpty
+            ? Text('Chat with ${conversationAsync.valueOrNull!.first.participantIds.first}')
             : const Text('Chat'),
         actions: [
           IconButton(
@@ -97,7 +98,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
-                builder: (context) => const DraggableScrollableSheet(
+                builder: (context) => DraggableScrollableSheet(
                   initialChildSize: 0.5,
                   minChildSize: 0.3,
                   maxChildSize: 0.8,
@@ -139,13 +140,13 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
-                  builder: (context) => const DraggableScrollableSheet(
-                    initialChildSize: 0.6,
-                    minChildSize: 0.4,
-                    maxChildSize: 0.9,
-                    expand: false,
-                    builder: (context, scrollController) => QRShare(),
-                  ),
+                builder: (context) => DraggableScrollableSheet(
+                  initialChildSize: 0.6,
+                  minChildSize: 0.4,
+                  maxChildSize: 0.9,
+                  expand: false,
+                  builder: (context, scrollController) => QRShare(),
+                ),
                 );
               }
             },

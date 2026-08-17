@@ -161,4 +161,40 @@ class Property {
       isAvailable: isAvailable ?? this.isAvailable,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'price': price,
+      'location': location,
+      'image_urls': imageUrls,
+      'tags': tags,
+      'landlord_id': landlordId,
+      'is_verified': isVerified,
+      'rating': rating,
+      'review_count': reviewCount,
+      'created_at': createdAt.toIso8601String(),
+      'is_available': isAvailable,
+    };
+  }
+
+  factory Property.fromJson(Map<String, dynamic> json) {
+    return Property(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      price: json['price'] as double,
+      location: json['location'] as String,
+      imageUrls: (json['image_urls'] as List<dynamic>).map((e) => e as String).toList(),
+      tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
+      landlordId: json['landlord_id'] as String,
+      isVerified: json['is_verified'] as bool? ?? false,
+      rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
+      reviewCount: json['review_count'] as int? ?? 0,
+      createdAt: DateTime.parse(json['created_at'] as String),
+      isAvailable: json['is_available'] as bool? ?? true,
+    );
+  }
 }

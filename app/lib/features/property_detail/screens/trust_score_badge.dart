@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
+import 'package:homepulse/widgets/app_card.dart';
 
 class TrustScoreBadge extends StatelessWidget {
   final double score;

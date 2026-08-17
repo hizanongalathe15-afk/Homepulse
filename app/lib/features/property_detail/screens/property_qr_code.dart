@@ -4,6 +4,7 @@ import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/widgets/app_card.dart';
 import 'package:homepulse/widgets/app_button.dart';
 import 'package:homepulse/widgets/qr_code_display.dart';
+import 'package:homepulse/widgets/app_toast.dart';
 import 'package:homepulse/core/utils/formatters.dart';
 
 class PropertyQrCode extends ConsumerWidget {
@@ -68,7 +69,7 @@ class PropertyQrCode extends ConsumerWidget {
               child: Column(
                 children: [
                   QRCodeDisplay(
-                    data: qr.url,
+                     data: qr['url'] as String? ?? '',
                     size: 180,
                     backgroundColor: Colors.white,
                     foregroundColor: AppColors.textPrimary,

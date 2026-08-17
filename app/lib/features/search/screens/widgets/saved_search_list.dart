@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../models/saved_search.dart';
+import '../../../../../models/property.dart';
 import '../../../../../state/search_provider.dart';
 import '../../../../../widgets/app_card.dart';
 import '../../../../../widgets/app_toast.dart';
 import '../../../../../widgets/loading_spinner.dart';
+import './search_alerts_toggle.dart';
 
 class SavedSearchList extends ConsumerWidget {
   final String userId;

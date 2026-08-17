@@ -4,6 +4,7 @@ class AppDropdown<T> extends StatefulWidget {
   final List<T> items;
   final T? value;
   final String? hintText;
+  final String? hint;
   final String? labelText;
   final String? errorText;
   final bool enabled;
@@ -20,6 +21,7 @@ class AppDropdown<T> extends StatefulWidget {
     required this.items,
     this.value,
     this.hintText,
+    this.hint,
     this.labelText,
     this.errorText,
     this.enabled = true,
@@ -81,8 +83,10 @@ class _AppDropdownState<T> extends State<AppDropdown<T>> {
       ),
     );
 
+    final effectiveHintText = widget.hint ?? widget.hintText;
+
     final inputDecoration = InputDecoration(
-      hintText: widget.hintText,
+      hintText: effectiveHintText,
       labelText: widget.labelText,
       errorText: effectiveErrorText,
       filled: true,
