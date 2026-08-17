@@ -102,7 +102,7 @@ export default function SafetyDetailPage() {
         title={`Safety Alert ${alert.id}`}
         description="Detailed view of the emergency alert."
         breadcrumbs={[
-          { label: 'Safety', href: '/dashboard/safety' },
+          { label: 'Safety', href: '/safety' },
           { label: alert.id },
         ]}
         actions={
