@@ -1,48 +1,37 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:homepulse/core/network/api_client.dart';
+import 'package:homepulse/core/config/constants.dart';
 import '../models/property.dart';
 
 class PropertyService {
+  late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
+
   Future<Property> getProperty(String id) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return Property(
-      id: id,
-      title: 'Sample Property',
-      description: 'A wonderful property.',
-      price: 50000,
-      location: 'Nairobi, Kenya',
-      imageUrls: ['https://picsum.photos/400/300?random=1'],
-      tags: ['Verified'],
-      landlordId: 'landlord_1',
-      isVerified: true,
-      createdAt: DateTime.now(),
-    );
+    final response = await _api.get('/properties/$id');
+    return Property.fromJson(response.data as Map<String, dynamic>);
   }
 
   Future<List<Property>> getLandlordProperties(String landlordId) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return List.generate(3, (i) => Property(
-      id: 'prop_$i',
-      title: 'Property $i',
-      description: 'Description $i',
-      price: 45000 + i * 5000,
-      location: 'Nairobi',
-      imageUrls: ['https://picsum.photos/400/300?random=$i'],
-      tags: ['Verified'],
-      landlordId: landlordId,
-      isVerified: true,
-      createdAt: DateTime.now().subtract(Duration(days: i)),
-    ));
+    final response = await _api.get('/properties', queryParameters: {
+      'landlord_id': landlordId,
+    });
+    final List<dynamic> data = response.data as List<dynamic>;
+    return data.map((json) => Property.fromJson(json as Map<String, dynamic>)).toList();
   }
 
-  Future<void> createProperty(Property property) async {
-    await Future.delayed(const Duration(milliseconds: 400));
+  Future<Property> createProperty(Map<String, dynamic> propertyData) async {
+    final response = await _api.post('/properties', data: propertyData);
+    return Property.fromJson(response.data as Map<String, dynamic>);
   }
 
-  Future<void> updateProperty(Property property) async {
-    await Future.delayed(const Duration(milliseconds: 400));
+  Future<Property> updateProperty(String id, Map<String, dynamic> propertyData) async {
+    final response = await _api.put('/properties/$id', data: propertyData);
+    return Property.fromJson(response.data as Map<String, dynamic>);
   }
 
   Future<void> deleteProperty(String id) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+    await _api.delete('/properties/$id');
   }
 }
+
+final propertyServiceProvider = Provider<PropertyService>((ref) => PropertyService());

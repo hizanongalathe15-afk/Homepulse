@@ -170,12 +170,12 @@ class _BulkQrUploadScreenState extends ConsumerState<BulkQrUploadScreen> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: theme.colorScheme.outlineVariant.withOpacity(0.5)),
               ),
-              child: Column(
-                children: [
-                  QRCodeDisplay(
-                    data: 'https://homepulse.app/property/sample',
-                    size: 150,
-                  ),
+            child: Column(
+              children: [
+                QRCodeDisplay(
+                  data: 'https://homepulse.app/property/${widget.landlordId}',
+                  size: 150,
+                ),
                   const SizedBox(height: 12),
                   Text(
                     'Sample QR Code',

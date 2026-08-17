@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { ChevronUp, ChevronDown } from 'lucide-react'
 import { AdminButton } from './AdminButton'
 import { AdminInput } from './AdminInput'
 import type { AdminModalProps } from './AdminModal'
@@ -73,7 +74,7 @@ export function DataTable<T>({
                       <div className="flex items-center gap-1">
                         {col.header}
                         {col.sortable && sortKey === col.key && (
-                          <span>{sortDirection === 'asc' ? '↑' : '↓'}</span>
+                          <>{sortDirection === 'asc' ? <ChevronUp size={14} /> : <ChevronDown size={14} />}</>
                         )}
                       </div>
                     </th>

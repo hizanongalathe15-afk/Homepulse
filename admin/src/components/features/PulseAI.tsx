@@ -4,38 +4,12 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import { cn } from '@/lib/utils'
 import { soundEngine } from '@/utils/admin.sound'
 import { MessageSquare, X, Send, ChevronDown, Loader2 } from 'lucide-react'
+import { apiClient } from '@/lib/apiClient'
 
 interface Message {
   role: 'user' | 'assistant'
   content: string
   timestamp: Date
-}
-
-const mockResponses: Record<string, string> = {
-  'Show me why Ngong Rd occupancy is cooling':
-    'Ngong Rd occupancy has cooled 12.4% over the past 14 days. Key factors:\n\n1. New luxury development at Upper Hill offering 8% lower pricing\n2. Recent road construction causing 20-min delays during peak hours\n3. 3 competing properties launched marketing campaigns last week\n\nRecommended actions: Adjust pricing tier to competitive level and highlight alternative transport links.',
-
-  'Generate a safety report for Westlands':
-    'WESTLANDS SAFETY REPORT\n\nPeriod: Last 30 days\n\nIncidents Reported: 3 (All resolved)\n- Category A x1: Minor noise complaint (resolved)\n- Category B x2: Street lighting concern (resolved)\n\nSOS Response Time: 4.2 min avg (target: <5 min)\n\nSafety Score: 8.4/10 (up from 7.9)\n\nActive Safety Measures:\n- Night patrols: 18:00-06:00 daily\n- Emergency contacts verified: 24/25\n- QR check-ins this month: 1,247\n\nRecommendation: Maintain current protocols. Consider adding 2 more patrol points near Kijabe St junction.',
-
-  'Show me fraud patterns':
-    'FRAUD PATTERN ANALYSIS\n\nCurrent month flagged: 23 cases (-8% vs last month)\n\nTop risk categories:\n- Identity mismatch: 34%\n- Payment anomalies: 28%\n- Listing duplication: 22%\n- Review manipulation: 16%\n\nHighest risk area: Kilimani (4 cases this week)\n\nSystem confidence: 94.2% detection accuracy\n\nAction required: Review flagged Kilimani listings before next payout cycle.',
-
-  'default':
-    'I understand your query. Let me analyze the available data and provide insights. For specific questions about Ngong Rd occupancy, Westlands safety, or fraud patterns, try asking directly - I have detailed mock responses ready.',
-}
-
-function getMockResponse(query: string): string {
-  const lower = query.toLowerCase()
-  for (const [key, value] of Object.entries(mockResponses)) {
-    if (key !== 'default' && lower.includes(key.toLowerCase().slice(0, 20))) {
-      return value
-    }
-  }
-  if (lower.includes('occupancy') || lower.includes('ngong')) return mockResponses['Show me why Ngong Rd occupancy is cooling']
-  if (lower.includes('safety') || lower.includes('westlands')) return mockResponses['Generate a safety report for Westlands']
-  if (lower.includes('fraud')) return mockResponses['Show me fraud patterns']
-  return mockResponses['default']
 }
 
 export function PulseAI() {
@@ -58,27 +32,38 @@ export function PulseAI() {
     })
   }, [])
 
-  const sendMessage = useCallback(() => {
+  const sendMessage = useCallback(async () => {
     if (!input.trim()) return
     soundEngine.play('click')
 
     const userMessage: Message = { role: 'user', content: input.trim(), timestamp: new Date() }
     setMessages((prev) => [...prev, userMessage])
+    const currentInput = input.trim()
     setInput('')
     setThinking(true)
     soundEngine.play('thinking')
 
-    const delay = 1200 + Math.random() * 800
-    setTimeout(() => {
+    try {
+      const response = await apiClient.post('/ai/chat', { query: currentInput })
+      const reply = response.data?.data?.response || 'No response received.'
       setThinking(false)
       soundEngine.play('success')
       const assistantMessage: Message = {
         role: 'assistant',
-        content: getMockResponse(userMessage.content),
+        content: reply,
         timestamp: new Date(),
       }
       setMessages((prev) => [...prev, assistantMessage])
-    }, delay)
+    } catch (err) {
+      setThinking(false)
+      console.error('PulseAI error:', err)
+      const errorMessage: Message = {
+        role: 'assistant',
+        content: 'Sorry, I encountered an error processing your request. Please try again.',
+        timestamp: new Date(),
+      }
+      setMessages((prev) => [...prev, errorMessage])
+    }
   }, [input])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {

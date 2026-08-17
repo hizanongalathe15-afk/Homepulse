@@ -4,6 +4,7 @@ import type { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { AnimatedCounter } from '@/components/features/AnimatedCounter'
 import { LivePulseIndicator } from '@/components/features/LivePulseIndicator'
+import { TrendingUp, TrendingDown, Minus } from 'lucide-react'
 
 interface StatCardProps {
   label: string
@@ -79,13 +80,11 @@ export function StatCard({
         <p className="text-2xl font-bold text-foreground mt-1 text-glow-cyan">{displayValue}</p>
         <div className="flex items-center gap-2 mt-1">
           {trend && (
-            <span
-              className={cn(
-                'text-xs font-medium transition-colors duration-500',
-                flickering ? 'text-command-emerald' : trendColor
-              )}
-            >
-              {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '•'} {trendValue}
+               <span className={cn(
+                 'text-xs font-medium transition-colors duration-500 flex items-center gap-1',
+                 flickering ? 'text-command-emerald' : trendColor
+               )}>
+              {trend === 'up' ? <TrendingUp size={12} /> : trend === 'down' ? <TrendingDown size={12} /> : <Minus size={12} />} {trendValue}
             </span>
           )}
           {sub && <span className="text-xs text-muted-foreground">{sub}</span>}

@@ -77,7 +77,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
 
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 flex flex-col border-r border-white/10',
+          'fixed inset-y-0 left-0 z-50 w-64 glass-sidebar text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:flex lg:flex-col',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         )}
       >
@@ -134,7 +134,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 glass-panel flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
+        <header className="h-16 glass-header flex items-center justify-between px-4 lg:px-6 sticky top-0 z-30">
           <button
             onClick={() => {
               setSidebarOpen(true)
@@ -159,7 +159,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
             >
               <Command size={12} />
               <span>Search</span>
-              <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-border text-muted-foreground">⌘K</kbd>
+              <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-border text-muted-foreground">Cmd+K</kbd>
             </button>
             <ThemeSwitcher />
             <SoundToggle />

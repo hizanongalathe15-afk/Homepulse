@@ -30,6 +30,7 @@ class VideoCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: AppCard(
+        glass: true,
         margin: const EdgeInsets.only(bottom: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -28,7 +28,7 @@ export default function PropertyDetailPage() {
         }
       />
 
-      <PropertyDetailCard />
+      <PropertyDetailCard propertyId={id} />
 
       <SectionCard title="Gallery" description="Manage listing photos">
         <PropertyImagesManager />

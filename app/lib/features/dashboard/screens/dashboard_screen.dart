@@ -9,6 +9,8 @@ import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/user_avatar.dart';
 import '../../../../widgets/verified_badge.dart';
+import '../../../../widgets/antigravity_scroll.dart';
+import '../../../../widgets/profile_dropdown.dart';
 import 'widgets/escrow_status.dart';
 import 'widgets/my_qr_code.dart';
 import 'widgets/payment_history.dart';
@@ -31,20 +33,9 @@ class DashboardScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Dashboard'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              AppToast.info(context, 'Notifications');
-            },
-            icon: const Icon(Icons.notifications_outlined),
-          ),
-          IconButton(
-            onPressed: () {
-              AppToast.info(context, 'Messages');
-            },
-            icon: const Icon(Icons.chat_bubble_outline_outlined),
-          ),
-        ],
+         actions: [
+           const ProfileDropdown(showInAppBar: false),
+          ],
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -92,43 +83,55 @@ class DashboardScreen extends ConsumerWidget {
   }
 
   Widget _buildDashboard(BuildContext context, User user, ThemeData theme) {
-    return ListView(
+    return AntigravityListView(
       padding: const EdgeInsets.all(16),
+      staggerDelay: 0.15,
+      floatIntensity: 0.6,
       children: [
-        Row(
-          children: [
-            UserAvatar(
-              imageUrl: user.avatarUrl,
-              fullName: user.name,
-              size: 56,
-              backgroundColor: AppColors.primary,
-              textColor: Colors.white,
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+        AppCard(
+          glass: true,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          user.name,
-                          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      if (user.isVerified) const VerifiedBadge(size: 20),
-                    ],
+                  UserAvatar(
+                    imageUrl: user.avatarUrl,
+                    fullName: user.name,
+                    size: 56,
+                    backgroundColor: AppColors.primary,
+                    textColor: Colors.white,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    user.role[0].toUpperCase() + user.role.substring(1),
-                    style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                user.name,
+                                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            if (user.isVerified) const SizedBox(width: 8),
+                            if (user.isVerified) const VerifiedBadge(size: 20),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          user.role[0].toUpperCase() + user.role.substring(1),
+                          style: theme.textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 24),
         GridView.count(
@@ -185,7 +188,6 @@ class DashboardScreen extends ConsumerWidget {
         const SmartCalendar(userId: ''),
         const SizedBox(height: 16),
         const ViewingRequests(userId: ''),
-        const SizedBox(height: 24),
       ],
     );
   }
@@ -199,8 +201,10 @@ class _DashboardTile extends StatelessWidget {
   const _DashboardTile({required this.icon, required this.label, required this.color, required this.onTap});
 
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
     return AppCard(
+      glass: true,
+      padding: const EdgeInsets.all(16),
       onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

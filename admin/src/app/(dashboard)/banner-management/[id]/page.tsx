@@ -1,6 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
+import { ArrowRight } from 'lucide-react'
 import { AdminHeader } from '@/components/ui/AdminHeader'
 import { SectionCard } from '@/components/features/SectionCard'
 import { InfoRow } from '@/components/features/InfoRow'
@@ -27,7 +28,7 @@ export default function BannerDetailPage() {
           <InfoRow label="Target URL" value="/promo/august" />
           <InfoRow label="Impressions" value="482,100" />
           <InfoRow label="CTR" value="2.9%" />
-          <InfoRow label="Run dates" value="2026-08-01 → 2026-08-31" />
+          <InfoRow label="Run dates" value={<span className="flex items-center gap-1.5"><span>2026-08-01</span><ArrowRight size={12} /><span>2026-08-31</span></span>} />
         </div>
       </SectionCard>
 

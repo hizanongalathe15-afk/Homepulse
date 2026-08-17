@@ -68,7 +68,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       <PulseAI />
       <aside
         className={cn(
-          'bg-slate-900 text-white transition-all duration-300 flex flex-col border-r border-white/10',
+          'glass-sidebar text-white transition-all duration-300 flex flex-col',
           sidebarOpen ? 'w-64' : 'w-16'
         )}
       >
@@ -124,7 +124,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
       </aside>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-16 glass-panel flex items-center justify-between px-6 sticky top-0 z-40">
+        <header className="h-16 glass-header flex items-center justify-between px-6 sticky top-0 z-40">
           <h1 className="text-xl font-semibold text-foreground capitalize">
             {pathname.split('/').pop()?.replace(/-/g, ' ') || 'Dashboard'}
           </h1>
@@ -138,7 +138,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             >
               <Command size={12} />
               <span>Search</span>
-              <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-border text-muted-foreground">⌘K</kbd>
+              <kbd className="px-1.5 py-0.5 bg-white/5 rounded border border-border text-muted-foreground">Cmd+K</kbd>
             </button>
             <ThemeSwitcher />
             <SoundToggle />

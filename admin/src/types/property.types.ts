@@ -1,33 +1,41 @@
 export interface Property {
   id: string
   title: string
-  description: string
-  type: 'apartment' | 'house' | 'commercial' | 'land'
-  status: 'pending' | 'approved' | 'rejected' | 'flagged'
+  description?: string
+  type: string
+  status: string
   price: number
   currency: string
-  location: {
-    city: string
-    neighborhood: string
-    coordinates: {
-      lat: number
-      lng: number
-    }
-  }
-  landlordId: string
-  landlordName: string
+  city: string
+  neighborhood?: string
+  address?: string
+  bedrooms?: number
+  bathrooms?: number
+  area?: number
   images: string[]
   amenities: string[]
-  createdAt: Date
-  updatedAt: Date
+  landlordId: string
+  landlord?: {
+    firstName: string
+    lastName: string
+    email: string
+  }
+  landlordName?: string
+  isVerified?: boolean
+  views?: number
+  likes?: number
+  createdAt: string
+  updatedAt: string
 }
 
 export interface PropertyFilters {
   search?: string
-  type?: Property['type']
-  status?: Property['status']
+  type?: string
+  status?: string
   city?: string
   minPrice?: number
   maxPrice?: number
   landlordId?: string
+  page?: number
+  limit?: number
 }

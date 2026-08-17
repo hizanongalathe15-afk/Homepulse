@@ -22,6 +22,7 @@ class _AddPropertyScreenState extends ConsumerState<AddPropertyScreen> {
   final _priceController = TextEditingController();
   final _locationController = TextEditingController();
   final List<String> _selectedTags = [];
+  bool _isSubmitting = false;
 
   @override
   void initState() {
@@ -44,32 +45,44 @@ class _AddPropertyScreenState extends ConsumerState<AddPropertyScreen> {
     super.dispose();
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
+    setState(() => _isSubmitting = true);
+
     final property = Property(
-      id: widget.property?.id ?? 'prop_${DateTime.now().millisecondsSinceEpoch}',
+      id: widget.property?.id ?? '',
       title: _titleController.text,
       description: _descriptionController.text,
       price: double.parse(_priceController.text),
       location: _locationController.text,
       imageUrls: widget.property?.imageUrls ?? ['https://picsum.photos/400/300'],
       tags: _selectedTags,
-      landlordId: 'landlord_1',
+      landlordId: widget.property?.landlordId ?? '',
       isVerified: widget.property?.isVerified ?? false,
+      rating: widget.property?.rating ?? 0.0,
+      reviewCount: widget.property?.reviewCount ?? 0,
       createdAt: widget.property?.createdAt ?? DateTime.now(),
-      isAvailable: true,
+      isAvailable: widget.property?.isAvailable ?? true,
     );
 
     final service = ref.read(propertyServiceProvider);
-    if (widget.property == null) {
-      service.createProperty(property);
-      AppToast.show(context, 'Property created successfully');
-    } else {
-      service.updateProperty(property);
-      AppToast.show(context, 'Property updated successfully');
+    final propertyData = property.toJson();
+
+    try {
+      if (widget.property == null) {
+        await service.createProperty(propertyData);
+        AppToast.show(context, 'Property created successfully');
+      } else {
+        await service.updateProperty(property.id, propertyData);
+        AppToast.show(context, 'Property updated successfully');
+      }
+      Navigator.pop(context);
+    } catch (e) {
+      AppToast.show(context, 'Failed to save property');
+    } finally {
+      if (mounted) setState(() => _isSubmitting = false);
     }
-    Navigator.pop(context);
   }
 
   @override
@@ -133,7 +146,8 @@ class _AddPropertyScreenState extends ConsumerState<AddPropertyScreen> {
             const SizedBox(height: 32),
             AppButton(
               text: widget.property == null ? 'Create Property' : 'Update Property',
-              onPressed: _submit,
+              onPressed: _isSubmitting ? null : _submit,
+              isLoading: _isSubmitting,
             ),
           ],
         ),

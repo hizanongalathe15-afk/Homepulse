@@ -1,38 +1,103 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { RefreshCw } from 'lucide-react'
 import { SectionCard } from '@/components/features/SectionCard'
 import { StatusBadge } from '@/components/ui/StatusBadge'
+import { AdminButton } from '@/components/ui/AdminButton'
+import { adminPaymentService } from '@/services/adminPayment.service'
 
-interface MpesaTx {
-  receipt: string
+interface MpesaTransaction {
+  id: string
   phone: string
   amount: number
-  status: 'completed' | 'pending' | 'failed'
+  status: string
   date: string
 }
 
-const initial: MpesaTx[] = [
-  { receipt: 'QF2K98M1P2', phone: '+254712345678', amount: 4500, status: 'completed', date: '2026-08-14' },
-  { receipt: 'QF2K98M1B4', phone: '+254723456789', amount: 850, status: 'completed', date: '2026-08-14' },
-  { receipt: 'QF2K97J4N9', phone: '+254745678901', amount: 1200, status: 'pending', date: '2026-08-13' },
-  { receipt: 'QF2K96K3P1', phone: '+254756789012', amount: 3200, status: 'failed', date: '2026-08-12' },
-]
-
 export default function MpesaTransactions() {
-  const [transactions, setTransactions] = useState(initial)
+  const [transactions, setTransactions] = useState<MpesaTransaction[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [syncing, setSyncing] = useState(false)
 
-  const verify = (receipt: string) => {
-    setTransactions((prev) => prev.map((t) => (t.receipt === receipt ? { ...t, status: 'completed' as const } : t)))
+  const fetchTransactions = async () => {
+    try {
+      setLoading(true)
+      setError(null)
+      const response = await adminPaymentService.getMpesaTransactions(1, 20)
+      const data = response.data || []
+      const mapped: MpesaTransaction[] = data.map((tx: any) => ({
+        id: tx.id || tx.transactionId,
+        phone: tx.phoneNumber || tx.phone,
+        amount: tx.amount || 0,
+        status: tx.status || 'pending',
+        date: tx.createdAt ? new Date(tx.createdAt).toLocaleDateString() : tx.date || '',
+      }))
+      setTransactions(mapped)
+    } catch (err) {
+      setError('Failed to load M-Pesa transactions')
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSync = async () => {
+    try {
+      setSyncing(true)
+      await adminPaymentService.reconcilePayments(
+        new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        new Date().toISOString().split('T')[0]
+      )
+      await fetchTransactions()
+    } catch (err) {
+      console.error('Sync failed:', err)
+    } finally {
+      setSyncing(false)
+    }
+  }
+
+  const verify = async (receipt: string) => {
+    try {
+      await fetchTransactions()
+    } catch (err) {
+      console.error('Verify failed:', err)
+    }
+  }
+
+  useEffect(() => {
+    fetchTransactions()
+  }, [])
+
+  if (loading) {
+    return (
+      <SectionCard title="M-Pesa Transactions" description="Safaricom M-Pesa payments">
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-12 bg-muted rounded animate-pulse" />
+          ))}
+        </div>
+      </SectionCard>
+    )
   }
 
   return (
-    <SectionCard title="M-Pesa Transactions" description="STK push and paybill transactions">
+    <SectionCard
+      title="M-Pesa Transactions"
+      description="Safaricom M-Pesa payments"
+      action={
+        <AdminButton size="sm" variant="ghost" onClick={handleSync} loading={syncing}>
+          <RefreshCw size={14} className="mr-1" />
+          Sync
+        </AdminButton>
+      }
+    >
       <div className="space-y-3">
         {transactions.map((tx) => (
-          <div key={tx.receipt} className="flex items-center justify-between rounded-md border border-slate-100 p-3">
+          <div key={tx.id} className="flex items-center justify-between rounded-md border border-slate-100 p-3 glass-card">
             <div>
-              <p className="font-mono text-xs font-medium text-slate-800">{tx.receipt}</p>
+              <p className="font-mono text-xs font-medium text-slate-800">{tx.id}</p>
               <p className="text-xs text-slate-400">{tx.phone} · {tx.date}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -44,6 +109,12 @@ export default function MpesaTransactions() {
             </div>
           </div>
         ))}
+        {transactions.length === 0 && !error && (
+          <p className="text-sm text-slate-500 py-4">No M-Pesa transactions found</p>
+        )}
+        {error && (
+          <p className="text-sm text-red-500 py-4">{error}</p>
+        )}
       </div>
     </SectionCard>
   )

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { BadgeCheck } from 'lucide-react'
+import { BadgeCheck, Check, X } from 'lucide-react'
 import { AdminButton } from '@/components/ui/AdminButton'
 import { AdminModal } from '@/components/ui/AdminModal'
 import { InfoRow } from '@/components/features/InfoRow'
@@ -32,8 +32,8 @@ export default function PropertyVerificationModal() {
           {checklist.map((item) => (
             <div key={item.label} className="flex items-center justify-between rounded-md bg-slate-50 px-3 py-2 text-sm">
               <span className="text-slate-700">{item.label}</span>
-              <span className={item.ok ? 'text-green-600 font-medium' : 'text-red-500 font-medium'}>
-                {item.ok ? '✓ Verified' : '✕ Pending'}
+              <span className={item.ok ? 'text-green-600 font-medium flex items-center gap-1' : 'text-red-500 font-medium flex items-center gap-1'}>
+                {item.ok ? <Check size={14} /> : <X size={14} />} {item.ok ? 'Verified' : 'Pending'}
               </span>
             </div>
           ))}

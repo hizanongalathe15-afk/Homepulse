@@ -1,5 +1,6 @@
 'use client'
 
+import { ArrowRight } from 'lucide-react'
 import { SectionCard } from '@/components/features/SectionCard'
 import { StatusBadge } from '@/components/ui/StatusBadge'
 
@@ -17,7 +18,7 @@ export default function BannerScheduler() {
           <div key={item.title} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
             <div>
               <p className="text-sm font-medium text-slate-800">{item.title}</p>
-              <p className="text-xs text-slate-400">{item.start} → {item.end}</p>
+              <p className="text-xs text-slate-400 flex items-center gap-1.5">{item.start} <ArrowRight size={12} /> {item.end}</p>
             </div>
             <StatusBadge
               variant={item.status === 'active' ? 'success' : item.status === 'scheduled' ? 'warning' : 'default'}

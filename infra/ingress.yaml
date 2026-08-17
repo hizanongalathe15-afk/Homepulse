@@ -1,0 +1,48 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homepulse-ingress
+  namespace: homepulse
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  tls:
+  - hosts:
+    - api.homepulse.com
+    - app.homepulse.com
+    - admin.homepulse.com
+    secretName: homepulse-tls
+  rules:
+  - host: api.homepulse.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homepulse-backend
+            port:
+              number: 3000
+  - host: app.homepulse.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homepulse-admin
+            port:
+              number: 3001
+  - host: admin.homepulse.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: homepulse-admin
+            port:
+              number: 3001

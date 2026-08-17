@@ -852,4 +852,59 @@
         |-- formatters.ts
         `-- validators.ts
 
-194 directories, 659 files
+ 194 directories, 659 files
+
+## MISSING / NOT IN PLACE
+
+### Admin
+- `admin/.env` — documented but does not exist
+- `admin/src/app/globals.css` — documented under `src/styles/`, actual file lives at `src/app/globals.css`
+- `admin/src/styles/globals.css` — duplicate exists alongside `src/app/globals.css`
+
+### Backend
+- `backend/tests/` — documented (`fixtures/`, `integration/`, `unit/`) but does not exist; tests currently live in `backend/src/__tests__/`
+- `backend/jest.config.js` — newly added, not documented
+- `backend/.eslintrc.json` — newly added, not documented
+- `backend/src/__tests__/app.test.ts` — newly added, not documented
+- `backend/src/config/app.config.ts` — exists but not documented
+- `backend/src/config/env.config.ts` — exists but not documented
+- `backend/src/models/index.ts` — exists but not documented
+- `backend/src/sockets/index.ts` — exists but not documented
+- `backend/src/sockets/index.socket.ts` — exists but not documented
+- `backend/src/workers/index.worker.ts` — exists but not documented
+- `backend/src/jobs/background.jobs.ts` — exists but not documented
+- `backend/src/jobs/index.jobs.ts` — exists but not documented
+- `backend/src/middleware/globalErrorHandler.middleware.ts` — exists but not documented
+- `backend/src/middleware/socket.auth.ts` — exists but not documented
+- `backend/src/services/admin.service.ts` — exists but not documented
+- `backend/src/services/email.service.ts` — exists but not documented
+- `backend/src/services/sms.service.ts` — exists but not documented
+- `backend/src/services/stripe.service.ts` — exists but not documented
+- `backend/src/types/express.types.ts` — exists but not documented
+- `backend/src/utils/errors.ts` — exists but not documented
+- Missing controllers in doc: `ai.controller.ts`, `app.controller.ts`, `export.controller.ts`, `fraudDetection.controller.ts`, `geocoding.controller.ts`, `idVerification.controller.ts`, `push.controller.ts`, `recommendation.controller.ts`, `weather.controller.ts`, `webhook.controller.ts`
+- Missing routes in doc: `disputes.routes.ts`, `export.routes.ts`, `fraudDetection.routes.ts`, `geocoding.routes.ts`, `idVerification.routes.ts`, `misc.routes.ts`, `push.routes.ts`, `recommendation.routes.ts`, `review.routes.ts`, `users.routes.ts`, `weather.routes.ts`, `webhooks.routes.ts`
+
+### Flutter App
+- `app/assets/qr_templates/` — documented but does not exist
+- `app/assets/videos/` — documented but does not exist
+- `app/assets/fonts/` — created but empty
+- `app/assets/icons/` — created but empty
+- `app/assets/images/` — created but empty
+- `app/test/integration/` — documented but does not exist
+- `app/test/unit/` — documented but does not exist
+- `app/test/widget/` — documented but does not exist; only `app/test/widget_test.dart` exists at test root
+- `app/lib/models/app_notification.dart` — exists but not documented
+- `app/lib/models/conversation.dart` — exists but not documented
+- `app/lib/features/payments/screens/widgets/` — duplicate widgets directory not documented
+
+### Infrastructure / Scripts
+- `docker/docker-compose.staging.yml` — exists but is empty (0 bytes)
+- `infra/configmap.yaml` — exists but is empty (0 bytes)
+- `infra/deployment.yaml` — exists but is empty (0 bytes)
+- `infra/ingress.yaml` — exists but is empty (0 bytes)
+- `infra/service.yaml` — exists but is empty (0 bytes)
+- `scripts/backup.sh` — exists but is empty (0 bytes)
+- `scripts/deploy.sh` — exists but is empty (0 bytes)
+- `scripts/generate-qr.sh` — exists but is empty (0 bytes)
+- `scripts/seed.sh` — exists but is empty (0 bytes)

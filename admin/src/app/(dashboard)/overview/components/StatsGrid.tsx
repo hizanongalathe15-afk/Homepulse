@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { DollarSign, Users, Home, AlertTriangle, type LucideIcon } from 'lucide-react'
 import { StatCard } from '@/components/features/StatCard'
-import { useRegisterLiveMetric, useLiveMetric } from '@/contexts/LiveMetricsContext'
+import { adminDashboardService, type DashboardStats } from '@/services/adminDashboard.service'
 
 interface StatCardWrapperProps {
   id: string
@@ -40,36 +40,10 @@ function StatCardWrapper(props: StatCardWrapperProps) {
     sub,
   } = props
 
-  useRegisterLiveMetric(id, {
-    initialValue,
-    prefix,
-    suffix,
-    decimals,
-    min,
-    max,
-    volatility,
-    isLive,
-  })
-  const metric = useLiveMetric(id)
-
-  if (!metric) {
-    return (
-      <StatCard
-        label={label}
-        value={prefix ? `${prefix}${initialValue.toLocaleString()}${suffix ?? ''}` : initialValue.toLocaleString()}
-        trend={trend}
-        trendValue={trendValue}
-        icon={icon}
-        sub={sub}
-        live={isLive}
-      />
-    )
-  }
-
   return (
     <StatCard
       label={label}
-      value={metric.value}
+      value={initialValue}
       prefix={prefix}
       suffix={suffix}
       decimals={decimals}
@@ -77,77 +51,115 @@ function StatCardWrapper(props: StatCardWrapperProps) {
       trendValue={trendValue}
       icon={icon}
       sub={sub}
-      animated
-      live={metric.isLive}
-      flickering={metric.flickering}
+      live={isLive}
     />
   )
 }
 
-const stats = [
-  {
-    id: 'overview-revenue',
-    label: 'Total Revenue (MTD)',
-    initialValue: 45678,
-    prefix: '$',
-    decimals: 0,
-    min: 40000,
-    max: 60000,
-    volatility: 500,
-    isLive: false,
-    trend: 'up' as const,
-    trendValue: '12.5%',
-    icon: DollarSign,
-    sub: 'vs last month',
-  },
-  {
-    id: 'overview-users',
-    label: 'Total Users',
-    initialValue: 12345,
-    decimals: 0,
-    min: 10000,
-    max: 15000,
-    volatility: 100,
-    isLive: true,
-    trend: 'up' as const,
-    trendValue: '8.2%',
-    icon: Users,
-    sub: 'active this month',
-  },
-  {
-    id: 'overview-properties',
-    label: 'Total Properties',
-    initialValue: 8901,
-    decimals: 0,
-    min: 8000,
-    max: 10000,
-    volatility: 50,
-    isLive: false,
-    trend: 'up' as const,
-    trendValue: '3.1%',
-    icon: Home,
-    sub: 'listed',
-  },
-  {
-    id: 'overview-disputes',
-    label: 'Active Disputes',
-    initialValue: 23,
-    decimals: 0,
-    min: 15,
-    max: 35,
-    volatility: 3,
-    isLive: true,
-    trend: 'down' as const,
-    trendValue: '4',
-    icon: AlertTriangle,
-    sub: 'requires attention',
-  },
-]
-
 export default function StatsGrid() {
+  const [stats, setStats] = useState<DashboardStats | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const data = await adminDashboardService.getStats()
+        setStats(data)
+      } catch (err) {
+        setError('Failed to load dashboard stats')
+        console.error(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchStats()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="glass-card p-6 border-glow animate-pulse">
+            <div className="h-4 bg-muted rounded w-24 mb-2" />
+            <div className="h-8 bg-muted rounded w-32" />
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  if (error || !stats) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="col-span-full text-center text-red-500">{error || 'No data available'}</div>
+      </div>
+    )
+  }
+
+  const statCards = [
+    {
+      id: 'overview-revenue',
+      label: 'Total Revenue (MTD)',
+      initialValue: stats.totalRevenue,
+      prefix: 'KSh ',
+      decimals: 0,
+      min: 0,
+      max: stats.totalRevenue * 1.5,
+      volatility: stats.totalRevenue * 0.05,
+      isLive: false,
+      trend: 'up' as const,
+      trendValue: '12.5%',
+      icon: DollarSign,
+      sub: 'vs last month',
+    },
+    {
+      id: 'overview-users',
+      label: 'Total Users',
+      initialValue: stats.totalUsers,
+      decimals: 0,
+      min: 0,
+      max: stats.totalUsers * 1.2,
+      volatility: stats.totalUsers * 0.02,
+      isLive: true,
+      trend: 'up' as const,
+      trendValue: '8.2%',
+      icon: Users,
+      sub: 'active this month',
+    },
+    {
+      id: 'overview-properties',
+      label: 'Total Properties',
+      initialValue: stats.totalProperties,
+      decimals: 0,
+      min: 0,
+      max: stats.totalProperties * 1.2,
+      volatility: stats.totalProperties * 0.01,
+      isLive: false,
+      trend: 'up' as const,
+      trendValue: '3.1%',
+      icon: Home,
+      sub: 'listed',
+    },
+    {
+      id: 'overview-disputes',
+      label: 'Pending Approvals',
+      initialValue: stats.pendingApprovals,
+      decimals: 0,
+      min: 0,
+      max: Math.max(stats.pendingApprovals * 2, 50),
+      volatility: 2,
+      isLive: true,
+      trend: stats.pendingApprovals > 0 ? 'down' as const : 'neutral' as const,
+      trendValue: stats.pendingApprovals.toString(),
+      icon: AlertTriangle,
+      sub: 'requires attention',
+    },
+  ]
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {stats.map((stat) => (
+      {statCards.map((stat) => (
         <StatCardWrapper key={stat.id} {...stat} />
       ))}
     </div>

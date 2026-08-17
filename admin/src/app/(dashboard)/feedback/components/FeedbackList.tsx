@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Star } from 'lucide-react'
 import { AdminButton } from '@/components/ui/AdminButton'
 import { SectionCard } from '@/components/features/SectionCard'
 import { DataTable } from '@/components/ui/DataTable'
@@ -29,9 +30,11 @@ function ratingStars(rating: number) {
   return (
     <span className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
-        <span key={star} className={star <= rating ? 'text-yellow-500' : 'text-slate-300'}>
-          ★
-        </span>
+        <Star
+          key={star}
+          size={14}
+          className={star <= rating ? 'fill-yellow-500 text-yellow-500' : 'fill-slate-200 text-slate-300'}
+        />
       ))}
     </span>
   )

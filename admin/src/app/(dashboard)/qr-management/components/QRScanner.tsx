@@ -13,21 +13,47 @@ interface ScanResult {
   scannedAt: string
 }
 
-const sampleCodes = ['HP-NBO-0012', 'HP-MSA-0088', 'HP-CMP-0042']
-
 export default function QRScanner() {
   const [code, setCode] = useState('')
   const [result, setResult] = useState<ScanResult | null>(null)
+  const [loading, setLoading] = useState(false)
 
-  const scan = (value: string) => {
+  const scan = async (value: string) => {
     if (value.trim() === '') return
     setCode(value)
-    setResult({
-      code: value.toUpperCase(),
-      target: 'Sunset Apartments, Westlands',
-      type: 'property',
-      scannedAt: new Date().toLocaleString(),
-    })
+    setLoading(true)
+    try {
+      const response = await fetch('/api/qr/scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: value.toUpperCase() }),
+      })
+      const data = await response.json()
+      if (data.success) {
+        setResult({
+          code: value.toUpperCase(),
+          target: data.data?.property?.title || data.data?.property?.address || 'Unknown Property',
+          type: 'property',
+          scannedAt: new Date().toLocaleString(),
+        })
+      } else {
+        setResult({
+          code: value.toUpperCase(),
+          target: data.error || 'Invalid QR code',
+          type: 'error',
+          scannedAt: new Date().toLocaleString(),
+        })
+      }
+    } catch {
+      setResult({
+        code: value.toUpperCase(),
+        target: 'Scan failed',
+        type: 'error',
+        scannedAt: new Date().toLocaleString(),
+      })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -39,12 +65,10 @@ export default function QRScanner() {
           onChange={(e) => setCode(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && scan(code)}
         />
-        <div className="flex gap-2 flex-wrap">
-          {sampleCodes.map((c) => (
-            <AdminButton key={c} variant="outline" size="sm" onClick={() => scan(c)}>
-              {c}
+        <div className="flex gap-2">
+            <AdminButton variant="outline" size="sm" onClick={() => scan(code)} loading={loading}>
+              Scan
             </AdminButton>
-          ))}
         </div>
 
         {result ? (
@@ -60,7 +84,7 @@ export default function QRScanner() {
             </div>
           </div>
         ) : (
-          <p className="text-sm text-slate-400 text-center py-6">No scan yet — enter or pick a code above</p>
+          <p className="text-sm text-slate-400 text-center py-6">No scan yet — enter a code above and press Scan</p>
         )}
       </div>
     </SectionCard>

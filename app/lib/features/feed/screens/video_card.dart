@@ -26,6 +26,7 @@ class VideoCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppCard(
+      glass: true,
       margin: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

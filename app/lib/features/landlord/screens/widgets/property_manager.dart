@@ -4,7 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../models/property.dart';
-import '../../../../services/property_service.dart';
+import '../../../../services/property_service.dart' hide propertyServiceProvider;
 import '../../../../state/landlord_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_button.dart';
@@ -293,7 +293,7 @@ class _EditPropertyScreenState extends ConsumerState<EditPropertyScreen> {
         location: _locationController.text.trim(),
       );
 
-      await ref.read(propertyServiceProvider).updateProperty(updatedProperty);
+      await ref.read(propertyServiceProvider).updateProperty(updatedProperty.id, updatedProperty.toJson());
       if (mounted) {
         AppToast.success(context, 'Property updated successfully');
         Navigator.pop(context);

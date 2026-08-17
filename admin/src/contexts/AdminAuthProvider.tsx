@@ -35,6 +35,9 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
     setToken(response.token)
     setAdmin(response.admin)
     localStorage.setItem('admin_token', response.token)
+    if (typeof document !== 'undefined') {
+      document.cookie = `admin_token=${response.token}; path=/; max-age=${7 * 24 * 60 * 60}`
+    }
   }
 
   const logout = async () => {
@@ -44,6 +47,9 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
       setToken(null)
       setAdmin(null)
       localStorage.removeItem('admin_token')
+      if (typeof document !== 'undefined') {
+        document.cookie = 'admin_token=; path=/; max-age=0'
+      }
     }
   }
 
@@ -51,6 +57,9 @@ export function AdminAuthProvider({ children }: { children: React.ReactNode }) {
     const response = await adminAuthService.refreshToken()
     setToken(response.token)
     localStorage.setItem('admin_token', response.token)
+    if (typeof document !== 'undefined') {
+      document.cookie = `admin_token=${response.token}; path=/; max-age=${7 * 24 * 60 * 60}`
+    }
   }
 
   const value: AdminAuthContextValue = {

@@ -1,30 +1,32 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:homepulse/core/network/api_client.dart';
+import 'package:homepulse/core/config/constants.dart';
 import '../models/qr_code.dart';
 
 class QRService {
+  late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
+
   Future<QRCodeData> generateQR(QRCodeData qr) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return qr;
+    final response = await _api.post('/qr/generate', data: qr.toJson());
+    return QRCodeData.fromJson(response.data as Map<String, dynamic>);
   }
 
   Future<List<QRCodeData>> getLandlordQRs(String landlordId) async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    return List.generate(3, (i) => QRCodeData(
-      id: 'qr_$i',
-      propertyId: 'prop_$i',
-      landlordId: landlordId,
-      url: 'https://homepulse.app/property/prop_$i',
-      createdAt: DateTime.now().subtract(Duration(days: i)),
-      isActive: true,
-    ));
+    final response = await _api.get('/qr', queryParameters: {
+      'landlord_id': landlordId,
+    });
+    final List<dynamic> data = response.data as List<dynamic>;
+    return data.map((json) => QRCodeData.fromJson(json as Map<String, dynamic>)).toList();
   }
 
   Future<void> uploadBulkQRs(List<QRCodeData> qrs) async {
-    await Future.delayed(const Duration(milliseconds: 600));
+    await _api.post('/qr/bulk', data: {
+      'qrs': qrs.map((qr) => qr.toJson()).toList(),
+    });
   }
 
   Future<void> deactivateQR(String qrId) async {
-    await Future.delayed(const Duration(milliseconds: 200));
+    await _api.patch('/qr/$qrId/deactivate');
   }
 }
 

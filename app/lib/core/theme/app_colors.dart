@@ -27,4 +27,8 @@ class AppColors {
   static const Color save = Color(0xFFFFA726);
   static const Color share = Color(0xFF42A5F5);
   static const Color verified = Color(0xFF43A047);
+  static const Color glassWhite = Color(0xFFFFFFFF);
+  static const Color glassBlack = Color(0xFF000000);
+  static const Color glassBorderLight = Color(0x3DFFFFFF);
+  static const Color glassBorderDark = Color(0x33FFFFFF);
 }

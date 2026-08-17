@@ -8,6 +8,7 @@ import { body, param, query } from 'express-validator';
 import { NotificationService } from '../services/notification.service';
 import { EmailService } from '../services/email.service';
 import { SmsService } from '../services/sms.service';
+import axios from 'axios';
 
 export class AiService {
   private prisma: PrismaClient;
@@ -20,7 +21,33 @@ export class AiService {
 
   async generatePropertyDescription(title: string, type: string, features: string[]) {
     try {
-      const description = `Beautiful ${type.toLowerCase()} located in a prime area. ${title} features ${features.join(', ')}. Perfect for modern living with easy access to amenities.`;
+      const openaiApiKey = process.env['OPENAI_API_KEY'];
+      if (!openaiApiKey) {
+        throw new AppError('OpenAI API key not configured', 500);
+      }
+
+      const prompt = `Generate a compelling property description for a ${type.toLowerCase()} titled "${title}" with the following features: ${features.join(', ')}. The description should be professional, engaging, and suitable for a rental listing in Kenya. Keep it under 200 words.`;
+
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: 'You are a professional real estate copywriter specializing in Kenyan rental properties.' },
+            { role: 'user', content: prompt },
+          ],
+          max_tokens: 300,
+          temperature: 0.7,
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${openaiApiKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const description = response.data.choices[0]?.message?.content?.trim() || '';
 
       return {
         success: true,
@@ -28,6 +55,7 @@ export class AiService {
       };
     } catch (error) {
       logger.error('Failed to generate property description:', error);
+      if (error instanceof AppError) throw error;
       throw new AppError('Failed to generate description', 500);
     }
   }
@@ -107,35 +135,41 @@ export class AiService {
 
   async getChatbotResponse(query: string, userId: string) {
     try {
-      const lowerQuery = query.toLowerCase();
-
-      if (lowerQuery.includes('RENT') || lowerQuery.includes('price')) {
-        return {
-          success: true,
-          data: { response: 'Rent prices vary by location and property type. You can use our search feature to find properties within your budget.' },
-        };
+      const openaiApiKey = process.env['OPENAI_API_KEY'];
+      if (!openaiApiKey) {
+        throw new AppError('OpenAI API key not configured', 500);
       }
 
-      if (lowerQuery.includes('maintenance') || lowerQuery.includes('repair')) {
-        return {
-          success: true,
-          data: { response: 'You can submit a maintenance request through the Maintenance section. Our team will review and assign it to a technician.' },
-        };
-      }
+      const systemPrompt = `You are HomePulse AI assistant, a helpful support chatbot for a property rental and management platform in Kenya. You help users with questions about renting, property management, payments, maintenance, and general platform usage. Be concise, friendly, and professional.`;
 
-      if (lowerQuery.includes('payment') || lowerQuery.includes('pay')) {
-        return {
-          success: true,
-          data: { response: 'We accept M-Pesa and Stripe payments. You can make payments through the Payments section.' },
-        };
-      }
+      const response = await axios.post(
+        'https://api.openai.com/v1/chat/completions',
+        {
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: query },
+          ],
+          max_tokens: 200,
+          temperature: 0.7,
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${openaiApiKey}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const chatbotResponse = response.data.choices[0]?.message?.content?.trim() || 'Thank you for your question. Our support team will get back to you shortly.';
 
       return {
         success: true,
-        data: { response: 'Thank you for your question. Our support team will get back to you shortly.' },
+        data: { response: chatbotResponse },
       };
     } catch (error) {
       logger.error('Failed to get chatbot response:', error);
+      if (error instanceof AppError) throw error;
       throw new AppError('Failed to get response', 500);
     }
   }

@@ -8,7 +8,13 @@ class Lease {
   final double amount;
   final String currency;
   final String status;
+  final double? depositAmount;
+  final String? depositStatus;
+  final String paymentFrequency;
+  final String? terms;
   final String? documentUrl;
+  final DateTime? signedAt;
+  final DateTime? terminatedAt;
   final DateTime createdAt;
 
   const Lease({
@@ -19,9 +25,15 @@ class Lease {
     required this.startDate,
     required this.endDate,
     required this.amount,
-    required this.currency,
-    required this.status,
+    this.currency = 'KES',
+    this.status = 'active',
+    this.depositAmount,
+    this.depositStatus,
+    this.paymentFrequency = 'monthly',
+    this.terms,
     this.documentUrl,
+    this.signedAt,
+    this.terminatedAt,
     required this.createdAt,
   });
 
@@ -34,9 +46,15 @@ class Lease {
       startDate: DateTime.parse(json['start_date'] as String),
       endDate: DateTime.parse(json['end_date'] as String),
       amount: (json['amount'] as num).toDouble(),
-      currency: json['currency'] as String? ?? 'USD',
-      status: json['status'] as String,
+      currency: json['currency'] as String? ?? 'KES',
+      status: json['status'] as String? ?? 'active',
+      depositAmount: (json['deposit_amount'] as num?)?.toDouble(),
+      depositStatus: json['deposit_status'] as String?,
+      paymentFrequency: json['payment_frequency'] as String? ?? 'monthly',
+      terms: json['terms'] as String?,
       documentUrl: json['document_url'] as String?,
+      signedAt: json['signed_at'] != null ? DateTime.parse(json['signed_at'] as String) : null,
+      terminatedAt: json['terminated_at'] != null ? DateTime.parse(json['terminated_at'] as String) : null,
       createdAt: DateTime.parse(json['created_at'] as String),
     );
   }
@@ -52,7 +70,13 @@ class Lease {
       'amount': amount,
       'currency': currency,
       'status': status,
+      'deposit_amount': depositAmount,
+      'deposit_status': depositStatus,
+      'payment_frequency': paymentFrequency,
+      'terms': terms,
       'document_url': documentUrl,
+      'signed_at': signedAt?.toIso8601String(),
+      'terminated_at': terminatedAt?.toIso8601String(),
       'created_at': createdAt.toIso8601String(),
     };
   }

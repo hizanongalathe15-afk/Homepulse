@@ -1,6 +1,7 @@
 'use client'
 
 import { useParams } from 'next/navigation'
+import { Star } from 'lucide-react'
 import { AdminHeader } from '@/components/ui/AdminHeader'
 import { SectionCard } from '@/components/features/SectionCard'
 import { InfoRow } from '@/components/features/InfoRow'
@@ -49,7 +50,7 @@ export default function FeedbackDetailPage() {
               <InfoRow label="User ID" value={feedback.userId} />
               <InfoRow label="Email" value={feedback.email} />
               <InfoRow label="Property" value={feedback.property} />
-              <InfoRow label="Rating" value="★★★★★" />
+              <InfoRow label="Rating" value={<div className="flex items-center gap-1"><Star size={16} className="fill-yellow-500 text-yellow-500" /><Star size={16} className="fill-yellow-500 text-yellow-500" /><Star size={16} className="fill-yellow-500 text-yellow-500" /><Star size={16} className="fill-yellow-500 text-yellow-500" /><Star size={16} className="fill-yellow-500 text-yellow-500" /> 5.0</div>} />
             </div>
           </SectionCard>
           <SectionCard title="Status">

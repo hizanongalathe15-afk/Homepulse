@@ -34,6 +34,14 @@ import maintenanceRoutes from './routes/maintenance.routes';
 import reviewRoutes from './routes/review.routes';
 import roommateRoutes from './routes/roommate.routes';
 import webhooksRoutes from './routes/webhooks.routes';
+import geocodingRoutes from './routes/geocoding.routes';
+import idVerificationRoutes from './routes/idVerification.routes';
+import fraudDetectionRoutes from './routes/fraudDetection.routes';
+import exportRoutes from './routes/export.routes';
+import aiRoutes from './routes/ai.routes';
+import pushRoutes from './routes/push.routes';
+import weatherRoutes from './routes/weather.routes';
+import leaseRoutes from './routes/lease.routes';
 
 import { initializeAllSockets } from './sockets';
 import { initializeWorker } from './workers/index.worker';
@@ -50,7 +58,7 @@ const apiVersion = process.env['API_VERSION'] || 'v1';
 
 app.use(helmet());
 app.use(cors({
-  origin: process.env['FRONTEND_URL'] || 'http://localhost:3001',
+  origin: [process.env['FRONTEND_URL'] || 'http://localhost:3001', 'http://localhost:3000'],
   credentials: true,
 }));
 app.use(compression());
@@ -86,6 +94,14 @@ app.use(`/api/${apiVersion}/maintenance`, maintenanceRoutes);
 app.use(`/api/${apiVersion}/review`, reviewRoutes);
 app.use(`/api/${apiVersion}/roommate`, roommateRoutes);
 app.use(`/api/${apiVersion}/webhooks`, webhooksRoutes);
+app.use(`/api/${apiVersion}/geocoding`, geocodingRoutes);
+app.use(`/api/${apiVersion}/verifications`, idVerificationRoutes);
+app.use(`/api/${apiVersion}/fraud`, fraudDetectionRoutes);
+app.use(`/api/${apiVersion}/export`, exportRoutes);
+app.use(`/api/${apiVersion}/ai`, aiRoutes);
+app.use(`/api/${apiVersion}/push`, pushRoutes);
+app.use(`/api/${apiVersion}/weather`, weatherRoutes);
+app.use(`/api/${apiVersion}/leases`, leaseRoutes);
 
 app.use('*', (req, res) => {
   res.status(404).json({
@@ -100,7 +116,7 @@ app.use(errorHandler);
 
 const io = new Server(server, {
   cors: {
-    origin: process.env['SOCKET_CORS_ORIGIN'] || 'http://localhost:3001',
+    origin: [process.env['SOCKET_CORS_ORIGIN'] || 'http://localhost:3001', 'http://localhost:3000'],
     credentials: true,
   },
   path: process.env['SOCKET_PATH'] || '/socket.io',
@@ -111,13 +127,13 @@ initializeAllSockets(io);
 if (process.env['NODE_ENV'] !== 'test') {
   startBackgroundJobs();
   initializeWorker();
+
+  const PORT = Number(process.env['PORT']) || 3000;
+  const HOST = process.env['HOST'] || '0.0.0.0';
+
+  server.listen(PORT, HOST, () => {
+    logger.info(`Server running on http://${HOST}:${PORT} in ${process.env['NODE_ENV']} mode`);
+  });
 }
-
-const PORT = Number(process.env['PORT']) || 3000;
-const HOST = process.env['HOST'] || '0.0.0.0';
-
-server.listen(PORT, HOST, () => {
-  logger.info(`Server running on http://${HOST}:${PORT} in ${process.env['NODE_ENV']} mode`);
-});
 
 export { app, server, io };

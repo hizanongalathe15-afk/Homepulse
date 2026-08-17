@@ -4,6 +4,8 @@ import '../../../../models/property.dart';
 import '../../../../services/feed_service.dart';
 import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/loading_spinner.dart';
+import '../../../../widgets/antigravity_scroll.dart';
+import '../../../../widgets/profile_dropdown.dart';
 import '../../../../state/feed_provider.dart';
 import 'video_card.dart';
 import 'video_filters.dart';
@@ -46,7 +48,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
         title: const Text('Homepulse'),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications_outlined)),
+          const ProfileDropdown(showInAppBar: false),
         ],
       ),
       body: Column(
@@ -73,19 +75,12 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                 }
                 return RefreshIndicator(
                   onRefresh: () => ref.read(feedProvider.notifier).loadFeed(),
-                  child: ListView.builder(
+                  child: AntigravityListView(
                     controller: _scrollController,
+                    staggerDelay: 0.1,
+                    floatIntensity: 0.4,
                     padding: const EdgeInsets.all(16),
-                    itemCount: properties.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index >= properties.length) {
-                        return const Padding(
-                          padding: EdgeInsets.all(16),
-                          child: LoadingSpinner(size: 24),
-                        );
-                      }
-                      final property = properties[index];
-                      return VideoCard(
+                    children: properties.map((property) => VideoCard(
                         property: property,
                         onLike: () async {
                           await ref.read(feedServiceProvider).likeProperty(property.id);
@@ -96,8 +91,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                           AppToast.show(context, 'Saved');
                         },
                         onShare: () {},
-                      );
-                    },
+                      )).toList(),
                   ),
                 );
               },

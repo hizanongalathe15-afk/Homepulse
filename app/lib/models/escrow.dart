@@ -44,6 +44,36 @@ class Escrow {
       releasedAt: releasedAt ?? this.releasedAt,
     );
   }
+
+  factory Escrow.fromJson(Map<String, dynamic> json) {
+    return Escrow(
+      id: json['id'] as String,
+      propertyId: json['property_id'] as String,
+      tenantId: json['tenant_id'] as String,
+      landlordId: json['landlord_id'] as String,
+      amount: (json['amount'] as num).toDouble(),
+      currency: json['currency'] as String? ?? 'KES',
+      status: json['status'] as String? ?? 'pending',
+      createdAt: DateTime.parse(json['created_at'] as String),
+      releasedAt: json['released_at'] != null
+          ? DateTime.parse(json['released_at'] as String)
+          : null,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'property_id': propertyId,
+      'tenant_id': tenantId,
+      'landlord_id': landlordId,
+      'amount': amount,
+      'currency': currency,
+      'status': status,
+      'created_at': createdAt.toIso8601String(),
+      'released_at': releasedAt?.toIso8601String(),
+    };
+  }
 }
 
 class EscrowTransaction {

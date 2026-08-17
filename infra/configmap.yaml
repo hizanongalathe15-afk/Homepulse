@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepulse-config
+  namespace: homepulse
+data:
+  NODE_ENV: "production"
+  API_VERSION: "v1"
+  PORT: "3000"
+  HOST: "0.0.0.0"
+  BODY_LIMIT: "10mb"
+  LOG_LEVEL: "info"
+  RATE_LIMIT_WINDOW_MS: "900000"
+  RATE_LIMIT_MAX_REQUESTS: "100"
+  REDIS_CACHE_TTL: "3600"
+  QR_CACHE_TTL: "3600"
+  ENABLE_HEALTH_CHECKS: "true"
+  ENABLE_METRICS: "true"
+  METRICS_PATH: "/metrics"

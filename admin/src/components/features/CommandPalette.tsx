@@ -26,6 +26,9 @@ import {
   LayoutDashboard,
   Bell,
   Command,
+   ChevronUp,
+   ChevronDown,
+   CornerDownLeft,
 } from 'lucide-react'
 
 interface CommandItem {
@@ -182,12 +185,12 @@ export function CommandPalette() {
             </div>
           ))}
           {filtered.length === 0 && (
-            <div className="px-3 py-8 text-center text-sm text-slate-400">No results found for "{query}"</div>
+            <div className="px-3 py-8 text-center text-sm text-slate-400">No results found for &quot;{query}&quot;</div>
           )}
         </div>
         <div className="px-4 py-2 border-t border-slate-100 flex items-center gap-4 text-xs text-slate-400">
-          <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 text-slate-500">↑↓</kbd> Navigate</span>
-          <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 text-slate-500">↵</kbd> Select</span>
+          <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 text-slate-500"><ChevronUp size={12} /><ChevronDown size={12} /></kbd> Navigate</span>
+          <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 text-slate-500"><CornerDownLeft size={12} /></kbd> Select</span>
           <span className="flex items-center gap-1"><kbd className="px-1.5 py-0.5 bg-slate-100 rounded border border-slate-200 text-slate-500">ESC</kbd> Close</span>
         </div>
       </div>

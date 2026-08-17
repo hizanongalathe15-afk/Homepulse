@@ -3,11 +3,13 @@ import type { Property, PropertyFilters } from '@/types/property.types'
 
 export interface CreatePropertyInput {
   title: string
-  description: string
-  type: Property['type']
+  description?: string
+  type: string
   price: number
   currency: string
-  location: Property['location']
+  city: string
+  neighborhood?: string
+  address?: string
   landlordId: string
   images: string[]
   amenities: string[]

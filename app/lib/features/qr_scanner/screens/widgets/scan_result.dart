@@ -4,7 +4,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/utils/qr_generator.dart';
 import '../../../../models/property.dart';
-import '../../../../services/property_service.dart';
+import '../../../../services/property_service.dart' hide propertyServiceProvider;
 import '../../../../state/landlord_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_button.dart';

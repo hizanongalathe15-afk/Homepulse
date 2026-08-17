@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 class Constants {
@@ -5,7 +6,22 @@ class Constants {
 
   static const String appName = 'Homepulse';
   static const String appVersion = '1.0.0';
-  static const String apiUrl = 'http://localhost:3000/api/v1';
+
+  static String _resolveApiUrl() {
+    if (kIsWeb) {
+      return const String.fromEnvironment('API_URL', defaultValue: 'http://localhost:3000/api/v1');
+    }
+    if (Platform.isAndroid) {
+      return const String.fromEnvironment('API_URL', defaultValue: 'http://10.0.2.2:3000/api/v1');
+    }
+    if (Platform.isIOS) {
+      return const String.fromEnvironment('API_URL', defaultValue: 'http://127.0.0.1:3000/api/v1');
+    }
+    return const String.fromEnvironment('API_URL', defaultValue: 'http://localhost:3000/api/v1');
+  }
+
+  static final String apiUrl = _resolveApiUrl();
+  static const String socketUrl = String.fromEnvironment('SOCKET_URL', defaultValue: 'http://localhost:3000');
   static const String apiKey = '';
   static const String mapboxToken = 'pk.placeholder';
   static const String mpesaShortcode = '174379';
@@ -13,7 +29,6 @@ class Constants {
   static const String mpesaConsumerKey = '';
   static const String mpesaConsumerSecret = '';
   static const String mpesaCallbackUrl = 'http://localhost:3000/api/v1/mpesa/callback';
-  static const String socketUrl = 'http://localhost:3000';
   static const int connectTimeout = 30000;
   static const int receiveTimeout = 30000;
   static const int sendTimeout = 30000;

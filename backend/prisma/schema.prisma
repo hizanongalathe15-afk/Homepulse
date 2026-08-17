@@ -328,6 +328,8 @@ model User {
   bannersCreated        Banner[]               @relation("BannerCreator")
   disputes              Dispute[]              @relation("DisputeRaisedBy")
   disputeAssignments    Dispute[]              @relation("DisputeAssignedTo")
+  tenantLeases          Lease[]                 @relation("TenantLeases")
+  landlordLeases        Lease[]                 @relation("LandlordLeases")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -386,6 +388,7 @@ model Property {
   savedSearches       SavedSearch[]
   banner              Banner?              @relation("PropertyBanner")
   disputes            Dispute[]            @relation("PropertyDisputes")
+  leases              Lease[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -1026,4 +1029,38 @@ model SystemLog {
   @@index([source])
   @@index([createdAt])
   @@map("system_logs")
+}
+
+// ---------- LEASES ----------
+model Lease {
+  id            String    @id @default(uuid())
+  propertyId    String
+  property      Property  @relation(fields: [propertyId], references: [id])
+  tenantId      String
+  tenant        User       @relation("TenantLeases", fields: [tenantId], references: [id])
+  landlordId    String
+  landlord      User       @relation("LandlordLeases", fields: [landlordId], references: [id])
+  startDate     DateTime
+  endDate       DateTime
+  amount        Float
+  currency      String     @default("KES")
+  status        String     @default("active") @db.VarChar(50) // active, completed, terminated
+  depositAmount Float?
+  depositStatus String?    @default("pending") @db.VarChar(50) // pending, paid, refunded
+  paymentFrequency String @default("monthly") @db.VarChar(50)
+  terms         String?
+  documentUrl   String?
+  signedAt      DateTime?
+  terminatedAt  DateTime?
+  deletedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([propertyId])
+  @@index([tenantId])
+  @@index([landlordId])
+  @@index([status])
+  @@index([deletedAt])
+  @@map("leases")
 }

@@ -5,10 +5,11 @@ import { forwardRef } from 'react'
 interface AdminButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'ghost'
   size?: 'default' | 'sm' | 'lg' | 'icon'
+  loading?: boolean
 }
 
 const AdminButton = forwardRef<HTMLButtonElement, AdminButtonProps>(
-  ({ className = '', variant = 'default', size = 'default', ...props }, ref) => {
+  ({ className = '', variant = 'default', size = 'default', loading = false, disabled, ...props }, ref) => {
     const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98]'
 
     const variants = {
@@ -30,8 +31,14 @@ const AdminButton = forwardRef<HTMLButtonElement, AdminButtonProps>(
       <button
         className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${className}`}
         ref={ref}
+        disabled={disabled || loading}
         {...props}
-      />
+      >
+        {loading ? (
+          <div className="animate-spin rounded-full h-4 w-4 border-2 border-current border-t-transparent mr-2" />
+        ) : null}
+        {props.children}
+      </button>
     )
   }
 )
