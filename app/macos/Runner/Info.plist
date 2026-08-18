@@ -28,5 +28,36 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+
+	<!-- ===== CAMERA ===== -->
+	<key>NSCameraUsageDescription</key>
+	<string>HomePulse needs camera access to scan QR codes, verify identity, and capture property photos.</string>
+
+	<!-- ===== MICROPHONE ===== -->
+	<key>NSMicrophoneUsageDescription</key>
+	<string>HomePulse needs microphone access for voice calls, voice messages, and video recordings.</string>
+
+	<!-- ===== PHOTO LIBRARY ===== -->
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>HomePulse needs photo library access to upload property images and profile pictures.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>HomePulse needs permission to save images to your photo library.</string>
+
+	<!-- ===== LOCATION ===== -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>HomePulse needs location access to find properties near you and show nearby listings.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>HomePulse needs location access to send SOS alerts with your location.</string>
+
+	<!-- ===== SCREEN CAPTURE ===== -->
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>HomePulse needs screen capture access for screen sharing during video calls.</string>
+
+	<!-- ===== INTERNET ===== -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 </dict>
 </plist>

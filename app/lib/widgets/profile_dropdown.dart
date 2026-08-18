@@ -38,8 +38,8 @@ class ProfileDropdown extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: theme.colorScheme.surface.withOpacity(0.7),
-            border: Border.all(color: theme.colorScheme.outline.withOpacity(0.3)),
+            color: Theme.of(context).colorScheme.surface.withOpacity(0.7),
+            border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.3)),
           ),
           child: Row(
             children: [
@@ -53,7 +53,7 @@ class ProfileDropdown extends ConsumerWidget {
               const SizedBox(width: 8),
               Text(
                 userName,
-                style: theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w500),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
               ),

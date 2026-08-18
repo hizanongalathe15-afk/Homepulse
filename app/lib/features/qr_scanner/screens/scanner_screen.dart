@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:homepulse/services/permission_service.dart';
+import 'package:homepulse/widgets/app_toast.dart';
 import 'scan_result.dart';
 import 'scan_history.dart';
 

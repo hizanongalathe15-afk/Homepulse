@@ -7,7 +7,6 @@ enum PermissionType {
   photos,
   microphone,
   notifications,
-  biometric,
   storage,
 }
 
@@ -32,9 +31,6 @@ class PermissionService {
         break;
       case PermissionType.notifications:
         permission = Permission.notification;
-        break;
-      case PermissionType.biometric:
-        permission = Permission.biometrics;
         break;
       case PermissionType.storage:
         permission = Permission.storage;
@@ -65,9 +61,6 @@ class PermissionService {
         break;
       case PermissionType.notifications:
         permission = Permission.notification;
-        break;
-      case PermissionType.biometric:
-        permission = Permission.biometrics;
         break;
       case PermissionType.storage:
         permission = Permission.storage;
