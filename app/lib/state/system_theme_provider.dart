@@ -9,6 +9,7 @@ import 'package:homepulse/models/system_theme.dart';
 import 'package:homepulse/services/theme_service.dart';
 import 'package:homepulse/services/auth_service.dart';
 import 'package:homepulse/state/auth_provider.dart';
+import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 
 class SystemThemeNotifier extends AsyncNotifier<SystemThemeConfig> {
   late final ThemeService _themeService;
@@ -60,22 +61,36 @@ class SystemThemeNotifier extends AsyncNotifier<SystemThemeConfig> {
 
     try {
       final socketUrl = Constants.socketUrl;
-      _applySocketImport(socketUrl);
+      _socket = socket_io.io(
+        socketUrl,
+        socket_io.OptionBuilder()
+            .setTransports(['websocket'])
+            .enableAutoConnect()
+            .build(),
+      );
+
+      _socket!.connect();
+
+      _socket!.on('connect', (_) {
+        _socket!.emit('theme:subscribe');
+      });
+
+      _socket!.on('disconnect', (_) {});
+
+      _socket!.on('theme:update', (data) {
+        _handleRemoteThemeUpdate(data);
+      });
+
+      _socket!.on('connect_error', (error) {
+        if (kDebugMode) {
+          print('Theme socket connect error: $error');
+        }
+      });
     } catch (e) {
       if (kDebugMode) {
         print('Failed to initialize theme socket: $e');
       }
     }
-  }
-
-  void _applySocketImport(String socketUrl) {
-    try {
-      void Function(String event, dynamic Function(dynamic)? cb) on;
-      void Function(String event, dynamic data) emit;
-      void Function() connect;
-      void Function() dispose;
-      _ = socketUrl;
-    } catch (_) {}
   }
 
   void _handleRemoteThemeUpdate(dynamic data) {

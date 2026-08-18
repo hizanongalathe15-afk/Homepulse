@@ -115,7 +115,7 @@ class _ColorPickerFieldState extends ConsumerState<ColorPickerField> {
                 ],
                 decoration: InputDecoration(
                   hintText: '#000000',
-                  hintStyle: TextStyle(color: theme.hintStyle?.color),
+                  hintStyle: TextStyle(color: theme.hintColor),
                   isDense: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 ),
@@ -188,7 +188,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
   late double _hue;
   late double _saturation;
   late double _value;
-  double _alpha;
+  double _alpha = 1.0;
 
   @override
   void initState() {
@@ -202,7 +202,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final currentColor = HSVColor.fromAHSB(_alpha, _hue, _saturation, _value).toColor();
+    final currentColor = HSVColor.fromAHSV(_alpha, _hue, _saturation, _value).toColor();
     return Column(
       children: [
         Expanded(
@@ -215,7 +215,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
                 _saturation = s;
                 _value = v;
               });
-              widget.onColorChanged(HSVColor.fromAHSB(_alpha, _hue, _saturation, _value).toColor());
+              widget.onColorChanged(HSVColor.fromAHSV(_alpha, _hue, _saturation, _value).toColor());
             },
           ),
         ),
@@ -224,7 +224,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
           hue: _hue,
           onChanged: (h) {
             setState(() => _hue = h);
-            widget.onColorChanged(HSVColor.fromAHSB(_alpha, _hue, _saturation, _value).toColor());
+            widget.onColorChanged(HSVColor.fromAHSV(_alpha, _hue, _saturation, _value).toColor());
           },
         ),
         if (widget.showAlpha) ...[
@@ -234,7 +234,7 @@ class _ColorPickerDialogState extends State<ColorPickerDialog> {
             color: currentColor,
             onChanged: (a) {
               setState(() => _alpha = a);
-              widget.onColorChanged(HSVColor.fromAHSB(_alpha, _hue, _saturation, _value).toColor());
+              widget.onColorChanged(HSVColor.fromAHSV(_alpha, _hue, _saturation, _value).toColor());
             },
           ),
         ],
@@ -333,7 +333,7 @@ class _SatValPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final hueColor = HSVColor.fromAHSB(1, hue, 1, 1).toColor();
+    final hueColor = HSVColor.fromAHSV(1, hue, 1, 1).toColor();
 
     final satGradient = Paint()
       ..shader = const LinearGradient(
@@ -424,7 +424,7 @@ class _HueSliderPainter extends CustomPainter {
         tileMode: TileMode.clamp,
       ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
     canvas.drawRRect(
-      RRect.fromRectAndRadius(Offset.zero & size, BorderRadius.circular(4)),
+      RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(4)),
       paint,
     );
   }
@@ -478,20 +478,20 @@ class _AlphaSliderPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     const blockSize = 8.0;
     final paint = Paint()..color = Colors.grey.shade300;
-    for (int i = 0; i < size.width; i += blockSize.toInt() * 2) {
-      for (int j = 0; j < size.height; j += blockSize.toInt() * 2) {
+    for (double i = 0; i < size.width; i += blockSize * 2) {
+      for (double j = 0; j < size.height; j += blockSize * 2) {
         canvas.drawRect(
-          Offset(i.toDouble(), j.toDouble()) & Size(blockSize, blockSize),
+          Offset(i, j) & Size(blockSize, blockSize),
           paint,
         );
       }
     }
 
     final paint2 = Paint()..color = Colors.grey.shade400;
-    for (int i = blockSize; i < size.width; i += blockSize.toInt() * 2) {
-      for (int j = 0; j < size.height; j += blockSize.toInt() * 2) {
+    for (double i = blockSize; i < size.width; i += blockSize * 2) {
+      for (double j = 0; j < size.height; j += blockSize * 2) {
         canvas.drawRect(
-          Offset(i.toDouble(), j.toDouble()) & Size(blockSize, blockSize),
+          Offset(i, j) & Size(blockSize, blockSize),
           paint2,
         );
       }

@@ -170,26 +170,26 @@ class _ColorMixCanvasState extends State<ColorMixCanvas> with SingleTickerProvid
                 });
                 widget.onMixSelected(_mixAt(_panX));
               },
-              child: Listener(
-                onPointerSignal: (event) {
-                  if (event is PointerScrollEvent) {
-                    final delta = event.scrollDelta;
-                    final zoomChange = delta.direction < 0 ? 1.1 : 0.9;
-                    setState(() {
-                      _zoom = (_zoom * zoomChange).clamp(1.0, 5.0);
-                    });
-                  }
-                },
-                child: CustomPaint(
-                  painter: _MixCanvasPainter(
-                    colorA: _colorA,
-                    colorB: _colorB,
-                    zoom: _zoom,
-                    panX: _panX,
-                  ),
-                  size: const Size(double.infinity, double.infinity),
-                ),
-              ),
+        child: Listener(
+          onPointerSignal: (event) {
+            if (event is PointerScrollEvent) {
+              final delta = event.scrollDelta;
+              final zoomChange = delta.direction < 0 ? 1.1 : 0.9;
+              setState(() {
+                _zoom = (_zoom * zoomChange).clamp(1.0, 5.0);
+              });
+            }
+          },
+          child: CustomPaint(
+            painter: _MixCanvasPainter(
+              colorA: _colorA,
+              colorB: _colorB,
+              zoom: _zoom,
+              indicatorX: _panX,
+            ),
+            size: const Size(double.infinity, double.infinity),
+          ),
+        ),
             ),
           ),
         ),
@@ -241,65 +241,54 @@ class _MixCanvasPainter extends CustomPainter {
   final Color colorA;
   final Color colorB;
   final double zoom;
-  final double panX;
+  final double indicatorX;
 
   const _MixCanvasPainter({
     required this.colorA,
     required this.colorB,
     required this.zoom,
-    required this.panX,
+    this.indicatorX = 0.5,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
+    final labelHeight = 40.0;
+    final rect = Rect.fromLTWH(0, labelHeight, size.width, size.height - labelHeight);
+
     final paint = Paint()
       ..shader = LinearGradient(
         colors: [colorA, colorB],
         tileMode: TileMode.mirror,
-      ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+      ).createShader(rect);
 
-    final strokeWidth = 3.0 / zoom;
-    final dotSize = 20.0 / zoom;
-    final labelHeight = 40.0;
-
-    canvas.drawRect(Offset(0, labelHeight) & Size(size.width, size.height - labelHeight), paint);
-
-    final gradientRect = Rect.fromLTWH(0, labelHeight, size.width, size.height - labelHeight);
-    final clipped = Canvas(
-      paint,
-      gradientRect.deflate(8),
-    );
+    canvas.drawRect(rect, paint);
 
     final highlightPaint = Paint()
       ..color = Colors.white.withOpacity(0.3)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12);
-    final cx = panX * size.width;
+    final cx = indicatorX * size.width;
+    final cy = labelHeight + (size.height - labelHeight) / 2;
     canvas.drawCircle(
-      Offset(cx, labelHeight + (size.height - labelHeight) / 2),
+      Offset(cx, cy),
       40 / zoom,
       highlightPaint,
     );
 
-    final indicatorX = cx;
-    final indicatorY = labelHeight + (size.height - labelHeight) / 2;
     final indicatorPaint = Paint()
       ..color = Colors.white
-      ..strokeWidth = strokeWidth
+      ..strokeWidth = 3.0 / zoom
       ..style = PaintingStyle.stroke;
-    canvas.drawCircle(
-      Offset(indicatorX, indicatorY),
-      dotSize,
-      indicatorPaint,
-    );
+    final r = 20.0 / zoom;
+    canvas.drawCircle(Offset(cx, cy), r, indicatorPaint);
 
     canvas.drawLine(
-      Offset(indicatorX - dotSize * 1.5, indicatorY),
-      Offset(indicatorX + dotSize * 1.5, indicatorY),
+      Offset(cx - r * 1.5, cy),
+      Offset(cx + r * 1.5, cy),
       indicatorPaint,
     );
     canvas.drawLine(
-      Offset(indicatorX, indicatorY - dotSize * 1.5),
-      Offset(indicatorX, indicatorY + dotSize * 1.5),
+      Offset(cx, cy - r * 1.5),
+      Offset(cx, cy + r * 1.5),
       indicatorPaint,
     );
   }
@@ -309,6 +298,6 @@ class _MixCanvasPainter extends CustomPainter {
     return old.colorA != colorA ||
         old.colorB != colorB ||
         old.zoom != zoom ||
-        old.panX != panX;
+        old.indicatorX != indicatorX;
   }
 }
