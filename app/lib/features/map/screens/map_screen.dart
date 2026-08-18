@@ -164,10 +164,12 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                     ],
                   ),
                 ),
+              ],
             ),
-            Positioned(
-             bottom: 16,
-             right: 16,
+          ),
+          Positioned(
+            bottom: 16,
+            right: 16,
             child: Column(
               children: [
                 FloatingActionButton(

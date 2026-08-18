@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/user.dart';
 import '../../../../widgets/app_card.dart';
+import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/user_avatar.dart';
 
 class PeopleYouMayKnow extends ConsumerStatefulWidget {

@@ -5,6 +5,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../models/neighborhood.dart';
 import '../../../../services/community_service.dart';
 import '../../../../widgets/app_card.dart';
+import '../../../../widgets/app_toast.dart';
 
 class LocalEvents extends ConsumerWidget {
   final List<Neighborhood> neighborhoods;

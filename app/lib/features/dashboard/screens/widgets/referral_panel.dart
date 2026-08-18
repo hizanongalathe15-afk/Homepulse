@@ -15,6 +15,7 @@ class ReferralPanel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final referralsAsync = ref.watch(referralProvider);
+    String? generatedCode;
 
     return AppCard(
       child: Column(
