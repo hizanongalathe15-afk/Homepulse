@@ -10,6 +10,8 @@ import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_input.dart';
 import '../../../../widgets/app_toast.dart';
 
+import '../../../../services/permission_service.dart';
+
 class VerifyIdScreen extends ConsumerStatefulWidget {
   const VerifyIdScreen({super.key});
 
@@ -37,6 +39,13 @@ class _VerifyIdScreenState extends ConsumerState<VerifyIdScreen> {
   }
 
   Future<void> _pickImage(bool isFront) async {
+    final hasPermission = await PermissionService.request(PermissionType.camera);
+    if (!hasPermission) {
+      if (mounted) {
+        AppToast.error(context, 'Camera permission is required to capture ID');
+      }
+      return;
+    }
     final XFile? image = await _picker.pickImage(
       source: ImageSource.camera,
       imageQuality: 80,

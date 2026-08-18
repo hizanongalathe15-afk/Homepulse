@@ -5,6 +5,7 @@ import 'package:homepulse/core/network/api_exception.dart';
 import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/app_notification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:homepulse/services/permission_service.dart';
 
 class NotificationService {
   late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
@@ -31,6 +32,10 @@ class NotificationService {
     await _api.put('/notifications/preferences', data: preferences);
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('notification_prefs', preferences.toString());
+  }
+
+  Future<bool> requestNotificationPermission() async {
+    return await PermissionService.request(PermissionType.notifications);
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:homepulse/core/network/api_exception.dart';
 import 'package:homepulse/core/config/constants.dart';
 import 'package:homepulse/models/property.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:homepulse/services/permission_service.dart';
 
 class MapService {
   late final ApiClient _api = ApiClient(baseUrl: Constants.apiUrl);
@@ -39,6 +40,15 @@ class MapService {
     if (!serviceEnabled) {
       throw Exception('Location services are disabled');
     }
+
+    final hasPermission = await PermissionService.check(PermissionType.location);
+    if (!hasPermission) {
+      final granted = await PermissionService.request(PermissionType.location);
+      if (!granted) {
+        throw Exception('Location permission denied');
+      }
+    }
+
     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();

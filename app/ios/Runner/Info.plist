@@ -67,16 +67,24 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to scan QR codes and verify properties.</string>
+	<string>This app needs camera access to scan QR codes, verify identity, and capture property photos.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs location access to show nearby properties and verify addresses.</string>
+	<string>This app needs location access to show nearby properties, verify addresses, and check safety scores.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs location access to show nearby properties and verify addresses.</string>
+	<string>This app needs location access to show nearby properties, verify addresses, and check safety scores.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs location access to show nearby properties and verify addresses.</string>
+	<string>This app needs location access to show nearby properties, verify addresses, and check safety scores.</string>
 	<key>NSSMSUsageDescription</key>
-	<string>This app needs SMS access to verify M-Pesa payments automatically.</string>
+	<string>This app needs SMS access to verify OTP codes and M-Pesa payments automatically.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs photo library access to upload property images.</string>
+	<string>This app needs photo library access to upload profile pictures and property images.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app needs photo library access to save property images and QR codes.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs microphone access for voice calls, voice notes, and video messages.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This app needs contacts access to invite friends and find nearby residents.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>This app uses Face ID for secure biometric login.</string>
 </dict>
 </plist>

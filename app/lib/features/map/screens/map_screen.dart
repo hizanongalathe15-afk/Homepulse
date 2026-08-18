@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/property.dart';
 import '../../../../state/map_provider.dart';
+import '../../../../services/permission_service.dart';
 import '../../../../widgets/app_toast.dart';
 import 'widgets/property_pin.dart';
 import 'widgets/property_card.dart';
@@ -31,6 +32,19 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _requestLocationPermission();
+  }
+
+  Future<void> _requestLocationPermission() async {
+    final granted = await PermissionService.request(PermissionType.location);
+    if (!granted && mounted) {
+      AppToast.show(context, 'Location permission is required to show nearby properties');
+    }
   }
 
   Future<void> _locateUser() async {
@@ -146,13 +160,14 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                       IconButton(
                         onPressed: _locateUser,
                         icon: const Icon(Icons.my_location, color: AppColors.primary),
-                 ),
-               ],
-             ),
-           ),
-           Positioned(
-            bottom: 16,
-            right: 16,
+                      ),
+                    ],
+                  ),
+                ),
+            ),
+            Positioned(
+             bottom: 16,
+             right: 16,
             child: Column(
               children: [
                 FloatingActionButton(

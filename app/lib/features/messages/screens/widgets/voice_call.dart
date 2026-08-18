@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
+import 'package:homepulse/services/permission_service.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../widgets/app_toast.dart';
 
 class VoiceCallScreen extends ConsumerStatefulWidget {
   const VoiceCallScreen({super.key});
@@ -19,7 +21,15 @@ class _VoiceCallScreenState extends ConsumerState<VoiceCallScreen> {
   @override
   void initState() {
     super.initState();
+    _requestMicrophonePermission();
     _startCallTimer();
+  }
+
+  Future<void> _requestMicrophonePermission() async {
+    final granted = await PermissionService.request(PermissionType.microphone);
+    if (!granted && mounted) {
+      AppToast.error(context, 'Microphone permission is required for voice calls');
+    }
   }
 
   @override
