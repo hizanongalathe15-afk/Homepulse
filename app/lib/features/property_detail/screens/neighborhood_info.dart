@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/models/neighborhood.dart';
@@ -68,7 +69,7 @@ class NeighborhoodInfo extends ConsumerWidget {
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      _InfoChip(icon: Icons.people, label: neighborhood.population != null ? '${neighborhood.population} people' : 'N/A'),
+                      _InfoChip(icon: LucideIcons.users, label: neighborhood.population != null ? '${neighborhood.population} people' : 'N/A'),
                       const SizedBox(width: 8),
                       _InfoChip(icon: Icons.shield, label: neighborhood.safetyRating != null ? 'Safety: ${neighborhood.safetyRating!.toStringAsFixed(1)}/5' : 'N/A'),
                     ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../services/payment_service.dart';
@@ -62,7 +63,7 @@ class PaymentHistory extends ConsumerWidget {
                         color: isSuccess ? AppColors.success.withOpacity(0.1) : AppColors.warning.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Icon(isSuccess ? Icons.check_circle : Icons.pending, color: isSuccess ? AppColors.success : AppColors.warning),
+                      child: Icon(isSuccess ? LucideIcons.circle_check : Icons.pending, color: isSuccess ? AppColors.success : AppColors.warning),
                     ),
                     title: Text(payment.type[0].toUpperCase() + payment.type.substring(1)),
                     subtitle: Text(formatDate(payment.createdAt)),

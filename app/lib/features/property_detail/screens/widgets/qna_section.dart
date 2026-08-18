@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/widgets/app_card.dart';
 import 'package:homepulse/widgets/app_button.dart';
@@ -42,7 +43,7 @@ class _QnaSectionWidgetState extends State<QnaSectionWidget> {
             Text('Questions & Answers', style: Theme.of(context).textTheme.titleMedium),
             TextButton.icon(
               onPressed: () => setState(() => _showForm = !_showForm),
-              icon: Icon(_showForm ? Icons.close : Icons.add, size: 16),
+              icon: Icon(_showForm ? LucideIcons.x : LucideIcons.plus, size: 16),
               label: Text(_showForm ? 'Cancel' : 'Ask'),
             ),
           ],
@@ -89,7 +90,7 @@ class _QnaSectionWidgetState extends State<QnaSectionWidget> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.person, size: 16, color: AppColors.primary),
+                        Icon(LucideIcons.user, size: 16, color: AppColors.primary),
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
@@ -110,7 +111,7 @@ class _QnaSectionWidgetState extends State<QnaSectionWidget> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Icon(Icons.person, size: 14, color: AppColors.textSecondary),
+                            Icon(LucideIcons.user, size: 14, color: AppColors.textSecondary),
                             const SizedBox(width: 6),
                             Expanded(
                               child: Text(item['answer'],

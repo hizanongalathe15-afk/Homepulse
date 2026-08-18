@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -162,8 +163,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         },
                         prefixIcon: Icon(
                           _isPasswordVisible
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
+                              ? LucideIcons.eye_off
+                              : LucideIcons.eye,
                         ),
                         textInputAction: TextInputAction.done,
                         onSubmitted: (_) => _handleLogin(),

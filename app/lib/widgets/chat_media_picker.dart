@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../core/theme/app_colors.dart';
 import '../../widgets/app_toast.dart';
@@ -49,7 +50,7 @@ class ChatMediaPicker extends StatelessWidget {
                   },
                 ),
                 _MediaOption(
-                  icon: Icons.location_on_outlined,
+                  icon: LucideIcons.map_pin,
                   label: 'Location',
                   color: AppColors.error,
                   onTap: () {

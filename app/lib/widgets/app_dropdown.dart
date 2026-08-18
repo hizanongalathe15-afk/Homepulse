@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class AppDropdown<T> extends StatefulWidget {
   final List<T> items;
@@ -212,7 +213,7 @@ class _SearchableDropdownSheetState<T> extends State<_SearchableDropdownSheet<T>
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search...',
-                prefixIcon: const Icon(Icons.search_rounded),
+                prefixIcon: Icon(LucideIcons.search),
                 suffixIcon: _searchController.text.isNotEmpty
                     ? IconButton(
                         icon: const Icon(Icons.clear_rounded),

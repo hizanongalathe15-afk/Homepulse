@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../../models/qr_code.dart';
 import '../../../../services/qr_service.dart';
 import '../../../../widgets/app_card.dart';
@@ -21,7 +22,7 @@ class ScanResultScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            const Icon(Icons.check_circle, size: 80, color: Colors.green),
+            Icon(LucideIcons.circle_check, size: 80, color: Colors.green),
             const SizedBox(height: 24),
             const Text('QR Code Scanned', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../state/search_provider.dart';
@@ -64,7 +65,7 @@ class SavedProperties extends ConsumerWidget {
                               color: AppColors.primary.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(Icons.home_outlined, color: AppColors.primary),
+                            child: Icon(LucideIcons.house, color: AppColors.primary),
                           ),
                           title: Text('Property $id'),
                           subtitle: const Text('Saved for later'),

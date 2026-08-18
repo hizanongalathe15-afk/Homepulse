@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class TenantRequestsScreen extends StatelessWidget {
   const TenantRequestsScreen({super.key});
@@ -14,7 +15,7 @@ class TenantRequestsScreen extends StatelessWidget {
           return Card(
             margin: const EdgeInsets.only(bottom: 12),
             child: ListTile(
-              leading: const CircleAvatar(child: Icon(Icons.person)),
+              leading: const CircleAvatar(child: Icon(LucideIcons.user)),
               title: Text('Tenant Request ${index + 1}'),
               subtitle: Text('Property ${index + 1} - Nairobi'),
               trailing: Row(
@@ -22,7 +23,7 @@ class TenantRequestsScreen extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () {},
-                    icon: const Icon(Icons.check_circle, color: Colors.green),
+                    icon: Icon(LucideIcons.circle_check, color: Colors.green),
                     tooltip: 'Approve',
                   ),
                   IconButton(

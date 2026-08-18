@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -110,14 +111,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             onPressed: () {
               setState(() => _isMapView = !_isMapView);
             },
-            icon: Icon(_isMapView ? Icons.list : Icons.map_outlined),
+            icon: Icon(_isMapView ? LucideIcons.list : LucideIcons.map, size: 20),
             tooltip: _isMapView ? 'List View' : 'Map View',
           ),
           IconButton(
             onPressed: () {
               setState(() => _showFilters = !_showFilters);
             },
-            icon: Icon(_showFilters ? Icons.filter_list_off : Icons.filter_list),
+            icon: Icon(_showFilters ? LucideIcons.slash : LucideIcons.filter, size: 20),
             tooltip: 'Filters',
           ),
         ],
@@ -139,7 +140,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                    Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
                     const SizedBox(height: 16),
                     Text('Error loading results', style: theme.textTheme.titleMedium),
                     const SizedBox(height: 8),
@@ -159,7 +160,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.search_off, size: 64, color: AppColors.textSecondary.withOpacity(0.5)),
+                        Icon(LucideIcons.search_x, size: 64, color: AppColors.textSecondary.withOpacity(0.5)),
                         const SizedBox(height: 16),
                         Text(
                           'No properties found',
@@ -303,7 +304,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             value: _selectedPropertyType,
             decoration: InputDecoration(
               hintText: 'Property type',
-              prefixIcon: const Icon(Icons.home_outlined),
+              prefixIcon: Icon(LucideIcons.house),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -323,13 +324,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             children: [
               Expanded(
                 child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Min price',
-                    prefixIcon: const Icon(Icons.attach_money),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Min price',
+                                    prefixIcon: const Icon(LucideIcons.dollar_sign),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     final parsed = double.tryParse(value);
@@ -340,13 +341,13 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               const SizedBox(width: 12),
               Expanded(
                 child: TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Max price',
-                    prefixIcon: const Icon(Icons.attach_money),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
+                                  decoration: InputDecoration(
+                                    hintText: 'Max price',
+                                    prefixIcon: const Icon(LucideIcons.dollar_sign),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
                     final parsed = double.tryParse(value);
@@ -360,7 +361,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
           TextFormField(
             decoration: InputDecoration(
               hintText: 'Neighborhood',
-              prefixIcon: const Icon(Icons.location_on_outlined),
+              prefixIcon: Icon(LucideIcons.map_pin),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

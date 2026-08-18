@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../state/search_provider.dart';
@@ -37,7 +38,7 @@ class SearchBarWidget extends ConsumerWidget {
                   controller: controller,
                   decoration: InputDecoration(
                     hintText: 'Search properties, neighborhoods...',
-                    prefixIcon: const Icon(Icons.search, size: 20),
+                    prefixIcon: Icon(LucideIcons.search, size: 20),
                     suffixIcon: controller.text.isNotEmpty
                         ? IconButton(
                             onPressed: () {
@@ -80,7 +81,7 @@ class SearchBarWidget extends ConsumerWidget {
                 final property = suggestions[index];
                 return ListTile(
                   dense: true,
-                  leading: const Icon(Icons.home_outlined, size: 20),
+                  leading: Icon(LucideIcons.house, size: 20),
                   title: Text(
                     property.title,
                     style: const TextStyle(fontSize: 14),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/widgets/app_card.dart';
@@ -142,7 +143,7 @@ class _TourViewerDialog extends StatelessWidget {
             foregroundColor: Colors.white,
             title: Text(tour['id'] ?? 'Virtual Tour'),
             actions: [
-              IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
+              IconButton(onPressed: () => Navigator.pop(context), icon: Icon(LucideIcons.x)),
             ],
           ),
           const SizedBox(height: 120),

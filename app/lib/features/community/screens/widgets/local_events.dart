@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -83,7 +84,7 @@ class LocalEvents extends ConsumerWidget {
                                     if (event.location != null)
                                       Row(
                                         children: [
-                                          Icon(Icons.location_on_outlined, size: 14, color: AppColors.textSecondary),
+                                          Icon(LucideIcons.map_pin, size: 14, color: AppColors.textSecondary),
                                           const SizedBox(width: 4),
                                           Expanded(child: Text(event.location!, style: theme.textTheme.bodySmall, maxLines: 1, overflow: TextOverflow.ellipsis)),
                                         ],
@@ -100,7 +101,7 @@ class LocalEvents extends ConsumerWidget {
                                     AppToast.error(context, 'Failed to update RSVP');
                                   }
                                 },
-                                icon: Icon(event.isAttending ? Icons.check_circle : Icons.add_circle_outline),
+                                icon: Icon(event.isAttending ? LucideIcons.circle_check : LucideIcons.circle_plus),
                                 color: event.isAttending ? AppColors.success : AppColors.primary,
                               ),
                             ],

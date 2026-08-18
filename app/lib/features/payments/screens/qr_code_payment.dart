@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/services/qr_service.dart';
@@ -46,7 +47,7 @@ class _QrCodePaymentState extends ConsumerState<QrCodePayment> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('QR Payment', style: Theme.of(context).textTheme.headlineSmall),
-                  IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
+                  IconButton(onPressed: () => Navigator.pop(context), icon: Icon(LucideIcons.x)),
                 ],
               ),
               const SizedBox(height: 24),

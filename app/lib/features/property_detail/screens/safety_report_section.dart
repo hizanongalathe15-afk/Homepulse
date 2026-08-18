@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/models/safety_report.dart';
@@ -26,7 +27,7 @@ class SafetyReportSection extends ConsumerWidget {
             Text('Safety Reports', style: Theme.of(context).textTheme.titleMedium),
             TextButton.icon(
               onPressed: () {},
-              icon: const Icon(Icons.add, size: 16),
+              icon: Icon(LucideIcons.plus, size: 16),
               label: const Text('Report'),
             ),
           ],

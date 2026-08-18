@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/models/payment.dart';
@@ -142,7 +143,7 @@ class _PaymentsScreenState extends ConsumerState<PaymentsScreen> with SingleTick
                 onTap: () => _showPaymentSheet(const EscrowDepositFlow()),
               ),
               _QuickActionCard(
-                icon: Icons.qr_code_scanner,
+                icon: LucideIcons.scan,
                 label: 'QR Pay',
                 color: AppColors.tertiary,
                 onTap: () => _showPaymentSheet(const QrCodePayment()),
@@ -163,7 +164,7 @@ class _PaymentsScreenState extends ConsumerState<PaymentsScreen> with SingleTick
             error: (error, _) => Center(
               child: Column(
                 children: [
-                  const Icon(Icons.error_outline, color: AppColors.error),
+                  Icon(LucideIcons.circle_alert, color: AppColors.error),
                   const SizedBox(height: 8),
                   ElevatedButton(onPressed: () => ref.invalidate(paymentProvider), child: const Text('Retry')),
                 ],

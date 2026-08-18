@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -103,11 +104,11 @@ class _NeighborFeedState extends ConsumerState<NeighborFeed> {
           child: AppInput(
             controller: _postController,
             hintText: 'What is happening in your neighborhood?',
-            prefixIcon: const Icon(Icons.edit_outlined),
+            prefixIcon: Icon(LucideIcons.pencil),
             maxLines: 2,
             suffixIcon: IconButton(
               onPressed: _createPost,
-              icon: const Icon(Icons.send_rounded),
+              icon: Icon(LucideIcons.send),
             ),
           ),
         ),
@@ -180,7 +181,7 @@ class _NeighborFeedState extends ConsumerState<NeighborFeed> {
                             context.push('/chat/community');
                           }),
                           const SizedBox(width: 16),
-                          _ActionButton(icon: Icons.share_outlined, count: post['sharesCount'] as int, onTap: () {
+                          _ActionButton(icon: LucideIcons.share_2, count: post['sharesCount'] as int, onTap: () {
                             SocialShare.share(text: post['content'] as String);
                           }),
                         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../state/auth_provider.dart';
 import '../../../../state/escrow_provider.dart';
@@ -81,7 +82,7 @@ class LandlordHomeScreen extends ConsumerWidget {
       {'label': 'Properties', 'value': '12', 'icon': Icons.home, 'color': Colors.blue},
       {'label': 'Inquiries', 'value': '28', 'icon': Icons.chat, 'color': Colors.green},
       {'label': 'Revenue', 'value': 'KES 240K', 'icon': Icons.attach_money, 'color': Colors.orange},
-      {'label': 'Tenants', 'value': '8', 'icon': Icons.people, 'color': Colors.purple},
+      {'label': 'Tenants', 'value': '8', 'icon': LucideIcons.users, 'color': Colors.purple},
     ];
 
     return GridView.builder(
@@ -115,7 +116,7 @@ class LandlordHomeScreen extends ConsumerWidget {
 
   Widget _buildQuickActions(BuildContext context) {
     final actions = [
-      {'title': 'Add Property', 'icon': Icons.add_circle, 'screen': const AddPropertyScreen()},
+      {'title': 'Add Property', 'icon': LucideIcons.circle_plus, 'screen': const AddPropertyScreen()},
       {'title': 'Manage Properties', 'icon': Icons.list, 'screen': const PropertyManager()},
       {'title': 'QR Generator', 'icon': Icons.qr_code, 'screen': const QRCodeGeneratorScreen()},
       {'title': 'Tenant Requests', 'icon': Icons.person_search, 'screen': const TenantRequestsScreen()},

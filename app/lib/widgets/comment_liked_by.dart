@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/models/comment.dart';
 import 'package:homepulse/widgets/user_avatar.dart';
@@ -43,7 +44,7 @@ class CommentLikedBy extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.favorite_rounded, size: 20, color: AppColors.like),
+                Icon(LucideIcons.heart, size: 20, color: AppColors.like),
                 const SizedBox(width: 8),
                 Text(
                   'Liked by',
@@ -53,7 +54,7 @@ class CommentLikedBy extends StatelessWidget {
                 if (onClose != null)
                   IconButton(
                     onPressed: onClose,
-                    icon: const Icon(Icons.close_rounded, size: 18),
+                    icon: Icon(LucideIcons.x, size: 18),
                     padding: EdgeInsets.zero,
                     constraints: const BoxConstraints(),
                   ),
@@ -92,7 +93,7 @@ class CommentLikedBy extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        trailing: Icon(Icons.favorite, size: 14, color: AppColors.like),
+                        trailing: Icon(LucideIcons.heart, size: 14, color: AppColors.like),
                       );
                     },
                   ),

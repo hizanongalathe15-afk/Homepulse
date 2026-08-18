@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/roommate_profile.dart';
 import '../../../../widgets/app_card.dart';
@@ -115,7 +116,7 @@ class _MatchCardState extends State<MatchCard> with SingleTickerProviderStateMix
                             const SizedBox(height: 4),
                             Row(
                               children: [
-                                Icon(Icons.location_on_outlined, size: 14, color: AppColors.textSecondary),
+                                Icon(LucideIcons.map_pin, size: 14, color: AppColors.textSecondary),
                                 const SizedBox(width: 4),
                                 Text(
                                   widget.profile.preferredNeighborhood,

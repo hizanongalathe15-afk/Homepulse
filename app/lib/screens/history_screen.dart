@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 import '../../widgets/app_toast.dart';
@@ -16,19 +17,19 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
 
   final List<_HistoryEntry> _entries = [
     _HistoryEntry(
-      icon: Icons.visibility_outlined,
+      icon: LucideIcons.eye,
       label: 'Viewed 3 bedroom apartment in Westlands',
       time: DateTime.now().subtract(const Duration(hours: 2)),
       category: 'Viewed',
     ),
     _HistoryEntry(
-      icon: Icons.favorite_border_rounded,
+      icon: LucideIcons.heart,
       label: 'Saved apartment near CBD',
       time: DateTime.now().subtract(const Duration(hours: 5)),
       category: 'Saved',
     ),
     _HistoryEntry(
-      icon: Icons.share_outlined,
+      icon: LucideIcons.share_2,
       label: 'Shared property listing',
       time: DateTime.now().subtract(const Duration(days: 1)),
       category: 'Shared',
@@ -46,13 +47,13 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
       category: 'Liked',
     ),
     _HistoryEntry(
-      icon: Icons.visibility_outlined,
+      icon: LucideIcons.eye,
       label: 'Viewed modern studio in Kilimani',
       time: DateTime.now().subtract(const Duration(days: 3)),
       category: 'Viewed',
     ),
     _HistoryEntry(
-      icon: Icons.favorite_border_rounded,
+      icon: LucideIcons.heart,
       label: 'Saved commercial space',
       time: DateTime.now().subtract(const Duration(days: 5)),
       category: 'Saved',
@@ -81,12 +82,12 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
         actions: [
           IconButton(
             onPressed: _showExportDialog,
-            icon: const Icon(Icons.download_outlined),
+            icon: Icon(LucideIcons.download),
             tooltip: 'Export',
           ),
           IconButton(
             onPressed: _showClearDialog,
-            icon: const Icon(Icons.delete_outline_rounded),
+            icon: Icon(LucideIcons.trash_2),
             tooltip: 'Clear History',
           ),
         ],

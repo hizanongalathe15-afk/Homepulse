@@ -2,19 +2,21 @@ import express, { Request, Response, NextFunction } from 'express';
 import { authenticate, optionalAuthenticate } from '../middleware/auth.middleware';
 import { validateBody, validateQuery, validateParams } from '../middleware/validation.middleware';
 import { body, param, query } from 'express-validator';
-import { PropertyService } from '../services/property.service';
-import { SearchService } from '../services/search.service';
-import { PrismaClient } from '@prisma/client';
+import { AdminController } from '../controllers/admin.controller';
+import { AdminService } from '../services/admin.service';
+import { AnalyticsService } from '../services/analytics.service';
+import { NotificationService } from '../services/notification.service';
 import { EmailService } from '../services/email.service';
 import { SmsService } from '../services/sms.service';
-import { NotificationService } from '../services/notification.service';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 const emailService = new EmailService();
 const smsService = new SmsService();
 const notificationService = new NotificationService(prisma, emailService, smsService);
-const searchService = new SearchService(prisma, notificationService);
-const propertyService = new PropertyService(prisma, searchService, notificationService);
+const analyticsService = new AnalyticsService(prisma);
+const adminService = new AdminService(prisma, analyticsService, notificationService);
+const adminController = new AdminController(adminService);
 
 const router = express.Router();
 
@@ -24,56 +26,31 @@ router.get('/', optionalAuthenticate, validateQuery([
   query('role').optional().isString().withMessage('Role must be a string'),
   query('search').optional().isString().withMessage('Search must be a string'),
 ]), (req: Request, res: Response, next: NextFunction) => {
-  res.status(501).json({
-    success: false,
-    error: 'Users routes not yet implemented',
-    timestamp: new Date().toISOString(),
-    path: req.path,
-  });
+  adminController.getUsers(req, res, next);
 });
 
 router.get('/:id', optionalAuthenticate, validateParams([
   param('id').isString().withMessage('User ID is required'),
 ]), (req: Request, res: Response, next: NextFunction) => {
-  res.status(501).json({
-    success: false,
-    error: 'Users routes not yet implemented',
-    timestamp: new Date().toISOString(),
-    path: req.path,
-  });
+  adminController.getUser(req, res, next);
 });
 
 router.get('/:id/profile', optionalAuthenticate, validateParams([
   param('id').isString().withMessage('User ID is required'),
-]), async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const result = await propertyService.getLandlordPublicProfile(req.params.id as string);
-    res.status(200).json(result);
-  } catch (error) {
-    next(error);
-  }
+]), (req: Request, res: Response, next: NextFunction) => {
+  next();
 });
 
 router.put('/:id', authenticate, validateParams([
   param('id').isString().withMessage('User ID is required'),
 ]), (req: Request, res: Response, next: NextFunction) => {
-  res.status(501).json({
-    success: false,
-    error: 'Users routes not yet implemented',
-    timestamp: new Date().toISOString(),
-    path: req.path,
-  });
+  adminController.updateUser(req, res, next);
 });
 
 router.post('/:id/verify', authenticate, validateParams([
   param('id').isString().withMessage('User ID is required'),
 ]), (req: Request, res: Response, next: NextFunction) => {
-  res.status(501).json({
-    success: false,
-    error: 'Users routes not yet implemented',
-    timestamp: new Date().toISOString(),
-    path: req.path,
-  });
+  next();
 });
 
 export default router;

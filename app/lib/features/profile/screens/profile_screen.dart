@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -44,7 +45,7 @@ class ProfileScreen extends ConsumerWidget {
                     color: AppColors.error.withOpacity(0.1),
                     borderRadius: AppTheme.borderRadiusXl,
                   ),
-                  child: const Icon(Icons.error_outline_rounded, size: 48, color: AppColors.error),
+                  child: Icon(LucideIcons.circle_alert, size: 48, color: AppColors.error),
                 ),
                 const SizedBox(height: 16),
                 Text('Error loading profile', style: theme.textTheme.titleMedium),
@@ -114,7 +115,7 @@ class ProfileScreen extends ConsumerWidget {
           actions: [
             IconButton(
               onPressed: () => _showEditProfile(context, user),
-              icon: const Icon(Icons.edit_outlined),
+              icon: Icon(LucideIcons.pencil),
               tooltip: 'Edit Profile',
             ),
             IconButton(

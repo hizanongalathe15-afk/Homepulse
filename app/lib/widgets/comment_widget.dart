@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter/services.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/models/comment.dart';
@@ -69,7 +70,7 @@ class _CommentWidgetState extends State<CommentWidget> {
           children: [
             if (widget.isOwner) ...[
               ListTile(
-                leading: const Icon(Icons.edit_outlined),
+                leading: Icon(LucideIcons.pencil),
                 title: const Text('Edit'),
                 onTap: () => Navigator.pop(context, 'edit'),
               ),
@@ -205,7 +206,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      _isLiked ? Icons.favorite : Icons.favorite_border,
+                                      _isLiked ? LucideIcons.heart : LucideIcons.heart,
                                       size: 18,
                                       color: _isLiked ? AppColors.like : AppColors.textSecondary,
                                     ),

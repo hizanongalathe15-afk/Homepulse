@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 class VideoComments extends StatelessWidget {
   const VideoComments({super.key});
@@ -39,7 +40,7 @@ class VideoComments extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(radius: 16, backgroundColor: Colors.grey, child: Icon(Icons.person, size: 16)),
+                      const CircleAvatar(radius: 16, backgroundColor: Colors.grey, child: Icon(LucideIcons.user, size: 16)),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(

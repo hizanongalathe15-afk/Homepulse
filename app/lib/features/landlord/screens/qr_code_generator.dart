@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../models/qr_code.dart';
 import '../../../../services/qr_service.dart';
@@ -111,7 +112,7 @@ class _QRCodeGeneratorScreenState extends ConsumerState<QRCodeGeneratorScreen> {
                         leading: const Icon(Icons.qr_code, color: Colors.blue),
                         title: Text('Property: ${qr.propertyId}'),
                         subtitle: Text('Created: ${formatDate(qr.createdAt)}'),
-                        trailing: Icon(qr.isActive ? Icons.check_circle : Icons.cancel, color: qr.isActive ? Colors.green : Colors.red),
+                        trailing: Icon(qr.isActive ? LucideIcons.circle_check : Icons.cancel, color: qr.isActive ? Colors.green : Colors.red),
                       ),
                     );
                   },

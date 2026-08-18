@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../state/escrow_provider.dart';
@@ -93,7 +94,7 @@ class EscrowStatus extends ConsumerWidget {
                         return ListTile(
                           dense: true,
                           leading: Icon(
-                            escrow.status == 'released' ? Icons.check_circle : Icons.pending,
+                            escrow.status == 'released' ? LucideIcons.circle_check : Icons.pending,
                             color: escrow.status == 'released' ? AppColors.success : AppColors.warning,
                           ),
                           title: Text('Property ${escrow.propertyId}'),

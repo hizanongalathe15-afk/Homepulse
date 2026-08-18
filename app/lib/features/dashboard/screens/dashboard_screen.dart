@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -47,7 +48,7 @@ class DashboardScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
                 const SizedBox(height: 16),
                 Text('Error loading dashboard', style: theme.textTheme.titleMedium),
                 const SizedBox(height: 8),
@@ -142,19 +143,19 @@ class DashboardScreen extends ConsumerWidget {
           mainAxisSpacing: 12,
           children: [
             _DashboardTile(
-              icon: Icons.qr_code_scanner,
+              icon: LucideIcons.scan,
               label: 'Scan QR',
               color: AppColors.primary,
               onTap: () => context.push('/scanner'),
             ),
             _DashboardTile(
-              icon: Icons.favorite_border,
+              icon: LucideIcons.heart,
               label: 'Saved Properties',
               color: AppColors.secondary,
               onTap: () {},
             ),
               _DashboardTile(
-                icon: Icons.search,
+                icon: LucideIcons.search,
                 label: 'Saved Searches',
                 color: AppColors.tertiary,
                 onTap: () {},

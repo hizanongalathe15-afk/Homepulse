@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -153,7 +154,7 @@ class _ShareBottomSheet extends StatelessWidget {
                 onTap: () => _shareToTwitter(context),
               ),
               _ShareOption(
-                icon: Icons.favorite,
+                icon: LucideIcons.heart,
                 label: 'Facebook',
                 color: const Color(0xFF1877F2),
                 onTap: () => _shareToFacebook(context),

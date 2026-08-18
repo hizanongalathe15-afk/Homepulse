@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class VideoActions extends StatelessWidget {
@@ -22,10 +23,10 @@ class VideoActions extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _ActionButton(icon: Icons.favorite_border, label: 'Like', color: AppColors.like, onTap: onLike),
+          _ActionButton(icon: LucideIcons.heart, label: 'Like', color: AppColors.like, onTap: onLike),
           _ActionButton(icon: Icons.comment_outlined, label: 'Comment', color: AppColors.textSecondary, onTap: onComment),
           _ActionButton(icon: Icons.bookmark_border, label: 'Save', color: AppColors.save, onTap: onSave),
-          _ActionButton(icon: Icons.share_outlined, label: 'Share', color: AppColors.share, onTap: onShare),
+          _ActionButton(icon: LucideIcons.share_2, label: 'Share', color: AppColors.share, onTap: onShare),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../widgets/app_button.dart';
@@ -52,7 +53,7 @@ class _CompatibilityQuizState extends ConsumerState<CompatibilityQuiz> {
     if (_isComplete) {
       return Column(
         children: [
-          const Icon(Icons.check_circle, size: 48, color: AppColors.success),
+          Icon(LucideIcons.circle_check, size: 48, color: AppColors.success),
           const SizedBox(height: 16),
           Text('Quiz Complete', style: theme.textTheme.titleMedium),
           const SizedBox(height: 8),

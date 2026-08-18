@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/roommate_profile.dart';
@@ -33,7 +34,7 @@ class _RoommatesScreenState extends ConsumerState<RoommatesScreen> {
             onPressed: () {
               setState(() => _showQuiz = !_showQuiz);
             },
-            icon: Icon(_showQuiz ? Icons.close : Icons.quiz_outlined),
+            icon: Icon(_showQuiz ? LucideIcons.x : Icons.quiz_outlined),
             tooltip: 'Compatibility Quiz',
           ),
         ],
@@ -56,7 +57,7 @@ class _RoommatesScreenState extends ConsumerState<RoommatesScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                    Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
                     const SizedBox(height: 16),
                     Text('Error loading roommates', style: theme.textTheme.titleMedium),
                     const SizedBox(height: 8),

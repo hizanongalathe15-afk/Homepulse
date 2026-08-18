@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/property.dart';
 import '../../../../widgets/app_card.dart';
@@ -111,7 +112,7 @@ class VideoCard extends StatelessWidget {
           const SizedBox(height: 4),
           Row(
             children: [
-              const Icon(Icons.location_on_outlined, size: 16, color: Colors.grey),
+              Icon(LucideIcons.map_pin, size: 16, color: Colors.grey),
               const SizedBox(width: 4),
               Expanded(
                 child: Text(
@@ -194,7 +195,7 @@ class VideoCard extends StatelessWidget {
           const Spacer(),
           IconButton(
             onPressed: onLike,
-            icon: const Icon(Icons.favorite_border_rounded, size: 20),
+            icon: Icon(LucideIcons.heart, size: 20),
             visualDensity: VisualDensity.compact,
           ),
           IconButton(
@@ -204,7 +205,7 @@ class VideoCard extends StatelessWidget {
           ),
           IconButton(
             onPressed: onShare,
-            icon: const Icon(Icons.share_outlined, size: 20),
+            icon: Icon(LucideIcons.share_2, size: 20),
             visualDensity: VisualDensity.compact,
           ),
         ],

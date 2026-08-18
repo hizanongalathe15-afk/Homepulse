@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
 import '../../../../core/utils/qr_generator.dart';
@@ -74,7 +75,7 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
           if (_scanHistory.isNotEmpty)
             IconButton(
               onPressed: _clearHistory,
-              icon: const Icon(Icons.delete_outline_rounded),
+              icon: Icon(LucideIcons.trash_2),
               tooltip: 'Clear history',
             ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../../models/qr_code.dart';
 import '../../../../services/qr_service.dart';
 import '../../../../widgets/app_card.dart';
@@ -30,10 +31,10 @@ class ScanHistoryScreen extends StatelessWidget {
               return AppCard(
                 margin: const EdgeInsets.only(bottom: 12),
                 child: ListTile(
-                  leading: const Icon(Icons.qr_code_scanner, color: Colors.blue),
+                  leading: Icon(LucideIcons.scan, color: Colors.blue),
                   title: Text('Property ${scan.propertyId}'),
                   subtitle: Text(formatDate(scan.createdAt)),
-                  trailing: Icon(scan.isActive ? Icons.check_circle : Icons.cancel, color: scan.isActive ? Colors.green : Colors.red),
+                  trailing: Icon(scan.isActive ? LucideIcons.circle_check : Icons.cancel, color: scan.isActive ? Colors.green : Colors.red),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => ScanResultScreen(qrCode: scan.url)));
                   },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/qr_code.dart';
@@ -61,7 +62,7 @@ class QRCodeGeneratorScreen extends ConsumerWidget {
               error: (error, _) => Center(
                 child: Column(
                   children: [
-                    const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                    Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
                     const SizedBox(height: 16),
                     Text('Failed to load QR codes', style: Theme.of(context).textTheme.titleMedium),
                   ],

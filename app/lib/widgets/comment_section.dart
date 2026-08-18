@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
@@ -192,7 +193,7 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                       const SizedBox(width: 4),
                       GestureDetector(
                         onTap: () => setState(() => _replyingToId = null),
-                        child: Icon(Icons.close_rounded, size: 14, color: AppColors.primary),
+                        child: Icon(LucideIcons.x, size: 14, color: AppColors.primary),
                       ),
                     ],
                   ),
@@ -213,7 +214,7 @@ class _CommentSectionState extends ConsumerState<CommentSection> {
                 onPressed: _isSubmitting ? null : _submitComment,
                 icon: _isSubmitting
                     ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.onPrimary))
-                    : const Icon(Icons.send_rounded, size: 20),
+                    : Icon(LucideIcons.send, size: 20),
                 style: IconButton.styleFrom(backgroundColor: AppColors.primary, foregroundColor: AppColors.onPrimary),
               ),
             ],

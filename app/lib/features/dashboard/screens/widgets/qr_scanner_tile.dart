@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../widgets/app_card.dart';
@@ -22,7 +23,7 @@ class QRScannerTile extends StatelessWidget {
               color: AppColors.primary.withOpacity(0.1),
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(Icons.qr_code_scanner, color: AppColors.primary, size: 28),
+            child: Icon(LucideIcons.scan, color: AppColors.primary, size: 28),
           ),
           const SizedBox(width: 16),
           Expanded(

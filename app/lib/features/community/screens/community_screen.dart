@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../services/community_service.dart';
@@ -56,7 +57,7 @@ class _CommunityScreenState extends ConsumerState<CommunityScreen> with SingleTi
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
               const SizedBox(height: 16),
               Text('Error loading community', style: theme.textTheme.titleMedium),
               const SizedBox(height: 8),

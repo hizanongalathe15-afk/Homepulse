@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/state/auth_provider.dart';
@@ -38,7 +39,7 @@ class SavedSearchesScreen extends ConsumerWidget {
                         padding: const EdgeInsets.all(24),
                         child: Column(
                           children: [
-                            Icon(Icons.search_off_rounded, size: 48, color: AppColors.textTertiary),
+                            Icon(LucideIcons.search_x, size: 48, color: AppColors.textTertiary),
                             const SizedBox(height: 16),
                             Text('No saved searches yet', style: theme.textTheme.titleMedium),
                             const SizedBox(height: 8),
@@ -72,7 +73,7 @@ class SavedSearchesScreen extends ConsumerWidget {
                                 AppToast.error(context, 'Failed to delete');
                               }
                             },
-                            icon: const Icon(Icons.delete_outline_rounded),
+                            icon: Icon(LucideIcons.trash_2),
                           ),
                         ),
                       );

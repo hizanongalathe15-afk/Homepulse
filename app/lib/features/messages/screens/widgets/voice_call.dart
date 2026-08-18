@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:homepulse/services/permission_service.dart';
@@ -70,7 +71,7 @@ class _VoiceCallScreenState extends ConsumerState<VoiceCallScreen> {
               child: CircleAvatar(
                 radius: 56,
                 backgroundColor: AppColors.surface,
-                child: Icon(Icons.person, size: 80, color: AppColors.textSecondary),
+                child: Icon(LucideIcons.user, size: 80, color: AppColors.textSecondary),
               ),
             ),
             const SizedBox(height: 32),

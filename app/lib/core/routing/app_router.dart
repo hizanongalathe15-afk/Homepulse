@@ -15,7 +15,17 @@ import '../../features/map/screens/map_screen.dart';
 import '../../features/messages/screens/messages_screen.dart';
 import '../../features/messages/screens/chat_screen.dart';
 import '../../features/roommates/screens/roommates_screen.dart';
-import '../../features/property/screens/property_detail_screen.dart';
+import '../../features/dashboard/screens/dashboard_screen.dart';
+import '../../features/community/screens/community_screen.dart';
+import '../../features/community/screens/neighborhood_screen.dart';
+import '../../features/payments/screens/payments_screen.dart';
+import '../../features/property_detail/screens/property_detail_screen.dart';
+import '../../features/safety/screens/sos_screen.dart';
+import '../../features/safety/screens/safety_reports_screen.dart';
+import '../../features/referrals/screens/referrals_screen.dart';
+import '../../features/search/screens/saved_searches_screen.dart';
+import '../../features/archive/screens/archive_screen.dart';
+import '../../features/notifications/screens/notifications_screen.dart';
 import '../../screens/privacy_settings_screen.dart';
 import '../../screens/history_screen.dart';
 import '../../screens/followers_screen.dart';
@@ -157,6 +167,61 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/blocked-users',
         pageBuilder: (context, state) =>
             slideTransition(child: const BlockedUsersScreen(users: []), state: state),
+      ),
+      GoRoute(
+        path: '/dashboard',
+        pageBuilder: (context, state) =>
+            fadeScaleTransition(child: const DashboardScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/community',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const CommunityScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/neighborhood/:neighborhoodId',
+        pageBuilder: (context, state) {
+          final id = state.pathParameters['neighborhoodId'] ?? '';
+          return fadeScaleTransition(
+            child: NeighborhoodScreen(neighborhoodId: id),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        path: '/payments',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const PaymentsScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/sos',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const SOSScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/safety-reports',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const SafetyReportsScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/referrals',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const ReferralsScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/saved-searches',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const SavedSearchesScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/archive',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const ArchiveScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/notifications',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const NotificationsScreen(), state: state),
       ),
     ],
   );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -91,7 +92,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
               controller: _searchController,
               decoration: InputDecoration(
                 hintText: 'Search conversations...',
-                prefixIcon: const Icon(Icons.search, size: 20),
+                prefixIcon: Icon(LucideIcons.search, size: 20),
                 suffixIcon: _isSearching
                     ? IconButton(
                         onPressed: () {
@@ -110,7 +111,7 @@ class _MessagesScreenState extends ConsumerState<MessagesScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.error_outline, size: 48, color: Colors.red),
+                    Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
                     const SizedBox(height: 16),
                     Text('Error loading messages', style: theme.textTheme.titleMedium),
                     const SizedBox(height: 8),

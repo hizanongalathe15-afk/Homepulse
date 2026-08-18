@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -153,13 +154,13 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                             hintText: 'Search location...',
                             border: InputBorder.none,
                             contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                            prefixIcon: const Icon(Icons.search, size: 20),
+                            prefixIcon: Icon(LucideIcons.search, size: 20),
                           ),
                         ),
                       ),
                       IconButton(
                         onPressed: _locateUser,
-                        icon: const Icon(Icons.my_location, color: AppColors.primary),
+                        icon: const Icon(LucideIcons.navigation, color: AppColors.primary),
                       ),
                     ],
                   ),
@@ -179,7 +180,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                   },
                   backgroundColor: _showSafetyOverlay ? AppColors.primary : AppColors.surface,
                   child: Icon(
-                    Icons.security,
+                    LucideIcons.shield,
                     color: _showSafetyOverlay ? AppColors.onPrimary : AppColors.textPrimary,
                   ),
                 ),
@@ -191,7 +192,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                   },
                   backgroundColor: _showWeatherOverlay ? AppColors.primary : AppColors.surface,
                   child: Icon(
-                    Icons.wb_sunny,
+                    LucideIcons.sun,
                     color: _showWeatherOverlay ? AppColors.onPrimary : AppColors.textPrimary,
                   ),
                 ),
@@ -203,7 +204,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                   },
                   backgroundColor: _showNeighborhoodBoundary ? AppColors.primary : AppColors.surface,
                   child: Icon(
-                    Icons.map,
+                    LucideIcons.map,
                     color: _showNeighborhoodBoundary ? AppColors.onPrimary : AppColors.textPrimary,
                   ),
                 ),
@@ -221,6 +222,28 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               ),
             ),
         ],
+      ),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: AppBottomNav.indexFor(context),
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              context.go('/feed');
+              break;
+            case 1:
+              context.go('/map');
+              break;
+            case 2:
+              context.go('/search');
+              break;
+            case 3:
+              context.go('/messages');
+              break;
+            case 4:
+              context.go('/profile');
+              break;
+          }
+        },
       ),
     );
   }

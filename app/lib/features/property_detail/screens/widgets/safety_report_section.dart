@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/models/safety_report.dart';
 import 'package:homepulse/widgets/app_card.dart';
@@ -26,7 +27,7 @@ class SafetyReportSectionWidget extends StatelessWidget {
             if (onReport != null)
               TextButton.icon(
                 onPressed: onReport,
-                icon: const Icon(Icons.add, size: 16),
+                icon: Icon(LucideIcons.plus, size: 16),
                 label: const Text('Report'),
               ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/antigravity_scroll.dart';
@@ -51,7 +52,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
       appBar: AppBar(
         title: Text('Homepulse', style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.search_rounded)),
+          IconButton(onPressed: () {}, icon: Icon(LucideIcons.search)),
           const ProfileDropdown(showInAppBar: false),
         ],
       ),
@@ -73,7 +74,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                           color: AppColors.error.withOpacity(0.1),
                           borderRadius: AppTheme.borderRadiusXl,
                         ),
-                        child: const Icon(Icons.error_outline_rounded, size: 48, color: AppColors.error),
+                        child: Icon(LucideIcons.circle_alert, size: 48, color: AppColors.error),
                       ),
                       const SizedBox(height: 16),
                       Text('Error loading feed', style: Theme.of(context).textTheme.titleMedium),
@@ -92,7 +93,7 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.home_outlined, size: 64, color: AppColors.textTertiary),
+                        Icon(LucideIcons.house, size: 64, color: AppColors.textTertiary),
                         const SizedBox(height: 16),
                         Text('No properties found', style: Theme.of(context).textTheme.titleMedium),
                       ],
@@ -125,6 +126,28 @@ class _FeedScreenState extends ConsumerState<FeedScreen> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: AppBottomNav.indexFor(context),
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              context.go('/feed');
+              break;
+            case 1:
+              context.go('/map');
+              break;
+            case 2:
+              context.go('/search');
+              break;
+            case 3:
+              context.go('/messages');
+              break;
+            case 4:
+              context.go('/profile');
+              break;
+          }
+        },
       ),
     );
   }

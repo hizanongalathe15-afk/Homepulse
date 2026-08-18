@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/models/neighborhood.dart';
 import 'package:homepulse/widgets/app_card.dart';
@@ -64,7 +65,7 @@ class NeighborhoodInfoWidget extends StatelessWidget {
                 Row(
                   children: [
                     _InfoChip(
-                      icon: Icons.people,
+                      icon: LucideIcons.users,
                       label: neighborhood!.population != null ? '${neighborhood!.population} people' : 'N/A',
                     ),
                     const SizedBox(width: 8),

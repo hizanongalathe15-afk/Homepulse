@@ -1,90 +1,271 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
 <plist version="1.0">
+
 <dict>
+
+	<!-- =========================================================
+	     PERFORMANCE
+	     ========================================================= -->
+
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+
+
+	<!-- =========================================================
+	     APP IDENTITY
+	     ========================================================= -->
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+
 	<key>CFBundleDisplayName</key>
-	<string>Homepulse</string>
+	<string>HomePulse</string>
+
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+
 	<key>CFBundleName</key>
-	<string>homepulse</string>
+	<string>HomePulse</string>
+
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
-	<key>CFBundleShortVersionString</key>
-	<string>$(FLUTTER_BUILD_NAME)</string>
+
 	<key>CFBundleSignature</key>
 	<string>????</string>
+
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+
+	<!-- =========================================================
+	     APP SCENES
+	     ========================================================= -->
+
 	<key>UIApplicationSceneManifest</key>
+
 	<dict>
+
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
+
 		<key>UISceneConfigurations</key>
+
 		<dict>
+
 			<key>UIWindowSceneSessionRoleApplication</key>
+
 			<array>
+
 				<dict>
+
 					<key>UISceneClassName</key>
 					<string>UIWindowScene</string>
+
 					<key>UISceneConfigurationName</key>
 					<string>flutter</string>
+
 					<key>UISceneDelegateClassName</key>
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
+
 				</dict>
+
 			</array>
+
 		</dict>
+
 	</dict>
+
+
+	<!-- =========================================================
+	     INPUT
+	     ========================================================= -->
+
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+
+	<!-- =========================================================
+	     LAUNCH SCREEN
+	     ========================================================= -->
+
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
+
+	<!-- =========================================================
+	     IPHONE ORIENTATIONS
+	     ========================================================= -->
+
 	<key>UISupportedInterfaceOrientations</key>
+
 	<array>
+
 		<string>UIInterfaceOrientationPortrait</string>
+
 		<string>UIInterfaceOrientationLandscapeLeft</string>
+
 		<string>UIInterfaceOrientationLandscapeRight</string>
+
 	</array>
+
+
+	<!-- =========================================================
+	     IPAD ORIENTATIONS
+	     ========================================================= -->
+
 	<key>UISupportedInterfaceOrientations~ipad</key>
+
 	<array>
+
 		<string>UIInterfaceOrientationPortrait</string>
+
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+
 		<string>UIInterfaceOrientationLandscapeLeft</string>
+
 		<string>UIInterfaceOrientationLandscapeRight</string>
+
 	</array>
+
+
+	<!-- =========================================================
+	     HOMEPULSE PRIVACY PERMISSIONS
+	     ========================================================= -->
+
+
+	<!-- ---------------------------------------------------------
+	     CAMERA
+
+	     Used for:
+	     - QR scanning
+	     - Property photos
+	     - Identity verification
+	     --------------------------------------------------------- -->
+
 	<key>NSCameraUsageDescription</key>
-	<string>This app needs camera access to scan QR codes, verify identity, and capture property photos.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app needs location access to show nearby properties, verify addresses, and check safety scores.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app needs location access to show nearby properties, verify addresses, and check safety scores.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app needs location access to show nearby properties, verify addresses, and check safety scores.</string>
-	<key>NSSMSUsageDescription</key>
-	<string>This app needs SMS access to verify OTP codes and M-Pesa payments automatically.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app needs photo library access to upload profile pictures and property images.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This app needs photo library access to save property images and QR codes.</string>
+
+	<string>
+	HomePulse uses your camera to scan property QR codes, upload property photos, and complete identity verification.
+	</string>
+
+
+	<!-- ---------------------------------------------------------
+	     MICROPHONE
+
+	     Used for:
+	     - Voice messages
+	     - Voice calls
+	     - Video calls
+	     --------------------------------------------------------- -->
+
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This app needs microphone access for voice calls, voice notes, and video messages.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>This app needs contacts access to invite friends and find nearby residents.</string>
+
+	<string>
+	HomePulse uses your microphone for voice messages, voice calls, and video calls.
+	</string>
+
+
+	<!-- ---------------------------------------------------------
+	     LOCATION
+
+	     Foreground / while using the app only.
+
+	     Used for:
+	     - Nearby properties
+	     - Property search
+	     - Maps
+	     - Neighborhood information
+	     --------------------------------------------------------- -->
+
+	<key>NSLocationWhenInUseUsageDescription</key>
+
+	<string>
+	HomePulse uses your location to show nearby properties, improve property search, and provide relevant neighborhood information.
+	</string>
+
+
+	<!-- ---------------------------------------------------------
+	     PHOTO LIBRARY
+
+	     Used when the user chooses photos to upload.
+	     --------------------------------------------------------- -->
+
+	<key>NSPhotoLibraryUsageDescription</key>
+
+	<string>
+	HomePulse uses your photo library when you choose images to upload as profile or property photos.
+	</string>
+
+
+	<!-- ---------------------------------------------------------
+	     SAVE PHOTOS
+
+	     Used when the user chooses to save:
+	     - Property images
+	     - QR codes
+	     - Receipts or generated images
+	     --------------------------------------------------------- -->
+
+	<key>NSPhotoLibraryAddUsageDescription</key>
+
+	<string>
+	HomePulse uses photo library access when you choose to save property images or QR codes to your device.
+	</string>
+
+
+	<!-- ---------------------------------------------------------
+	     FACE ID
+
+	     Used for:
+	     - Secure login
+	     - Account protection
+	     - Sensitive actions
+	     --------------------------------------------------------- -->
+
 	<key>NSFaceIDUsageDescription</key>
-	<string>This app uses Face ID for secure biometric login.</string>
+
+	<string>
+	HomePulse uses Face ID to help you securely access your account and protect sensitive actions.
+	</string>
+
+
+	<!-- =========================================================
+	     FLUTTER
+	     ========================================================= -->
+
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
+
+
+	<!-- =========================================================
+	     OPTIONAL: STATUS BAR
+	     ========================================================= -->
+
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
+
+
 </dict>
+
 </plist>

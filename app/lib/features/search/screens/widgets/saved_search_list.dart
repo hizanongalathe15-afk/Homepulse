@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../core/theme/app_colors.dart';
@@ -28,7 +29,7 @@ class SavedSearchList extends ConsumerWidget {
       error: (error, _) => Center(
         child: Column(
           children: [
-            Icon(Icons.error_outline, size: 32, color: AppColors.error),
+            Icon(LucideIcons.circle_alert, size: 32, color: AppColors.error),
             const SizedBox(height: 8),
             Text(
               'Failed to load saved searches',

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../../models/property.dart';
 import '../../../../widgets/rating_stars.dart';
 import '../../../../widgets/property_like_button.dart';
@@ -44,7 +45,7 @@ class VideoActions extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _ActionButton(
-          icon: Icons.share_outlined,
+          icon: LucideIcons.share_2,
           label: 'Share',
           onTap: onShare,
         ),

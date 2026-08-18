@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../state/chat_provider.dart';
@@ -47,7 +48,7 @@ class _CommunityChatState extends ConsumerState<CommunityChat> {
                 child: TextField(
                   decoration: InputDecoration(
                     hintText: 'Search conversations...',
-                    prefixIcon: const Icon(Icons.search, size: 20),
+                    prefixIcon: Icon(LucideIcons.search, size: 20),
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   ),
@@ -59,7 +60,7 @@ class _CommunityChatState extends ConsumerState<CommunityChat> {
                   error: (error, _) => Center(
                     child: Column(
                       children: [
-                        const Icon(Icons.error_outline, color: Colors.red),
+                        Icon(LucideIcons.circle_alert, color: Colors.red),
                         const SizedBox(height: 8),
                         TextButton(onPressed: () => ref.invalidate(chatProvider), child: const Text('Retry')),
                       ],
@@ -162,7 +163,7 @@ class _ChatWindow extends ConsumerWidget {
             error: (error, _) => Center(
               child: Column(
                 children: [
-                  const Icon(Icons.error_outline, color: Colors.red),
+                  Icon(LucideIcons.circle_alert, color: Colors.red),
                   const SizedBox(height: 8),
                   TextButton(onPressed: () => ref.invalidate(messagesProvider(conversationId)), child: const Text('Retry')),
                 ],
@@ -235,7 +236,7 @@ class _ChatWindow extends ConsumerWidget {
                     AppToast.error(context, 'Failed to send');
                   }
                 },
-                icon: const Icon(Icons.send_rounded),
+                icon: Icon(LucideIcons.send),
                 color: AppColors.primary,
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
@@ -33,7 +34,7 @@ class PropertyManager extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
               const SizedBox(height: 16),
               Text('Failed to load properties', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 16),
@@ -50,7 +51,7 @@ class PropertyManager extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.home_outlined, size: 64, color: Theme.of(context).disabledColor),
+                  Icon(LucideIcons.house, size: 64, color: Theme.of(context).disabledColor),
                   const SizedBox(height: 16),
                   Text('No properties yet', style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 16),
@@ -136,7 +137,7 @@ class PropertyManager extends ConsumerWidget {
             ),
           );
         },
-        child: const Icon(Icons.add_rounded),
+        child: Icon(LucideIcons.plus),
       ),
     );
   }
@@ -196,7 +197,7 @@ class _PropertyTile extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
+                      Icon(LucideIcons.map_pin, size: 14, color: Colors.grey),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
@@ -225,12 +226,12 @@ class _PropertyTile extends StatelessWidget {
               children: [
                 IconButton(
                   onPressed: onEdit,
-                  icon: const Icon(Icons.edit_outlined, size: 20),
+                  icon: Icon(LucideIcons.pencil, size: 20),
                   visualDensity: VisualDensity.compact,
                 ),
                 IconButton(
                   onPressed: onDelete,
-                  icon: const Icon(Icons.delete_outline_rounded, size: 20, color: Colors.red),
+                  icon: Icon(LucideIcons.trash_2, size: 20, color: Colors.red),
                   visualDensity: VisualDensity.compact,
                 ),
               ],

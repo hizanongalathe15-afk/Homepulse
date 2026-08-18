@@ -85,7 +85,7 @@ class ReferralsScreen extends ConsumerWidget {
                             backgroundColor: AppColors.primary.withOpacity(0.1),
                             child: Icon(Icons.person_outline_rounded, color: AppColors.primary),
                           ),
-                          title: Text(referral.userName ?? 'New User'),
+                           title: Text('Referral ${referral.code}'),
                           subtitle: Text('Referred on ${referral.createdAt.toString().split(' ')[0]}'),
                           trailing: Text(
                             '+${referral.rewardPoints} pts',

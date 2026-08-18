@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -210,7 +211,7 @@ class _NeighborhoodScreenState extends ConsumerState<NeighborhoodScreen> with Si
             children: [
               _StatCard(label: 'Events', value: '12', icon: Icons.event, color: AppColors.primary),
               _StatCard(label: 'Groups', value: '8', icon: Icons.group, color: AppColors.secondary),
-              _StatCard(label: 'Members', value: '1.2K', icon: Icons.people, color: AppColors.tertiary),
+              _StatCard(label: 'Members', value: '1.2K', icon: LucideIcons.users, color: AppColors.tertiary),
               _StatCard(label: 'Posts', value: '345', icon: Icons.article, color: AppColors.info),
             ],
           ),
@@ -286,7 +287,7 @@ class _NeighborhoodScreenState extends ConsumerState<NeighborhoodScreen> with Si
                               if (event.location != null)
                                 Row(
                                   children: [
-                                    Icon(Icons.location_on_outlined, size: 14, color: AppColors.textSecondary),
+                                    Icon(LucideIcons.map_pin, size: 14, color: AppColors.textSecondary),
                                     const SizedBox(width: 4),
                                     Expanded(child: Text(event.location!, style: theme.textTheme.bodySmall)),
                                   ],
@@ -303,7 +304,7 @@ class _NeighborhoodScreenState extends ConsumerState<NeighborhoodScreen> with Si
                               AppToast.error(context, 'Failed to update RSVP');
                             }
                           },
-                          icon: Icon(event.isAttending ? Icons.check_circle : Icons.add_circle_outline),
+                          icon: Icon(event.isAttending ? LucideIcons.circle_check : LucideIcons.circle_plus),
                           color: event.isAttending ? AppColors.success : AppColors.primary,
                         ),
                       ],
@@ -339,7 +340,7 @@ class _NeighborhoodScreenState extends ConsumerState<NeighborhoodScreen> with Si
               child: AppInput(
                 controller: _discussionController,
                 hintText: 'Start a discussion...',
-                prefixIcon: const Icon(Icons.edit_outlined),
+                prefixIcon: Icon(LucideIcons.pencil),
                 maxLines: 3,
                 suffixIcon: IconButton(
                   onPressed: () => _postDiscussion(neighborhood.id),
@@ -433,7 +434,7 @@ class _NeighborhoodScreenState extends ConsumerState<NeighborhoodScreen> with Si
                   onPressed: () {
                     AppToast.success(context, 'QR code saved');
                   },
-                  icon: const Icon(Icons.download_outlined),
+                  icon: Icon(LucideIcons.download),
                   label: const Text('Save'),
                 ),
                 const SizedBox(width: 16),
@@ -441,7 +442,7 @@ class _NeighborhoodScreenState extends ConsumerState<NeighborhoodScreen> with Si
                   onPressed: () {
                     AppToast.info(context, 'Share link copied');
                   },
-                  icon: const Icon(Icons.share_outlined),
+                  icon: Icon(LucideIcons.share_2),
                   label: const Text('Share'),
                 ),
               ],

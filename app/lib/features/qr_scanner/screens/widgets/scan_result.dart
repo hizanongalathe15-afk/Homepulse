@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
@@ -101,7 +102,7 @@ class _ScanResultScreenState extends ConsumerState<ScanResultScreen> {
                 color: AppColors.error.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Icon(Icons.error_outline_rounded, size: 40, color: AppColors.error),
+              child: Icon(LucideIcons.circle_alert, size: 40, color: AppColors.error),
             ),
             const SizedBox(height: 24),
             Text(
@@ -243,7 +244,7 @@ class _PropertyResultCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Row(
                   children: [
-                    const Icon(Icons.location_on_outlined, size: 16, color: Colors.grey),
+                    Icon(LucideIcons.map_pin, size: 16, color: Colors.grey),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(

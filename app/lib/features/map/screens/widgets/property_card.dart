@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/property.dart';
@@ -73,7 +74,7 @@ class PropertyCard extends StatelessWidget {
                     const SizedBox(width: 4),
                     IconButton(
                       onPressed: onClose,
-                      icon: const Icon(Icons.close, size: 20),
+                      icon: Icon(LucideIcons.x, size: 20),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                     ),
@@ -82,7 +83,7 @@ class PropertyCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Icon(Icons.location_on_outlined, size: 16, color: AppColors.textSecondary),
+                    Icon(LucideIcons.map_pin, size: 16, color: AppColors.textSecondary),
                     const SizedBox(width: 4),
                     Expanded(
                       child: Text(
@@ -121,7 +122,7 @@ class PropertyCard extends StatelessWidget {
                         onPressed: () {
                           context.push('/property/${property.id}');
                         },
-                        icon: const Icon(Icons.visibility_outlined, size: 18),
+                        icon: Icon(LucideIcons.eye, size: 18),
                         label: const Text('View'),
                       ),
                     ),

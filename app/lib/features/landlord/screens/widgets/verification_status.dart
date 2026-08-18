@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
@@ -354,7 +355,7 @@ class _VerificationTile extends StatelessWidget {
     switch (status.toLowerCase()) {
       case 'approved':
       case 'verified':
-        return Icons.check_circle_rounded;
+        return LucideIcons.circle_check;
       case 'pending':
       case 'processing':
         return Icons.pending_rounded;

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../state/auth_provider.dart';
@@ -60,7 +61,7 @@ class MyQRCode extends ConsumerWidget {
                 onPressed: () {
                   AppToast.success(context, 'QR code saved');
                 },
-                icon: const Icon(Icons.download_outlined),
+                icon: Icon(LucideIcons.download),
                 label: const Text('Save'),
               ),
               const SizedBox(width: 12),
@@ -68,7 +69,7 @@ class MyQRCode extends ConsumerWidget {
                 onPressed: () {
                   AppToast.info(context, 'Share link copied');
                 },
-                icon: const Icon(Icons.share_outlined),
+                icon: Icon(LucideIcons.share_2),
                 label: const Text('Share'),
               ),
             ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/services/payment_service.dart';
@@ -43,7 +44,7 @@ class _MpesaPaymentState extends ConsumerState<MpesaPayment> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('M-Pesa Payment', style: Theme.of(context).textTheme.headlineSmall),
-                  IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
+                  IconButton(onPressed: () => Navigator.pop(context), icon: Icon(LucideIcons.x)),
                 ],
               ),
               const SizedBox(height: 24),
@@ -80,7 +81,7 @@ class _MpesaPaymentState extends ConsumerState<MpesaPayment> {
                     children: [
                       Icon(
                         _resultMessage!.contains('success') || _resultMessage!.contains('initiated')
-                            ? Icons.check_circle
+                            ? LucideIcons.circle_check
                             : Icons.error,
                         color: _resultMessage!.contains('success') || _resultMessage!.contains('initiated')
                             ? AppColors.success

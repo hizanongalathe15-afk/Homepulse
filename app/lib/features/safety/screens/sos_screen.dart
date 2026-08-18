@@ -2,30 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/state/auth_provider.dart';
+import 'package:homepulse/services/safety_service.dart';
 import 'package:homepulse/widgets/app_card.dart';
 import 'package:homepulse/widgets/app_button.dart';
 import 'package:homepulse/widgets/app_toast.dart';
-import 'package:homepulse/services/safety_service.dart';
 
-class SOSScreen extends ConsumerWidget {
+class SOSScreen extends ConsumerStatefulWidget {
   const SOSScreen({super.key});
 
-  Future<void> _triggerSOS(BuildContext context, WidgetRef ref) async {
-    try {
-      final service = SafetyService();
-      await service.triggerSOS();
-      if (mounted) {
-        AppToast.success(context, 'SOS alert sent. Help is on the way.');
-      }
-    } catch (e) {
-      if (mounted) {
-        AppToast.error(context, 'Failed to send SOS alert');
-      }
-    }
-  }
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SOSScreen> createState() => _SOSScreenState();
+}
+
+class _SOSScreenState extends ConsumerState<SOSScreen> {
+  @override
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
@@ -50,7 +41,20 @@ class SOSScreen extends ConsumerWidget {
                 ),
                 child: Center(
                   child: TextButton(
-                    onPressed: () => _triggerSOS(context, ref),
+                    onPressed: () async {
+                      try {
+                        await ref.read(safetyProvider.notifier).triggerSos(
+                          message: 'Emergency SOS triggered from app',
+                        );
+                        if (mounted) {
+                          AppToast.success(context, 'SOS alert sent. Help is on the way.');
+                        }
+                      } catch (e) {
+                        if (mounted) {
+                          AppToast.error(context, 'Failed to send SOS alert');
+                        }
+                      }
+                    },
                     style: TextButton.styleFrom(
                       backgroundColor: AppColors.error,
                       foregroundColor: Colors.white,

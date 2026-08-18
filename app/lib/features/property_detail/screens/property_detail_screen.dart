@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
@@ -48,7 +49,7 @@ class PropertyDetailScreen extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(Icons.error_outline, size: 48, color: AppColors.error),
+                Icon(LucideIcons.circle_alert, size: 48, color: AppColors.error),
                 const SizedBox(height: 16),
                 Text('Failed to load property', style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 8),
@@ -73,7 +74,7 @@ class PropertyDetailScreen extends ConsumerWidget {
                     background: PropertyGallery(imageUrls: property.imageUrls),
                   ),
                   actions: [
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.favorite_border)),
+                    IconButton(onPressed: () {}, icon: Icon(LucideIcons.heart)),
                     IconButton(onPressed: () {}, icon: const Icon(Icons.share)),
                   ],
                 ),

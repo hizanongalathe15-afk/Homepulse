@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../state/auth_provider.dart';
@@ -48,11 +49,11 @@ class RenterResume extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: leasesAsync.when(
-                          loading: () => const _ResumeStat(label: 'Active Leases', value: '...', icon: Icons.home_outlined),
-                          error: (_, __) => const _ResumeStat(label: 'Active Leases', value: '0', icon: Icons.home_outlined),
+                          loading: () => const _ResumeStat(label: 'Active Leases', value: '...', icon: LucideIcons.house),
+                          error: (_, __) => const _ResumeStat(label: 'Active Leases', value: '0', icon: LucideIcons.house),
                           data: (leases) {
                             final activeLeases = leases.where((l) => l.status == 'active').length;
-                            return _ResumeStat(label: 'Active Leases', value: '$activeLeases', icon: Icons.home_outlined);
+                            return _ResumeStat(label: 'Active Leases', value: '$activeLeases', icon: LucideIcons.house);
                           },
                         ),
                       ),

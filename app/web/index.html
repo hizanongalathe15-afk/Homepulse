@@ -1,46 +1,792 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
 
-  <!-- iOS meta tags & icons -->
+  <!-- Basic -->
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+  >
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  <meta
+    name="description"
+    content="HomePulse — Discover verified homes, connect with trusted landlords, schedule viewings, and manage your property journey securely."
+  >
+
+  <meta
+    name="keywords"
+    content="HomePulse, real estate, property, homes, apartments, rentals, Kenya, Nairobi, verified properties"
+  >
+
+  <meta name="author" content="HomePulse">
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#0b0b14">
+  <meta name="color-scheme" content="dark light">
+
+  <!-- Mobile / PWA -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="homepulse">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta name="mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  >
+  <meta
+    name="apple-mobile-web-app-title"
+    content="HomePulse"
+  >
+
+  <!-- Prevent unwanted phone number detection -->
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- Apple -->
+  <link
+    rel="apple-touch-icon"
+    href="icons/Icon-192.png"
+  >
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link
+    rel="icon"
+    type="image/png"
+    href="favicon.png"
+  >
 
-  <title>homepulse</title>
-  <link rel="manifest" href="manifest.json">
+  <!-- PWA -->
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
+
+  <!-- Preconnect -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <!-- Modern Font -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Open Graph -->
+  <meta
+    property="og:title"
+    content="HomePulse — Find Your Next Home"
+  >
+
+  <meta
+    property="og:description"
+    content="Discover verified properties, trusted landlords, secure payments and smarter property experiences with HomePulse."
+  >
+
+  <meta
+    property="og:type"
+    content="website"
+  >
+
+  <meta
+    property="og:image"
+    content="icons/Icon-512.png"
+  >
+
+  <!-- Twitter -->
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
+
+  <meta
+    name="twitter:title"
+    content="HomePulse — Find Your Next Home"
+  >
+
+  <meta
+    name="twitter:description"
+    content="Discover verified properties and manage your entire property journey with HomePulse."
+  >
+
+  <meta
+    name="twitter:image"
+    content="icons/Icon-512.png"
+  >
+
+  <title>HomePulse — Find Your Next Home</title>
+
+  <!-- =========================================================
+       HOME PULSE PRELOADER
+       ========================================================= -->
+
+  <style>
+
+    :root {
+      --hp-bg: #080811;
+      --hp-bg-2: #10101d;
+      --hp-primary: #7c5cff;
+      --hp-primary-2: #9d7cff;
+      --hp-text: #ffffff;
+      --hp-muted: rgba(255,255,255,.55);
+      --hp-border: rgba(255,255,255,.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--hp-bg);
+    }
+
+    body {
+      font-family:
+        "Manrope",
+        "DM Sans",
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* =========================================================
+       LOADING SCREEN
+       ========================================================= */
+
+    #homepulse-loader {
+
+      position: fixed;
+      inset: 0;
+
+      z-index: 999999;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle at 20% 20%,
+          rgba(124,92,255,.16),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at 80% 75%,
+          rgba(74,144,255,.12),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #080811 0%,
+          #0c0c18 45%,
+          #090913 100%
+        );
+
+      transition:
+        opacity .65s cubic-bezier(.22,1,.36,1),
+        visibility .65s;
+    }
+
+    #homepulse-loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Ambient blobs */
+
+    .hp-orb {
+      position: absolute;
+
+      width: 420px;
+      height: 420px;
+
+      border-radius: 50%;
+
+      filter: blur(90px);
+
+      opacity: .20;
+
+      animation:
+        hpFloat 9s ease-in-out infinite alternate;
+    }
+
+    .hp-orb.one {
+      top: -180px;
+      left: -120px;
+
+      background: #7658ff;
+    }
+
+    .hp-orb.two {
+      right: -180px;
+      bottom: -150px;
+
+      background: #387cff;
+
+      animation-delay: -4s;
+    }
+
+    .hp-orb.three {
+      top: 35%;
+      left: 45%;
+
+      width: 220px;
+      height: 220px;
+
+      background: #a855f7;
+
+      opacity: .08;
+
+      animation-delay: -2s;
+    }
+
+    @keyframes hpFloat {
+
+      0% {
+        transform:
+          translate3d(0,0,0)
+          scale(1);
+      }
+
+      100% {
+        transform:
+          translate3d(35px,-25px,0)
+          scale(1.08);
+      }
+
+    }
+
+    /* Noise */
+
+    #homepulse-loader::after {
+
+      content: "";
+
+      position: absolute;
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: .025;
+
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+    }
+
+    /* =========================================================
+       GLASS CARD
+       ========================================================= */
+
+    .hp-loader-card {
+
+      position: relative;
+
+      width: min(420px, calc(100vw - 40px));
+
+      padding: 42px 34px;
+
+      text-align: center;
+
+      border: 1px solid var(--hp-border);
+
+      border-radius: 32px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.09),
+          rgba(255,255,255,.025)
+        );
+
+      box-shadow:
+        0 40px 100px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(255,255,255,.08);
+
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+
+      animation:
+        hpCardIn .8s cubic-bezier(.22,1,.36,1);
+    }
+
+    @keyframes hpCardIn {
+
+      from {
+        opacity: 0;
+        transform:
+          translateY(18px)
+          scale(.97);
+      }
+
+      to {
+        opacity: 1;
+        transform:
+          translateY(0)
+          scale(1);
+      }
+
+    }
+
+    /* =========================================================
+       LOGO
+       ========================================================= */
+
+    .hp-logo {
+
+      width: 72px;
+      height: 72px;
+
+      margin: 0 auto 22px;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 22px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #8b6cff,
+          #6344e8
+        );
+
+      box-shadow:
+        0 16px 40px rgba(124,92,255,.35),
+        inset 0 1px 0 rgba(255,255,255,.25);
+
+      position: relative;
+
+      animation:
+        hpLogoFloat 3s ease-in-out infinite;
+    }
+
+    .hp-logo::before {
+
+      content: "";
+
+      position: absolute;
+      inset: 1px;
+
+      border-radius: 21px;
+
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .hp-logo-icon {
+
+      width: 34px;
+      height: 34px;
+
+      position: relative;
+    }
+
+    /* House icon */
+
+    .hp-logo-icon::before {
+
+      content: "";
+
+      position: absolute;
+
+      width: 22px;
+      height: 22px;
+
+      left: 6px;
+      top: 7px;
+
+      border-left: 3px solid white;
+      border-top: 3px solid white;
+
+      transform: rotate(45deg);
+
+      border-radius: 4px 0 0 0;
+    }
+
+    .hp-logo-icon::after {
+
+      content: "";
+
+      position: absolute;
+
+      width: 18px;
+      height: 16px;
+
+      left: 8px;
+      top: 14px;
+
+      border:
+        3px solid white;
+
+      border-top: none;
+
+      border-radius: 0 0 4px 4px;
+    }
+
+    @keyframes hpLogoFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+
+    }
+
+    /* =========================================================
+       TEXT
+       ========================================================= */
+
+    .hp-brand {
+
+      margin: 0;
+
+      color: var(--hp-text);
+
+      font-size: 28px;
+      line-height: 1.1;
+
+      font-weight: 800;
+
+      letter-spacing: -1.2px;
+    }
+
+    .hp-brand span {
+      color: #9d87ff;
+    }
+
+    .hp-tagline {
+
+      margin: 11px 0 0;
+
+      color: var(--hp-muted);
+
+      font-size: 14px;
+
+      line-height: 1.6;
+
+      letter-spacing: -.1px;
+    }
+
+    /* =========================================================
+       LOADING
+       ========================================================= */
+
+    .hp-loading {
+
+      margin-top: 30px;
+    }
+
+    .hp-loading-track {
+
+      height: 5px;
+
+      overflow: hidden;
+
+      border-radius: 999px;
+
+      background:
+        rgba(255,255,255,.07);
+    }
+
+    .hp-loading-bar {
+
+      width: 35%;
+      height: 100%;
+
+      border-radius: inherit;
+
+      background:
+        linear-gradient(
+          90deg,
+          #7155ff,
+          #a78bfa,
+          #5c8dff
+        );
+
+      box-shadow:
+        0 0 20px rgba(124,92,255,.55);
+
+      animation:
+        hpProgress 1.5s ease-in-out infinite;
+    }
+
+    @keyframes hpProgress {
+
+      0% {
+        transform: translateX(-130%);
+      }
+
+      50% {
+        transform: translateX(180%);
+      }
+
+      100% {
+        transform: translateX(300%);
+      }
+
+    }
+
+    .hp-loading-text {
+
+      margin-top: 12px;
+
+      color:
+        rgba(255,255,255,.38);
+
+      font-size: 11px;
+
+      font-weight: 600;
+
+      letter-spacing: .08em;
+
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       FOOTER
+       ========================================================= */
+
+    .hp-footer {
+
+      margin-top: 28px;
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      color:
+        rgba(255,255,255,.25);
+
+      font-size: 10px;
+    }
+
+    .hp-dot {
+
+      width: 3px;
+      height: 3px;
+
+      margin-top: 5px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.25);
+    }
+
+    /* =========================================================
+       MOBILE
+       ========================================================= */
+
+    @media (max-width: 480px) {
+
+      .hp-loader-card {
+
+        padding: 34px 24px;
+
+        border-radius: 28px;
+      }
+
+      .hp-logo {
+
+        width: 64px;
+        height: 64px;
+
+        border-radius: 20px;
+      }
+
+      .hp-brand {
+        font-size: 25px;
+      }
+
+    }
+
+    /* =========================================================
+       REDUCED MOTION
+       ========================================================= */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+
+        scroll-behavior: auto !important;
+      }
+
+    }
+
+  </style>
 </head>
-<body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
+<body>
+
+  <!-- =========================================================
+       PREMIUM HOME PULSE LOADER
+       ========================================================= -->
+
+  <div
+    id="homepulse-loader"
+    role="status"
+    aria-label="Loading HomePulse"
+  >
+
+    <div class="hp-orb one"></div>
+    <div class="hp-orb two"></div>
+    <div class="hp-orb three"></div>
+
+    <div class="hp-loader-card">
+
+      <div class="hp-logo">
+        <div class="hp-logo-icon"></div>
+      </div>
+
+      <h1 class="hp-brand">
+        Home<span>Pulse</span>
+      </h1>
+
+      <p class="hp-tagline">
+        Discover places worth calling home.
+      </p>
+
+      <div class="hp-loading">
+
+        <div class="hp-loading-track">
+          <div class="hp-loading-bar"></div>
+        </div>
+
+        <div class="hp-loading-text">
+          Preparing your experience
+        </div>
+
+      </div>
+
+      <div class="hp-footer">
+        <span>Verified homes</span>
+        <span class="hp-dot"></span>
+        <span>Trusted people</span>
+        <span class="hp-dot"></span>
+        <span>Secure journeys</span>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       FLUTTER
+       ========================================================= -->
+
   <script src="flutter_bootstrap.js" async></script>
+
+
+  <!-- =========================================================
+       HIDE PRELOADER WHEN FLUTTER IS READY
+       ========================================================= -->
+
+  <script>
+
+    (function () {
+
+      const loader =
+        document.getElementById("homepulse-loader");
+
+      if (!loader) return;
+
+      let hidden = false;
+
+      function hideLoader() {
+
+        if (hidden) return;
+
+        hidden = true;
+
+        loader.classList.add("hidden");
+
+        setTimeout(() => {
+
+          loader.remove();
+
+        }, 800);
+      }
+
+      /*
+       * Flutter Web creates its Flutter view
+       * after bootstrap initialization.
+       */
+
+      const observer =
+        new MutationObserver(() => {
+
+          const flutterView =
+            document.querySelector("flutter-view");
+
+          if (flutterView) {
+
+            setTimeout(hideLoader, 350);
+
+            observer.disconnect();
+          }
+
+        });
+
+      observer.observe(
+        document.documentElement,
+        {
+          childList: true,
+          subtree: true
+        }
+      );
+
+      /*
+       * Safety fallback.
+       * Prevent the loading screen from staying
+       * forever if Flutter takes an unusual path.
+       */
+
+      setTimeout(() => {
+
+        if (!hidden) {
+
+          hideLoader();
+
+        }
+
+      }, 10000);
+
+    })();
+
+  </script>
+
 </body>
 </html>

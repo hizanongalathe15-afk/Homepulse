@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_colors.dart';
@@ -51,7 +52,7 @@ class MessageActionMenu extends ConsumerWidget {
         children: [
           if (_canEdit)
             _ActionTile(
-              icon: Icons.edit_outlined,
+              icon: LucideIcons.pencil,
               label: 'Edit',
               color: AppColors.primary,
               onTap: () {
@@ -61,7 +62,7 @@ class MessageActionMenu extends ConsumerWidget {
             ),
           if (_isOwnMessage)
             _ActionTile(
-              icon: Icons.delete_outline_rounded,
+              icon: LucideIcons.trash_2,
               label: 'Delete',
               color: AppColors.error,
               onTap: () {
@@ -117,7 +118,7 @@ class MessageActionMenu extends ConsumerWidget {
               },
             ),
           _ActionTile(
-            icon: Icons.close_rounded,
+            icon: LucideIcons.x,
             label: 'Cancel',
             color: AppColors.textSecondary,
             onTap: () => Navigator.of(context).pop(),

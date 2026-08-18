@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
@@ -114,7 +115,7 @@ class _PropertyLikeButtonState extends ConsumerState<PropertyLikeButton> with Si
                   opacity: _burstOpacityAnimation.value,
                   child: Transform.scale(
                     scale: 1.5 + (1.0 - _burstOpacityAnimation.value) * 0.5,
-                    child: Icon(Icons.favorite, size: 60, color: AppColors.like),
+                    child: Icon(LucideIcons.heart, size: 60, color: AppColors.like),
                   ),
                 );
               },
@@ -140,7 +141,7 @@ class _PropertyLikeButtonState extends ConsumerState<PropertyLikeButton> with Si
                         )
                       : IconButton(
                           icon: Icon(
-                            _isLiked ? Icons.favorite : Icons.favorite_border,
+                            _isLiked ? LucideIcons.heart : LucideIcons.heart,
                             color: _isLiked ? AppColors.like : AppColors.textSecondary,
                             size: widget.size * 0.55,
                           ),
@@ -179,7 +180,7 @@ class PropertyLikeCountBadge extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.favorite, size: 14, color: isLiked ? AppColors.like : AppColors.textSecondary),
+          Icon(LucideIcons.heart, size: 14, color: isLiked ? AppColors.like : AppColors.textSecondary),
           const SizedBox(width: 4),
           Text(
             _formatCount(count),

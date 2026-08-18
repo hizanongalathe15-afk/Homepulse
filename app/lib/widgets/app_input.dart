@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter/services.dart';
 
 class AppInput extends StatefulWidget {
@@ -102,7 +103,7 @@ class _AppInputState extends State<AppInput> {
       suffixIcon: widget.isPassword
           ? IconButton(
               icon: Icon(
-                _obscureText ? Icons.visibility_off_outlined : Icons.visibility_outlined,
+                _obscureText ? LucideIcons.eye_off : LucideIcons.eye,
                 semanticLabel: _obscureText ? 'Show password' : 'Hide password',
               ),
               onPressed: () {

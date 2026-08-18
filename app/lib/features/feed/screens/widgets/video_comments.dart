@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../widgets/app_input.dart';
 import '../../../../models/property.dart';
@@ -127,7 +128,7 @@ class _VideoCommentsState extends State<VideoComments> {
                     onPressed: _isSubmitting ? null : _submitComment,
                     icon: _isSubmitting
                         ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2))
-                        : const Icon(Icons.send_rounded, size: 20),
+                        : Icon(LucideIcons.send, size: 20),
                   ),
                 ),
               ),

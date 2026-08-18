@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:homepulse/core/theme/app_colors.dart';
 import 'package:homepulse/services/payment_service.dart';
@@ -46,7 +47,7 @@ class _EscrowDepositFlowState extends ConsumerState<EscrowDepositFlow> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Escrow Deposit', style: Theme.of(context).textTheme.headlineSmall),
-                  IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.close)),
+                  IconButton(onPressed: () => Navigator.pop(context), icon: Icon(LucideIcons.x)),
                 ],
               ),
               const SizedBox(height: 16),
@@ -76,7 +77,7 @@ class _EscrowDepositFlowState extends ConsumerState<EscrowDepositFlow> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.check_circle, color: AppColors.success),
+                      Icon(LucideIcons.circle_check, color: AppColors.success),
                       const SizedBox(width: 12),
                       Expanded(child: Text(_resultMessage!)),
                     ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
@@ -29,7 +30,7 @@ class RevenueAnalyticsScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
               const SizedBox(height: 16),
               Text('Failed to load analytics', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 16),
@@ -82,7 +83,7 @@ class RevenueAnalyticsScreen extends ConsumerWidget {
                         title: 'Released',
                         value: formatCurrency(releasedRevenue),
                         color: AppColors.info,
-                        icon: Icons.check_circle_rounded,
+                        icon: LucideIcons.circle_check,
                       ),
                     ),
                     const SizedBox(width: 12),
@@ -340,7 +341,7 @@ class _TransactionTile extends StatelessWidget {
   IconData _getStatusIcon(String status) {
     switch (status.toLowerCase()) {
       case 'released':
-        return Icons.check_circle_rounded;
+        return LucideIcons.circle_check;
       case 'pending':
         return Icons.pending_rounded;
       case 'disputed':

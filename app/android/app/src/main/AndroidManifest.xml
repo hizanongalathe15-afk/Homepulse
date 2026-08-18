@@ -1,80 +1,246 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- ===== INTERNET (Required for ALL Flutter apps) ===== -->
+    <!-- =========================================================
+         NETWORK
+         ========================================================= -->
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <!-- ===== CAMERA & AUDIO ===== -->
+
+    <!-- =========================================================
+         CAMERA
+         Used for:
+         - QR scanning
+         - Property photos
+         - Identity verification
+         - Video viewing/verification
+         ========================================================= -->
+
     <uses-permission android:name="android.permission.CAMERA" />
+
+    <!-- Camera is a feature, NOT a requirement to install HomePulse -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+
+
+    <!-- =========================================================
+         MICROPHONE
+         Used for:
+         - Voice messages
+         - Voice calls
+         - Video calls
+         ========================================================= -->
+
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-    <uses-feature android:name="android.hardware.microphone" android:required="true" />
 
-    <!-- ===== LOCATION ===== -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-feature android:name="android.hardware.location.gps" />
-    <uses-feature android:name="android.hardware.location" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
 
-    <!-- ===== STORAGE (Android 13+) ===== -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
 
-    <!-- ===== STORAGE (Android 12 and below) ===== -->
+    <!-- =========================================================
+         LOCATION
+         Used for:
+         - Nearby properties
+         - Maps
+         - Neighborhood discovery
+         - Location-based search
+         ========================================================= -->
+
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+
+
+    <!-- =========================================================
+         MEDIA
+         Android 13+
+         Only keep these if HomePulse actually needs direct
+         access to existing media outside the app.
+         ========================================================= -->
+
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_VIDEO" />
+
+    <!-- Only add this if HomePulse actually imports audio files -->
+    <!--
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_AUDIO" />
+    -->
+
+
+    <!-- =========================================================
+         LEGACY MEDIA ACCESS
+         Android 12 and below
+         ========================================================= -->
+
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
-    <!-- ===== NOTIFICATIONS ===== -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-    <!-- ===== VIBRATION ===== -->
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- =========================================================
+         ANDROID 14+
+         Selected photos/videos access
+         ========================================================= -->
 
-    <!-- ===== BIOMETRIC ===== -->
-    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
-    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+    <uses-permission
+        android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
 
-    <!-- ===== SMS ===== -->
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.READ_SMS" />
+
+    <!-- =========================================================
+         NOTIFICATIONS
+         ========================================================= -->
+
+    <uses-permission
+        android:name="android.permission.POST_NOTIFICATIONS" />
+
+
+    <!-- =========================================================
+         VIBRATION
+         ========================================================= -->
+
+    <uses-permission
+        android:name="android.permission.VIBRATE" />
+
+
+    <!-- =========================================================
+         BIOMETRIC AUTHENTICATION
+         ========================================================= -->
+
+    <uses-permission
+        android:name="android.permission.USE_BIOMETRIC" />
+
+    <uses-permission
+        android:name="android.permission.USE_FINGERPRINT" />
+
+
+    <!-- =========================================================
+         APPLICATION
+         ========================================================= -->
 
     <application
-        android:label="homepulse"
+
         android:name="${applicationName}"
+
+        android:label="HomePulse"
+
         android:icon="@mipmap/ic_launcher"
-        android:requestLegacyExternalStorage="true">
+
+        android:allowBackup="true"
+
+        android:supportsRtl="true"
+
+        android:usesCleartextTraffic="false"
+
+        android:hardwareAccelerated="true">
+
+        <!-- =====================================================
+             MAIN FLUTTER ACTIVITY
+             ===================================================== -->
+
         <activity
+
             android:name=".MainActivity"
+
             android:exported="true"
+
             android:launchMode="singleTop"
+
             android:taskAffinity=""
+
             android:theme="@style/LaunchTheme"
-            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+
+            android:configChanges="
+                orientation|
+                keyboardHidden|
+                keyboard|
+                screenSize|
+                smallestScreenSize|
+                locale|
+                layoutDirection|
+                fontScale|
+                screenLayout|
+                density|
+                uiMode"
+
             android:hardwareAccelerated="true"
+
             android:windowSoftInputMode="adjustResize">
+
+            <!-- Flutter normal theme -->
+
             <meta-data
-              android:name="io.flutter.embedding.android.NormalTheme"
-              android:resource="@style/NormalTheme"
-              />
+                android:name="io.flutter.embedding.android.NormalTheme"
+                android:resource="@style/NormalTheme" />
+
+            <!-- Launcher -->
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+
+                <action
+                    android:name="android.intent.action.MAIN" />
+
+                <category
+                    android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
+
         </activity>
+
+
+        <!-- =====================================================
+             FLUTTER ENGINE
+             ===================================================== -->
+
         <meta-data
+
             android:name="flutterEmbedding"
+
             android:value="2" />
+
     </application>
+
+
+    <!-- =========================================================
+         TEXT PROCESSING
+         ========================================================= -->
+
     <queries>
+
         <intent>
-            <action android:name="android.intent.action.PROCESS_TEXT"/>
-            <data android:mimeType="text/plain"/>
+
+            <action
+                android:name="android.intent.action.PROCESS_TEXT" />
+
+            <data
+                android:mimeType="text/plain" />
+
         </intent>
+
     </queries>
+
 </manifest>

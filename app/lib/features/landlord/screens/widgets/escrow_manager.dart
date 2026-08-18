@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/formatters.dart';
@@ -30,7 +31,7 @@ class EscrowManagerScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              Icon(LucideIcons.circle_alert, size: 48, color: Colors.red),
               const SizedBox(height: 16),
               Text('Failed to load escrow data', style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 16),
