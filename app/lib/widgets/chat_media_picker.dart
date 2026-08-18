@@ -65,7 +65,7 @@ class ChatMediaPicker extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _MediaOption(
-                  icon: Icons.emoji_emotions_outlined,
+                  icon: LucideIcons.face_slightly_smiling,
                   label: 'Stickers',
                   color: AppColors.warning,
                   onTap: () {

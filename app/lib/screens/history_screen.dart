@@ -35,13 +35,13 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
       category: 'Shared',
     ),
     _HistoryEntry(
-      icon: Icons.chat_outlined,
+      icon: LucideIcons.message_circle,
       label: 'Messaged property manager',
       time: DateTime.now().subtract(const Duration(days: 1, hours: 3)),
       category: 'Messaged',
     ),
     _HistoryEntry(
-      icon: Icons.thumb_up_outlined,
+      icon: LucideIcons.heart,
       label: 'Liked a review',
       time: DateTime.now().subtract(const Duration(days: 2)),
       category: 'Liked',
@@ -114,7 +114,7 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.history_outlined, size: 64, color: AppColors.textTertiary),
+                        Icon(LucideIcons.clock, size: 64, color: AppColors.textTertiary),
                         const SizedBox(height: 16),
                         Text('No activity yet', style: theme.textTheme.titleMedium),
                       ],

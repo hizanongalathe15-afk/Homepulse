@@ -110,7 +110,7 @@ export default function LandingPage() {
                   ))}
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 mt-4 pt-4 border-t border-white/20">
-                  <Link href="/properties" className="flex-1">
+                  <Link href="/listings" className="flex-1">
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -178,7 +178,7 @@ export default function LandingPage() {
             </div>
             <AntigravityItem delay={2}>
               <div className="mt-12 text-center">
-                <Link href="/properties">
+                <Link href="/listings">
                   <motion.button whileHover={{ scale: 1.03 }} className="btn-gradient-soft px-7 py-3.5 rounded-2xl text-sm font-semibold inline-flex items-center gap-2 border border-homespot-purple/30">
                     View All Properties
                     <ArrowRight className="w-4 h-4" />

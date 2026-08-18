@@ -73,7 +73,7 @@ export default function HowItWorksPage() {
                   Browse verified properties or list your own — it only takes a few minutes.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                  <Link href="/properties">
+                  <Link href="/listings">
                     <motion.button whileHover={{ scale: 1.03 }} className="btn-gradient px-7 py-3.5 rounded-2xl text-sm font-semibold inline-flex items-center gap-2">
                       Browse Properties <ArrowRight className="w-4 h-4" />
                     </motion.button>

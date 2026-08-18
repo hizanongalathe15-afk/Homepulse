@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../widgets/app_bottom_nav.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../models/user.dart';
 import '../../../../state/auth_provider.dart';
 import '../../../../widgets/app_button.dart';
-import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_input.dart';
 import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/user_avatar.dart';
@@ -17,10 +17,11 @@ import '../../../../widgets/social_handles_display.dart';
 import '../../../../widgets/social_handles_form.dart';
 import '../../../../widgets/follow_button.dart';
 import '../../../../widgets/block_user_button.dart';
-import '../../../../screens/privacy_settings_screen.dart';
-import '../../../../screens/followers_screen.dart';
-import '../../../../screens/following_screen.dart';
-import '../../../../screens/blocked_users_screen.dart';
+import '../../../../features/profile/widgets/profile_video_widget.dart';
+import '../../../../features/profile/widgets/profile_music_widget.dart';
+import '../../../../features/profile/widgets/renter_resume_widget.dart';
+import '../../../../features/profile/widgets/profile_card_widget.dart';
+import '../../../../state/system_theme_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -64,7 +65,7 @@ class ProfileScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.person_off_outlined, size: 64, color: AppColors.textTertiary),
+                  Icon(LucideIcons.user_round_x, size: 64, color: AppColors.textTertiary),
                   const SizedBox(height: 16),
                   Text('Not logged in', style: theme.textTheme.titleMedium),
                   const SizedBox(height: 16),
@@ -79,6 +80,28 @@ class ProfileScreen extends ConsumerWidget {
           return _buildProfile(context, ref, user, theme);
         },
       ),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: AppBottomNav.indexFor(context),
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              context.go('/feed');
+              break;
+            case 1:
+              context.go('/map');
+              break;
+            case 2:
+              context.go('/search');
+              break;
+            case 3:
+              context.go('/messages');
+              break;
+            case 4:
+              context.go('/profile');
+              break;
+          }
+        },
+      ),
     );
   }
 
@@ -91,7 +114,7 @@ class ProfileScreen extends ConsumerWidget {
           flexibleSpace: FlexibleSpaceBar(
             title: Text(user.name, style: const TextStyle(fontWeight: FontWeight.w700)),
             background: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -124,7 +147,7 @@ class ProfileScreen extends ConsumerWidget {
                 AppToast.success(context, 'Logged out successfully');
                 context.go('/login');
               },
-              icon: const Icon(Icons.logout_outlined),
+              icon: const Icon(LucideIcons.log_out),
               tooltip: 'Logout',
             ),
           ],
@@ -151,10 +174,10 @@ class ProfileScreen extends ConsumerWidget {
                         margin: const EdgeInsets.only(left: 8),
                         width: 10,
                         height: 10,
-                        decoration: const BoxDecoration(
-                          color: AppColors.success,
-                          shape: BoxShape.circle,
-                        ),
+                      decoration: BoxDecoration(
+                        color: AppColors.success,
+                        shape: BoxShape.circle,
+                      ),
                       ),
                   ],
                 ),
@@ -269,9 +292,34 @@ class ProfileScreen extends ConsumerWidget {
                   Text(user.bio!, style: theme.textTheme.bodyMedium),
                   const SizedBox(height: 16),
                 ],
+                ProfileVideoWidget(
+                  videoUrl: 'https://example.com/profile-video.mp4',
+                  thumbnailUrl: user.avatarUrl.isNotEmpty ? user.avatarUrl : null,
+                ),
+                const SizedBox(height: 16),
+                ProfileMusicWidget(
+                  title: 'My Profile Song',
+                  audioUrl: 'https://example.com/profile-music.mp3',
+                ),
+                const SizedBox(height: 16),
+                ProfileCardWidget(
+                  userId: user.id,
+                  userName: user.name,
+                  userBio: user.bio,
+                  profileImageUrl: user.avatarUrl.isNotEmpty ? user.avatarUrl : null,
+                ),
+                const SizedBox(height: 24),
                 SocialHandlesDisplay(user: user),
                 const SizedBox(height: 24),
-                _buildSettingsSection(context, theme, user),
+                _buildSettingsSection(context, ref, theme, user),
+                const SizedBox(height: 24),
+                RenterResumeWidget(
+                  reliabilityScore: 85,
+                  completedRentals: 12,
+                  paymentHistoryScore: 0.95,
+                  onTimePayments: 12,
+                  totalPayments: 12,
+                ),
                 const SizedBox(height: 32),
               ],
             ),
@@ -343,57 +391,68 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildSettingsSection(BuildContext context, ThemeData theme, User user) {
+  Widget _buildSettingsSection(BuildContext context, WidgetRef ref, ThemeData theme, User user) {
     final settings = [
       {
-        'icon': Icons.person_outline_rounded,
+        'icon': LucideIcons.user,
         'title': 'Edit Profile',
         'subtitle': 'Update your personal information',
         'onTap': () => _showEditProfile(context, user),
       },
       {
-        'icon': Icons.notifications_outlined,
+        'icon': LucideIcons.bell,
         'title': 'Notifications',
         'subtitle': 'Manage notification preferences',
         'onTap': () {},
       },
       {
-        'icon': Icons.lock_outline_rounded,
+        'icon': LucideIcons.lock,
         'title': 'Change Password',
         'subtitle': 'Update your password',
         'onTap': () => context.push('/forgot-password'),
       },
       {
-        'icon': Icons.verified_user_outlined,
+        'icon': LucideIcons.shield_check,
         'title': 'ID Verification',
         'subtitle': user.isVerified ? 'Verified' : 'Verify your identity',
         'onTap': () => context.push('/verify-id'),
       },
       {
-        'icon': Icons.privacy_tip_outlined,
+        'icon': LucideIcons.eye,
         'title': 'Privacy',
         'subtitle': 'Privacy settings',
         'onTap': () => _showPrivacySettings(context),
       },
       {
-        'icon': Icons.people_outline_rounded,
+        'icon': LucideIcons.users,
         'title': 'Blocked Users',
         'subtitle': 'Manage blocked users',
         'onTap': () => context.push('/blocked-users'),
       },
       {
-        'icon': Icons.history_outlined,
+        'icon': LucideIcons.clock,
         'title': 'Activity History',
         'subtitle': 'View your activity history',
         'onTap': () => context.push('/history'),
       },
-      {
-        'icon': Icons.help_outline_rounded,
-        'title': 'Help & Support',
-        'subtitle': 'Get help',
-        'onTap': () {},
-      },
-    ];
+       {
+         'icon': LucideIcons.circle_question_mark,
+         'title': 'Help & Support',
+         'subtitle': 'Get help',
+         'onTap': () {},
+       },
+     ];
+
+    final isAdmin = ref.watch(isCurrentUserAdminProvider);
+
+    if (isAdmin) {
+      settings.add({
+        'icon': LucideIcons.palette,
+        'title': 'System Theme',
+        'subtitle': 'Customize system-wide colors',
+        'onTap': () => context.push('/theme-editor'),
+      });
+    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -411,7 +470,7 @@ class ProfileScreen extends ConsumerWidget {
             leading: Icon(setting['icon'] as IconData, color: AppColors.primary),
             title: Text(setting['title'] as String),
             subtitle: Text(setting['subtitle'] as String),
-            trailing: const Icon(Icons.chevron_right_rounded, color: AppColors.textSecondary),
+            trailing: Icon(LucideIcons.chevron_right, color: AppColors.textSecondary),
             onTap: setting['onTap'] as VoidCallback,
           ),
         )),
@@ -460,25 +519,25 @@ class ProfileScreen extends ConsumerWidget {
             AppInput(
               controller: nameController,
               hintText: 'Full name',
-              prefixIcon: const Icon(Icons.person_outline_rounded),
+              prefixIcon: const Icon(LucideIcons.user),
             ),
             const SizedBox(height: 12),
             AppInput(
               controller: emailController,
               hintText: 'Email',
-              prefixIcon: const Icon(Icons.email_outlined),
+              prefixIcon: const Icon(LucideIcons.mail),
             ),
             const SizedBox(height: 12),
             AppInput(
               controller: phoneController,
               hintText: 'Phone',
-              prefixIcon: const Icon(Icons.phone_outlined),
+              prefixIcon: const Icon(LucideIcons.phone),
             ),
             const SizedBox(height: 12),
             AppInput(
               controller: bioController,
               hintText: 'Bio',
-              prefixIcon: const Icon(Icons.text_fields_outlined),
+              prefixIcon: const Icon(LucideIcons.text_cursor),
               maxLines: 3,
             ),
             const SizedBox(height: 12),
@@ -509,7 +568,7 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 );
               },
-              icon: const Icon(Icons.link_outlined),
+              icon: const Icon(LucideIcons.link),
               label: const Text('Edit Social Handles'),
             ),
             const SizedBox(height: 24),

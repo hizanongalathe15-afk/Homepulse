@@ -12,7 +12,7 @@ class AppBottomNav extends StatelessWidget {
     required this.onTap,
   });
 
-  int _indexForLocation(String location) {
+  static int _indexForLocation(String location) {
     if (location.startsWith('/map')) return 1;
     if (location.startsWith('/search')) return 2;
     if (location.startsWith('/messages') || location.startsWith('/chat')) return 3;
@@ -26,8 +26,8 @@ class AppBottomNav extends StatelessWidget {
   }
 
   static int indexFor(BuildContext context) {
-    final location = GoRouter.of(context).location;
-    return AppBottomNav()._indexForLocation(location);
+    final location = GoRouterState.of(context).matchedLocation;
+    return _indexForLocation(location);
   }
 
   @override
@@ -35,12 +35,12 @@ class AppBottomNav extends StatelessWidget {
     final theme = Theme.of(context);
     return NavigationBar(
       selectedIndex: currentIndex,
-      onTap: onTap,
+      onDestinationSelected: onTap,
       backgroundColor: theme.colorScheme.surface,
       elevation: 8,
       destinations: const [
         NavigationDestination(
-          icon: Icon(LucideIcons.home),
+          icon: Icon(LucideIcons.house),
           label: 'Feed',
         ),
         NavigationDestination(
@@ -52,7 +52,7 @@ class AppBottomNav extends StatelessWidget {
           label: 'Search',
         ),
         NavigationDestination(
-          icon: Icon(LucideIcons.message),
+          icon: Icon(LucideIcons.message_circle),
           label: 'Messages',
         ),
         NavigationDestination(

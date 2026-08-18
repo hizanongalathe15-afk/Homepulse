@@ -112,6 +112,36 @@ class ChatNotifier extends AsyncNotifier<List<Conversation>> {
     }
   }
 
+  Future<Conversation> pauseConversation(String conversationId) async {
+    try {
+      final updated = await _chatService.pauseConversation(conversationId);
+      final previous = state.valueOrNull ?? const [];
+      state = AsyncData(
+        previous
+            .map((c) => c.id == conversationId ? updated : c)
+            .toList(growable: false),
+      );
+      return updated;
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<Conversation> resumeConversation(String conversationId) async {
+    try {
+      final updated = await _chatService.resumeConversation(conversationId);
+      final previous = state.valueOrNull ?? const [];
+      state = AsyncData(
+        previous
+            .map((c) => c.id == conversationId ? updated : c)
+            .toList(growable: false),
+      );
+      return updated;
+    } on Exception catch (_) {
+      rethrow;
+    }
+  }
+
   Future<void> markConversationAsRead(String conversationId) async {
     try {
       await _chatService.markConversationAsRead(conversationId);

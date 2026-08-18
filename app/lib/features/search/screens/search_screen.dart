@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../widgets/app_bottom_nav.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import '../../../../core/theme/app_colors.dart';
@@ -118,7 +119,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             onPressed: () {
               setState(() => _showFilters = !_showFilters);
             },
-            icon: Icon(_showFilters ? LucideIcons.slash : LucideIcons.filter, size: 20),
+            icon: Icon(_showFilters ? LucideIcons.slash : LucideIcons.funnel, size: 20),
             tooltip: 'Filters',
           ),
         ],
@@ -175,10 +176,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             child: const Text('Clear filters'),
                           ),
                         ],
-                      ],
-                    ),
-                  );
-                }
+        ],
+      ),
+    );
+  }
                 return RefreshIndicator(
                   onRefresh: _performSearch,
                   child: ListView.builder(
@@ -202,7 +203,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   errorBuilder: (context, error, stackTrace) => Container(
                                     height: 180,
                                     color: AppColors.background,
-                                    child: const Icon(Icons.image_not_supported_outlined, size: 48),
+                                    child: const Icon(LucideIcons.image_off, size: 48),
                                   ),
                                 ),
                               ),
@@ -240,14 +241,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   const SizedBox(height: 8),
                                   Row(
                                     children: [
-                                      Icon(Icons.star, size: 16, color: AppColors.warning),
+                                      Icon(LucideIcons.star, size: 16, color: AppColors.warning),
                                       const SizedBox(width: 4),
                                       Text(
                                         property.rating.toStringAsFixed(1),
                                         style: theme.textTheme.bodySmall,
                                       ),
                                       const SizedBox(width: 16),
-                                      Icon(Icons.reviews, size: 16, color: AppColors.textSecondary),
+                                      Icon(LucideIcons.message_circle, size: 16, color: AppColors.textSecondary),
                                       const SizedBox(width: 4),
                                       Text(
                                         '${property.reviewCount} reviews',
@@ -268,6 +269,28 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: AppBottomNav(
+        currentIndex: AppBottomNav.indexFor(context),
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              context.go('/feed');
+              break;
+            case 1:
+              context.go('/map');
+              break;
+            case 2:
+              context.go('/search');
+              break;
+            case 3:
+              context.go('/messages');
+              break;
+            case 4:
+              context.go('/profile');
+              break;
+          }
+        },
       ),
     );
   }
@@ -390,16 +413,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               width: 40,
               height: 40,
               point: LatLng(-1.2921 + (property.id.hashCode % 100) * 0.001, 36.8219 + (property.id.hashCode % 100) * 0.001),
-              child: GestureDetector(
-                onTap: () {
-                  context.push('/property/${property.id}');
-                },
-                child: Icon(
-                  Icons.location_on,
-                  color: AppColors.primary,
-                  size: 40,
-                ),
-              ),
+                  child: GestureDetector(
+                    onTap: () {
+                      context.push('/property/${property.id}');
+                    },
+                    child: Icon(
+                      LucideIcons.map_pin,
+                      color: AppColors.primary,
+                      size: 40,
+                    ),
+                  ),
             );
           }).toList(),
         ),

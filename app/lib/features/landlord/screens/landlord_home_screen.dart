@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../state/auth_provider.dart';
 import '../../../../state/escrow_provider.dart';
 import '../../../../widgets/app_card.dart';
@@ -24,7 +25,7 @@ class LandlordHomeScreen extends ConsumerWidget {
         actions: [
           IconButton(
             onPressed: () => ref.read(authProvider.notifier).logout(),
-            icon: const Icon(Icons.logout),
+            icon: const Icon(LucideIcons.log_out),
           ),
         ],
       ),
@@ -70,7 +71,7 @@ class LandlordHomeScreen extends ConsumerWidget {
               color: Colors.blue,
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.home, color: Colors.white),
+            child: const Icon(LucideIcons.house, color: Colors.white),
           ),
         ],
       ),
@@ -79,9 +80,9 @@ class LandlordHomeScreen extends ConsumerWidget {
 
   Widget _buildStatsGrid(BuildContext context) {
     final stats = [
-      {'label': 'Properties', 'value': '12', 'icon': Icons.home, 'color': Colors.blue},
-      {'label': 'Inquiries', 'value': '28', 'icon': Icons.chat, 'color': Colors.green},
-      {'label': 'Revenue', 'value': 'KES 240K', 'icon': Icons.attach_money, 'color': Colors.orange},
+      {'label': 'Properties', 'value': '12', 'icon': LucideIcons.house, 'color': Colors.blue},
+      {'label': 'Inquiries', 'value': '28', 'icon': LucideIcons.message_circle, 'color': Colors.green},
+      {'label': 'Revenue', 'value': 'KES 240K', 'icon': LucideIcons.dollar_sign, 'color': Colors.orange},
       {'label': 'Tenants', 'value': '8', 'icon': LucideIcons.users, 'color': Colors.purple},
     ];
 
@@ -117,9 +118,9 @@ class LandlordHomeScreen extends ConsumerWidget {
   Widget _buildQuickActions(BuildContext context) {
     final actions = [
       {'title': 'Add Property', 'icon': LucideIcons.circle_plus, 'screen': const AddPropertyScreen()},
-      {'title': 'Manage Properties', 'icon': Icons.list, 'screen': const PropertyManager()},
-      {'title': 'QR Generator', 'icon': Icons.qr_code, 'screen': const QRCodeGeneratorScreen()},
-      {'title': 'Tenant Requests', 'icon': Icons.person_search, 'screen': const TenantRequestsScreen()},
+      {'title': 'Manage Properties', 'icon': LucideIcons.list, 'screen': const PropertyManager()},
+      {'title': 'QR Generator', 'icon': LucideIcons.qr_code, 'screen': const QRCodeGeneratorScreen()},
+      {'title': 'Tenant Requests', 'icon': LucideIcons.user_search, 'screen': const TenantRequestsScreen()},
     ];
 
     return Column(
@@ -151,7 +152,7 @@ class LandlordHomeScreen extends ConsumerWidget {
                     Icon(action['icon'] as IconData, color: Colors.blue, size: 24),
                     const SizedBox(width: 12),
                     Expanded(child: Text(action['title'] as String, style: const TextStyle(fontWeight: FontWeight.w500))),
-                    const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
+                    const                      Icon(LucideIcons.chevron_right, size: 16, color: Colors.grey),
                   ],
                 ),
               ),

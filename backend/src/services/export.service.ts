@@ -154,4 +154,210 @@ export class ExportService {
       throw new AppError('Failed to export maintenance reports', 500);
     }
   }
+
+  async requestUserDataExport(userId: string, format: string = 'json') {
+    try {
+      const exportRequest = await this.prisma.dataExportRequest.create({
+        data: {
+          userId,
+          format,
+          status: 'pending',
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        },
+      });
+      
+      await this.processExportRequest(exportRequest.id);
+      
+      return exportRequest;
+    } catch (error) {
+      logger.error('Failed to request data export:', error);
+      throw new AppError('Failed to request data export', 500);
+    }
+  }
+
+  async processExportRequest(requestId: string) {
+    try {
+      const request = await this.prisma.dataExportRequest.findUnique({
+        where: { id: requestId },
+      });
+      if (!request) throw new AppError('Export request not found', 404);
+      
+      const user = await this.prisma.user.findUnique({
+        where: { id: request.userId },
+        include: {
+          properties: true,
+          payments: true,
+          reviews: true,
+          chatMessages: true,
+          notifications: true,
+          identityVerifications: true,
+          referralsMade: true,
+          referralsReceived: true,
+          escrowTransactions: true,
+          roommateProfile: true,
+          savedSearches: true,
+          privacySettings: true,
+          profileVideo: true,
+          profileMusic: true,
+          profileCard: true,
+          locationFuzzPreference: true,
+          settings: true,
+        },
+      });
+      
+      const exportData = {
+        user: {
+          id: user?.id,
+          email: user?.email,
+          firstName: user?.firstName,
+          lastName: user?.lastName,
+          phone: user?.phone,
+          role: user?.role,
+          createdAt: user?.createdAt,
+          updatedAt: user?.updatedAt,
+        },
+        properties: user?.properties,
+        payments: user?.payments,
+        reviews: user?.reviews,
+        chatMessages: user?.chatMessages,
+        notifications: user?.notifications,
+        identityVerifications: user?.identityVerifications,
+        referrals: [...(user?.referralsMade || []), ...(user?.referralsReceived || [])],
+        escrowTransactions: user?.escrowTransactions,
+        roommateProfile: user?.roommateProfile,
+        savedSearches: user?.savedSearches,
+        privacySettings: user?.privacySettings,
+        profileVideo: user?.profileVideo,
+        profileMusic: user?.profileMusic,
+        profileCard: user?.profileCard,
+        locationFuzzPreference: user?.locationFuzzPreference,
+        exportedAt: new Date(),
+      };
+      
+      await this.prisma.dataExportRequest.update({
+        where: { id: requestId },
+        data: {
+          status: 'completed',
+          completedAt: new Date(),
+          fileUrl: JSON.stringify(exportData),
+        },
+      });
+    } catch (error) {
+      logger.error('Failed to process export request:', error);
+      await this.prisma.dataExportRequest.update({
+        where: { id: requestId },
+        data: { status: 'failed' },
+      });
+      throw error;
+    }
+  }
+
+  async requestDataDeletion(userId: string, reason?: string) {
+    try {
+      const deleteRequest = await this.prisma.dataDeleteRequest.create({
+        data: {
+          userId,
+          reason,
+          status: 'pending',
+        },
+      });
+      
+      await this.processDeleteRequest(deleteRequest.id);
+      
+      return deleteRequest;
+    } catch (error) {
+      logger.error('Failed to request data deletion:', error);
+      throw new AppError('Failed to request data deletion', 500);
+    }
+  }
+
+  async processDeleteRequest(requestId: string) {
+    try {
+      const request = await this.prisma.dataDeleteRequest.findUnique({
+        where: { id: requestId },
+      });
+      if (!request) throw new AppError('Delete request not found', 404);
+      
+      await this.prisma.$transaction([
+        this.prisma.user.update({
+          where: { id: request.userId },
+          data: { status: 'INACTIVE', deletedAt: new Date(), email: `deleted_${request.userId}@deleted.com` },
+        }),
+        this.prisma.chatMessage.deleteMany({
+          where: { OR: [{ senderId: request.userId }, { receiverId: request.userId }] },
+        }),
+        this.prisma.propertyComment.deleteMany({
+          where: { userId: request.userId },
+        }),
+        this.prisma.commentLike.deleteMany({
+          where: { userId: request.userId },
+        }),
+        this.prisma.propertyLike.deleteMany({
+          where: { userId: request.userId },
+        }),
+        this.prisma.userFollow.deleteMany({
+          where: { OR: [{ followerId: request.userId }, { followingId: request.userId }] },
+        }),
+        this.prisma.userBlock.deleteMany({
+          where: { OR: [{ blockerId: request.userId }, { blockedId: request.userId }] },
+        }),
+      ]);
+      
+      await this.prisma.dataDeleteRequest.update({
+        where: { id: requestId },
+        data: { status: 'completed', completedAt: new Date() },
+      });
+    } catch (error) {
+      logger.error('Failed to process delete request:', error);
+      await this.prisma.dataDeleteRequest.update({
+        where: { id: requestId },
+        data: { status: 'failed' },
+      });
+      throw error;
+    }
+  }
+
+  async getExportStatus(userId: string) {
+    try {
+      return await this.prisma.dataExportRequest.findFirst({
+        where: { userId },
+        orderBy: { requestedAt: 'desc' },
+      });
+    } catch (error) {
+      logger.error('Failed to get export status:', error);
+      throw new AppError('Failed to get export status', 500);
+    }
+  }
+
+  async getDeleteStatus(userId: string) {
+    try {
+      return await this.prisma.dataDeleteRequest.findFirst({
+        where: { userId },
+        orderBy: { requestedAt: 'desc' },
+      });
+    } catch (error) {
+      logger.error('Failed to get delete status:', error);
+      throw new AppError('Failed to get delete status', 500);
+    }
+  }
+
+  async cancelDeletion(requestId: string) {
+    try {
+      const request = await this.prisma.dataDeleteRequest.findUnique({
+        where: { id: requestId },
+      });
+      if (!request) throw new AppError('Delete request not found', 404);
+      if (request.status !== 'pending') throw new AppError('Cannot cancel a non-pending deletion request', 400);
+
+      await this.prisma.dataDeleteRequest.update({
+        where: { id: requestId },
+        data: { status: 'cancelled', cancelledAt: new Date() },
+      });
+      return { success: true, message: 'Deletion request cancelled' };
+    } catch (error) {
+      logger.error('Failed to cancel deletion:', error);
+      if (error instanceof AppError) throw error;
+      throw new AppError('Failed to cancel deletion', 500);
+    }
+  }
 }

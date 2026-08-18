@@ -15,6 +15,8 @@ class ChatWindow extends ConsumerStatefulWidget {
   final TextEditingController messageController;
   final String currentUserId;
   final String conversationId;
+  final bool isPaused;
+  final String? pausedBy;
   final Function(String)? onReplyTo;
 
   const ChatWindow({
@@ -25,6 +27,8 @@ class ChatWindow extends ConsumerStatefulWidget {
     required this.messageController,
     required this.currentUserId,
     required this.conversationId,
+    this.isPaused = false,
+    this.pausedBy,
     this.onReplyTo,
   });
 
@@ -37,8 +41,12 @@ class _ChatWindowState extends ConsumerState<ChatWindow> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isPausedByMe = widget.isPaused && widget.pausedBy == widget.currentUserId;
+    final bool isCurrentUserBlocked = widget.isPaused && !isPausedByMe;
+
     return Column(
       children: [
+        if (widget.isPaused) _buildPauseBanner(isPausedByMe),
         Expanded(
           child: ListView.builder(
             controller: widget.controller,
@@ -148,18 +156,23 @@ class _ChatWindowState extends ConsumerState<ChatWindow> {
                 Expanded(
                   child: AppInput(
                     controller: widget.messageController,
-                    hintText: 'Type a message...',
+                    hintText: isCurrentUserBlocked
+                        ? 'Chat paused - cannot send messages'
+                        : 'Type a message...',
                     onChanged: (value) {
                       setState(() => _isTyping = value.trim().isNotEmpty);
                     },
+                    enabled: !isCurrentUserBlocked,
                   ),
                 ),
                 const SizedBox(width: 8),
                 IconButton(
-                  onPressed: widget.onSend,
+                  onPressed: isCurrentUserBlocked ? null : widget.onSend,
                   icon: Icon(
                     Icons.send,
-                    color: _isTyping ? AppColors.primary : AppColors.textSecondary,
+                    color: _isTyping && !isCurrentUserBlocked
+                        ? AppColors.primary
+                        : AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -167,6 +180,35 @@ class _ChatWindowState extends ConsumerState<ChatWindow> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildPauseBanner(bool isPausedByMe) {
+    final String message = isPausedByMe
+        ? 'You paused this conversation. Others cannot message you until you resume.'
+        : 'This conversation is paused. You cannot send messages until it is resumed.';
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.warning.withOpacity(0.1),
+        border: Border(bottom: BorderSide(color: AppColors.warning)),
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.pause_circle_filled, color: AppColors.warning, size: 18),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              message,
+              style: TextStyle(
+                color: AppColors.warning,
+                fontSize: 13,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

@@ -17,7 +17,7 @@ class SocialSharePopup extends StatelessWidget {
     required this.description,
     required this.url,
     this.imageUrl,
-    this.icon = Icons.share_rounded,
+    this.icon = LucideIcons.share,
   });
 
   void show(BuildContext context) {
@@ -142,13 +142,13 @@ class _ShareBottomSheet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               _ShareOption(
-                icon: Icons.chat,
+                icon: LucideIcons.message_circle,
                 label: 'WhatsApp',
                 color: const Color(0xFF25D366),
                 onTap: () => _shareToWhatsApp(context),
               ),
               _ShareOption(
-                icon: Icons.trending_up,
+                icon: LucideIcons.trending_up,
                 label: 'Twitter',
                 color: const Color(0xFF1DA1F2),
                 onTap: () => _shareToTwitter(context),
@@ -160,7 +160,7 @@ class _ShareBottomSheet extends StatelessWidget {
                 onTap: () => _shareToFacebook(context),
               ),
               _ShareOption(
-                icon: Icons.more_horiz,
+                icon: LucideIcons.ellipsis,
                 label: 'More',
                 color: theme.colorScheme.onSurface.withOpacity(0.5),
                 onTap: () => _shareSystem(context),
@@ -178,7 +178,7 @@ class _ShareBottomSheet extends StatelessWidget {
             ),
             child: TextButton.icon(
               onPressed: () => _copyLink(context),
-              icon: const Icon(Icons.copy_rounded),
+              icon: const Icon(LucideIcons.copy),
               label: const Text('Copy Link'),
             ),
           ),

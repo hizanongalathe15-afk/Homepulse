@@ -27,10 +27,13 @@ import '../../features/search/screens/saved_searches_screen.dart';
 import '../../features/archive/screens/archive_screen.dart';
 import '../../features/notifications/screens/notifications_screen.dart';
 import '../../screens/privacy_settings_screen.dart';
+import '../../features/admin/screens/theme_editor_screen.dart';
 import '../../screens/history_screen.dart';
 import '../../screens/followers_screen.dart';
 import '../../screens/following_screen.dart';
 import '../../screens/blocked_users_screen.dart';
+import '../../screens/settings_screen.dart';
+import '../../screens/data_export_screen.dart';
 import '../../state/auth_provider.dart';
 import '../transitions/transitions.dart';
 
@@ -149,6 +152,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             slideTransition(child: const PrivacySettingsScreen(), state: state),
       ),
       GoRoute(
+        path: '/settings',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const SettingsScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/data-export',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const DataExportScreen(), state: state),
+      ),
+      GoRoute(
         path: '/history',
         pageBuilder: (context, state) =>
             slideTransition(child: const HistoryScreen(), state: state),
@@ -222,6 +235,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/notifications',
         pageBuilder: (context, state) =>
             slideTransition(child: const NotificationsScreen(), state: state),
+      ),
+      GoRoute(
+        path: '/theme-editor',
+        pageBuilder: (context, state) =>
+            slideTransition(child: const ThemeEditorScreen(), state: state),
       ),
     ],
   );

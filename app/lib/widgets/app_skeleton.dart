@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
 class AppSkeleton extends StatefulWidget {
@@ -134,6 +133,19 @@ class AppCardSkeleton extends StatelessWidget {
             }),
         ],
       ),
+    );
+  }
+}
+
+class PropertyCardSkeleton extends StatelessWidget {
+  const PropertyCardSkeleton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCardSkeleton(
+      hasImage: true,
+      hasTextLines: true,
+      textLines: 3,
     );
   }
 }

@@ -59,7 +59,7 @@ export default function DashboardOverviewPage() {
           <p className="mt-1.5 text-slate-500 text-sm sm:text-base">Here&apos;s what&apos;s happening with your home search today</p>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/properties"><button className="glass px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-white/80 transition-all">Browse Properties</button></Link>
+          <Link href="/listings"><button className="glass px-4 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-white/80 transition-all">Browse Properties</button></Link>
           <Link href="/explore"><button className="btn-gradient px-4 py-2.5 rounded-xl text-sm font-semibold text-white">Explore Map</button></Link>
         </div>
       </div>

@@ -48,8 +48,11 @@ import adRoutes from './routes/ad.routes';
 import commentRoutes from './routes/comment.routes';
 import chatManagementRoutes from './routes/chatManagement.routes';
 import socialRoutes from './routes/social.routes';
+import profileRoutes from './routes/profile.routes';
+import themeRoutes from './routes/theme.routes';
 
 import { initializeAllSockets } from './sockets';
+import { setIoInstance } from './config/socket-holder';
 import { initializeWorker } from './workers/index.worker';
 import { startBackgroundJobs } from './jobs/background.jobs';
 import { validateEnv } from './config/env.config';
@@ -114,6 +117,8 @@ app.use(`/api/${apiVersion}/ads`, adRoutes);
 app.use(`/api/${apiVersion}/comments`, commentRoutes);
 app.use(`/api/${apiVersion}/chat-management`, chatManagementRoutes);
 app.use(`/api/${apiVersion}/social`, socialRoutes);
+app.use(`/api/${apiVersion}/profile`, profileRoutes);
+app.use(`/api/${apiVersion}/`, themeRoutes);
 
 app.use('*', (req, res) => {
   res.status(404).json({
@@ -133,6 +138,8 @@ const io = new Server(server, {
   },
   path: process.env['SOCKET_PATH'] || '/socket.io',
 });
+
+setIoInstance(io);
 
 initializeAllSockets(io);
 

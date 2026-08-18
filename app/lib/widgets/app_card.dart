@@ -11,6 +11,7 @@ class AppCard extends StatelessWidget {
   final bool glass;
   final double? borderRadius;
   final double blurSigma;
+  final bool selected;
 
   const AppCard({
     super.key,
@@ -22,6 +23,7 @@ class AppCard extends StatelessWidget {
     this.glass = false,
     this.borderRadius,
     this.blurSigma = 10,
+    this.selected = false,
   });
 
   @override
@@ -64,14 +66,14 @@ class AppCard extends StatelessWidget {
               )
             : Container(
                 margin: margin ?? EdgeInsets.zero,
-                decoration: BoxDecoration(
-                  color: effectiveBackgroundColor,
-                  borderRadius: BorderRadius.circular(resolvedRadius),
-                  border: Border.all(
-                    color: AppColors.divider,
-                    width: 1,
-                  ),
-                  boxShadow: [
+                   decoration: BoxDecoration(
+                   color: effectiveBackgroundColor,
+                   borderRadius: BorderRadius.circular(resolvedRadius),
+                   border: Border.all(
+                     color: selected ? AppColors.primary : AppColors.divider,
+                     width: selected ? 2 : 1,
+                   ),
+                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.05),
                       blurRadius: 10,

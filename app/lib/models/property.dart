@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 
 enum PropertyType {
   apartment,
@@ -52,25 +53,25 @@ class PropertyTypeData {
   });
 
   static const all = <String, PropertyTypeData>{
-    'APARTMENT': PropertyTypeData(label: 'Apartment', icon: Icons.apartment, value: 'APARTMENT'),
-    'HOUSE': PropertyTypeData(label: 'House', icon: Icons.home, value: 'HOUSE'),
-    'STUDIO': PropertyTypeData(label: 'Studio', icon: Icons.hotel, value: 'STUDIO'),
-    'BEDSITTER': PropertyTypeData(label: 'Bedsitter', icon: Icons.single_bed, value: 'BEDSITTER'),
-    'MAISONETTE': PropertyTypeData(label: 'Maisonette', icon: Icons.home_work, value: 'MAISONETTE'),
-    'TOWNHOUSE': PropertyTypeData(label: 'Townhouse', icon: Icons.house_rounded, value: 'TOWNHOUSE'),
-    'VILLA': PropertyTypeData(label: 'Villa', icon: Icons.villa, value: 'VILLA'),
-    'COMMERCIAL': PropertyTypeData(label: 'Commercial', icon: Icons.business, value: 'COMMERCIAL'),
-    'LAND': PropertyTypeData(label: 'Land', icon: Icons.landscape, value: 'LAND'),
-    'NYUMBA_YA_MABATI': PropertyTypeData(label: 'Nyumba ya Mabati', icon: Icons.home_work, value: 'NYUMBA_YA_MABATI'),
-    'SINGLE_ROOM': PropertyTypeData(label: 'Single Room', icon: Icons.hotel, value: 'SINGLE_ROOM'),
-    'SELF_CONTAINED': PropertyTypeData(label: 'Self-Contained', icon: Icons.single_bed, value: 'SELF_CONTAINED'),
-    'GUEST_HOUSE': PropertyTypeData(label: 'Guest House', icon: Icons.house, value: 'GUEST_HOUSE'),
-    'HOSTEL_ROOM': PropertyTypeData(label: 'Hostel Room', icon: Icons.hotel, value: 'HOSTEL_ROOM'),
-    'OFFICE': PropertyTypeData(label: 'Office', icon: Icons.business, value: 'OFFICE'),
-    'SHOP': PropertyTypeData(label: 'Shop', icon: Icons.storefront, value: 'SHOP'),
-    'WAREHOUSE': PropertyTypeData(label: 'Warehouse', icon: Icons.warehouse, value: 'WAREHOUSE'),
-    'FACTORY': PropertyTypeData(label: 'Factory', icon: Icons.factory, value: 'FACTORY'),
-    'AGRICULTURAL': PropertyTypeData(label: 'Agricultural', icon: Icons.eco, value: 'AGRICULTURAL'),
+    'APARTMENT': PropertyTypeData(label: 'Apartment', icon: LucideIcons.building_2, value: 'APARTMENT'),
+    'HOUSE': PropertyTypeData(label: 'House', icon: LucideIcons.house, value: 'HOUSE'),
+    'STUDIO': PropertyTypeData(label: 'Studio', icon: LucideIcons.hotel, value: 'STUDIO'),
+    'BEDSITTER': PropertyTypeData(label: 'Bedsitter', icon: LucideIcons.bed, value: 'BEDSITTER'),
+    'MAISONETTE': PropertyTypeData(label: 'Maisonette', icon: LucideIcons.house, value: 'MAISONETTE'),
+    'TOWNHOUSE': PropertyTypeData(label: 'Townhouse', icon: LucideIcons.house, value: 'TOWNHOUSE'),
+    'VILLA': PropertyTypeData(label: 'Villa', icon: LucideIcons.house, value: 'VILLA'),
+    'COMMERCIAL': PropertyTypeData(label: 'Commercial', icon: LucideIcons.briefcase, value: 'COMMERCIAL'),
+    'LAND': PropertyTypeData(label: 'Land', icon: LucideIcons.trees, value: 'LAND'),
+    'NYUMBA_YA_MABATI': PropertyTypeData(label: 'Nyumba ya Mabati', icon: LucideIcons.house, value: 'NYUMBA_YA_MABATI'),
+    'SINGLE_ROOM': PropertyTypeData(label: 'Single Room', icon: LucideIcons.hotel, value: 'SINGLE_ROOM'),
+    'SELF_CONTAINED': PropertyTypeData(label: 'Self-Contained', icon: LucideIcons.bed, value: 'SELF_CONTAINED'),
+    'GUEST_HOUSE': PropertyTypeData(label: 'Guest House', icon: LucideIcons.house, value: 'GUEST_HOUSE'),
+    'HOSTEL_ROOM': PropertyTypeData(label: 'Hostel Room', icon: LucideIcons.hotel, value: 'HOSTEL_ROOM'),
+    'OFFICE': PropertyTypeData(label: 'Office', icon: LucideIcons.briefcase, value: 'OFFICE'),
+    'SHOP': PropertyTypeData(label: 'Shop', icon: LucideIcons.store, value: 'SHOP'),
+    'WAREHOUSE': PropertyTypeData(label: 'Warehouse', icon: LucideIcons.warehouse, value: 'WAREHOUSE'),
+    'FACTORY': PropertyTypeData(label: 'Factory', icon: LucideIcons.factory, value: 'FACTORY'),
+    'AGRICULTURAL': PropertyTypeData(label: 'Agricultural', icon: LucideIcons.trees, value: 'AGRICULTURAL'),
   };
 
   static PropertyTypeData? fromValue(String? value) => all[value];

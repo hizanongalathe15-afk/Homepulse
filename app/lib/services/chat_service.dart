@@ -85,6 +85,16 @@ class ChatService {
     await _api.post('/conversations/$conversationId/archive');
   }
 
+  Future<Conversation> pauseConversation(String conversationId) async {
+    final response = await _api.post('/conversations/$conversationId/pause');
+    return Conversation.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  Future<Conversation> resumeConversation(String conversationId) async {
+    final response = await _api.delete('/conversations/$conversationId/pause');
+    return Conversation.fromJson(response.data as Map<String, dynamic>);
+  }
+
   Future<void> markConversationAsRead(String conversationId) async {
     await _api.post('/conversations/$conversationId/read');
   }

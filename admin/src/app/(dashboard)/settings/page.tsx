@@ -20,6 +20,7 @@ import ThirdPartyIntegrations from './components/integrations/ThirdPartyIntegrat
 import MapboxConfig from './components/integrations/MapboxConfig'
 import AWSConfig from './components/integrations/AWSConfig'
 import CookieSettings from './components/system/CookieSettings'
+import ThemeSettings from './components/system/ThemeSettings'
 
 export default function SettingsPage() {
   return (
@@ -63,6 +64,7 @@ export default function SettingsPage() {
         <AWSConfig />
       </div>
       <CookieSettings />
+      <ThemeSettings />
     </div>
   )
 }

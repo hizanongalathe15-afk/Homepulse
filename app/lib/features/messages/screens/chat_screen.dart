@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/conversation.dart';
 import '../../../../models/chat_message.dart';
+import '../../../../state/auth_provider.dart';
 import '../../../../state/chat_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/loading_spinner.dart';
@@ -31,7 +32,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   List<ChatMessage> _messages = const [];
   bool _isLoading = false;
   bool _showNegotiationPanel = false;
-  Conversation? _conversation;
 
   @override
   void initState() {
@@ -91,12 +91,22 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final conversationAsync = ref.watch(chatProvider);
+    final currentUser = ref.watch(authProvider).valueOrNull;
+    final currentUserId = currentUser?.id ?? 'me';
+    final conversations = conversationAsync.valueOrNull ?? const [];
+    final conversation = conversations.firstWhere(
+      (c) => c.id == widget.conversationId,
+      orElse: () => Conversation(
+        id: widget.conversationId,
+        participantIds: [],
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      ),
+    );
 
     return Scaffold(
       appBar: AppBar(
-        title: conversationAsync.valueOrNull != null && conversationAsync.valueOrNull!.isNotEmpty
-            ? Text('Chat with ${conversationAsync.valueOrNull!.first.participantIds.first}')
-            : const Text('Chat'),
+        title: Text('Chat with ${conversation.participantIds.firstWhere((id) => id != currentUserId, orElse: () => conversation.participantIds.firstOrNull ?? 'User')}'),
         actions: [
           IconButton(
             onPressed: () {
@@ -138,13 +148,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             tooltip: 'Video Call',
           ),
           ConversationActionBar(
-            conversation: _conversation ?? Conversation(
-              id: widget.conversationId,
-              participantIds: [],
-              createdAt: DateTime.now(),
-              updatedAt: DateTime.now(),
-            ),
-            currentUserId: 'me',
+            conversation: conversation,
+            currentUserId: currentUserId,
           ),
         ],
       ),
@@ -171,8 +176,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     controller: _scrollController,
                     onSend: _sendMessage,
                     messageController: _messageController,
-                    currentUserId: 'me',
+                    currentUserId: currentUserId,
                     conversationId: widget.conversationId,
+                    isPaused: conversation.isPaused,
+                    pausedBy: conversation.pausedBy,
                     onReplyTo: _handleReplyTo,
                   ),
           ),

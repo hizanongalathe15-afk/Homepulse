@@ -15,6 +15,11 @@ export class UserModel {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
+  profileVideo?: any;
+  profileMusic?: any;
+  privacySettings?: any;
+  profileCard?: any;
+  locationFuzzPreference?: any;
 }
 
 export class PropertyModel {

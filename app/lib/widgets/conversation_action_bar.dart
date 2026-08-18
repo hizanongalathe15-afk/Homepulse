@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_lucide/flutter_lucide.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme/app_colors.dart';
 import '../../models/conversation.dart';
@@ -23,8 +24,8 @@ class ConversationActionBar extends ConsumerWidget {
           onPressed: () => _toggleMute(context, ref),
           icon: Icon(
             conversation.isMuted
-                ? Icons.notifications_off_rounded
-                : Icons.notifications_active_outlined,
+                ? LucideIcons.bell_off
+                : LucideIcons.bell,
             color: conversation.isMuted ? AppColors.textTertiary : null,
           ),
           tooltip: conversation.isMuted ? 'Unmute' : 'Mute',
@@ -33,8 +34,8 @@ class ConversationActionBar extends ConsumerWidget {
           onPressed: () => _togglePin(context, ref),
           icon: Icon(
             conversation.isPinned
-                ? Icons.push_pin_rounded
-                : Icons.push_pin_outlined,
+                ? LucideIcons.pin
+                : LucideIcons.pin,
             color: conversation.isPinned ? AppColors.primary : null,
           ),
           tooltip: conversation.isPinned ? 'Unpin' : 'Pin',
@@ -42,7 +43,7 @@ class ConversationActionBar extends ConsumerWidget {
         IconButton(
           onPressed: () => _archive(context, ref),
           icon: Icon(
-            Icons.archive_outlined,
+            LucideIcons.archive,
             color: conversation.isArchived ? AppColors.textTertiary : null,
           ),
           tooltip: conversation.isArchived ? 'Unarchive' : 'Archive',
@@ -50,9 +51,19 @@ class ConversationActionBar extends ConsumerWidget {
         if (conversation.unreadCount > 0)
           IconButton(
             onPressed: () => _markAsRead(context, ref),
-            icon: const Icon(Icons.mark_chat_unread_outlined),
+            icon: const Icon(LucideIcons.mail),
             tooltip: 'Mark as read',
           ),
+        IconButton(
+          onPressed: () => _togglePause(context, ref),
+          icon: Icon(
+            conversation.isPaused
+                ? LucideIcons.play
+                : LucideIcons.pause,
+            color: conversation.isPaused ? AppColors.warning : null,
+          ),
+          tooltip: conversation.isPaused ? 'Resume' : 'Pause',
+        ),
         PopupMenuButton<String>(
           onSelected: (value) => _handleMenuAction(context, ref, value),
           itemBuilder: (context) => [
@@ -106,6 +117,20 @@ class ConversationActionBar extends ConsumerWidget {
       ref.invalidate(chatProvider);
     } on Exception {
       AppToast.show(context, 'Failed to archive conversation');
+    }
+  }
+
+  Future<void> _togglePause(BuildContext context, WidgetRef ref) async {
+    try {
+      if (conversation.isPaused) {
+        await ref.read(chatProvider.notifier).resumeConversation(conversation.id);
+        AppToast.show(context, 'Chat resumed');
+      } else {
+        await ref.read(chatProvider.notifier).pauseConversation(conversation.id);
+        AppToast.show(context, 'Chat paused');
+      }
+    } on Exception {
+      AppToast.show(context, 'Failed to update chat status');
     }
   }
 

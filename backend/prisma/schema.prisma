@@ -394,14 +394,25 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([email])
-  @@index([phone])
-  @@index([role])
-  @@index([status])
-  @@index([city])
-  @@index([deletedAt])
-  @@map("users")
-}
+   @@index([email])
+   @@index([phone])
+   @@index([role])
+   @@index([status])
+   @@index([city])
+   @@index([deletedAt])
+   @@map("users")
+
+   profileVideo UserProfileVideo?
+   profileMusic UserProfileMusic?
+   privacySettings PrivacySettings?
+   profileCard UserProfileCard?
+   locationFuzzPreference LocationFuzzPreference?
+   offlineCaches OfflineCache[]
+   dataExportRequests DataExportRequest[]
+   dataDeleteRequests DataDeleteRequest[]
+   appIconStates AppIconState[]
+   updatedThemes SystemTheme[]
+ }
 
 // ---------- PROPERTIES ----------
 model Property {
@@ -473,9 +484,10 @@ model Property {
   leases              Lease[]
    propertyComments    PropertyComment[]
    propertyLikes        PropertyLike[]
+   locationFuzz PropertyLocationFuzz?
 
 
-  createdAt DateTime @default(now())
+   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([city])
@@ -1120,6 +1132,23 @@ model Setting {
   @@map("settings")
 }
 
+// ---------- SYSTEM THEME ----------
+model SystemTheme {
+  id           String   @id @default(uuid())
+  name         String   @default("Default")
+  isActive     Boolean  @default(true)
+  colors       Json
+  typography   Json?
+  borderRadius Json?
+  spacing      Json?
+  updatedAt    DateTime @updatedAt
+  updatedById  String?
+  updatedBy    User?    @relation(fields: [updatedById], references: [id])
+
+  @@index([isActive])
+  @@map("system_themes")
+}
+
 // ---------- ANALYTICS ----------
 model Analytics {
   id         String  @id @default(uuid())
@@ -1423,4 +1452,198 @@ model AdCampaign {
   @@index([startDate])
   @@index([endDate])
   @@map("ad_campaigns")
+}
+
+// ---------- USER PROFILE VIDEO ----------
+model UserProfileVideo {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  url         String
+  thumbnailUrl String?
+  duration    Int      @default(10)
+  fileSize    Int?
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("user_profile_videos")
+}
+
+// ---------- USER PROFILE MUSIC ----------
+model UserProfileMusic {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  artist      String?
+  url         String
+  duration    Int?
+  coverUrl    String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+  @@map("user_profile_music")
+}
+
+// ---------- PRIVACY SETTINGS ----------
+model PrivacySettings {
+  id                     String   @id @default(uuid())
+  userId                 String   @unique
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shareEmail             Boolean  @default(false)
+  sharePhone             Boolean  @default(true)
+  shareLocation          Boolean  @default(true)
+  shareOnlineStatus      Boolean  @default(true)
+  shareLastSeen          Boolean  @default(true)
+  sharePaymentHistory    Boolean  @default(false)
+  shareEmployment        Boolean  @default(false)
+  shareProfileVideo      Boolean  @default(true)
+  shareProfileMusic      Boolean  @default(true)
+  allowDirectMessages    Boolean  @default(true)
+  allowFollowRequests    Boolean  @default(true)
+  showActivityStatus     Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@index([userId])
+  @@map("privacy_settings")
+}
+
+// ---------- PROPERTY LOCATION FUZZ ----------
+model PropertyLocationFuzz {
+  id                  String   @id @default(uuid())
+  propertyId          String   @unique
+  property            Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  approximateLat      Float?
+  approximateLng      Float?
+  exactLat            Float?
+  exactLng            Float?
+  fuzzRadius          Int      @default(500)
+  showExactAfterBooking Boolean @default(true)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  @@map("property_location_fuzz")
+}
+
+// ---------- OFFLINE CACHE ----------
+model OfflineCache {
+  id         String   @id @default(uuid())
+  userId     String
+  entityType String
+  entityId   String?
+  data       Json
+  cachedAt   DateTime @default(now())
+  expiresAt  DateTime?
+  isSynced   Boolean  @default(true)
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entityType])
+  @@index([cachedAt])
+  @@map("offline_cache")
+}
+
+// ---------- DATA EXPORT REQUESTS ----------
+model DataExportRequest {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status      String    @default("pending")
+  format      String    @default("json")
+  fileUrl     String?
+  requestedAt DateTime  @default(now())
+  completedAt DateTime?
+  expiresAt   DateTime?
+
+  @@index([userId])
+  @@index([status])
+  @@map("data_export_requests")
+}
+
+// ---------- DATA DELETE REQUESTS ----------
+model DataDeleteRequest {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status      String    @default("pending")
+  reason      String?
+  requestedAt DateTime  @default(now())
+  completedAt DateTime?
+  cancelledAt DateTime?
+
+  @@index([userId])
+  @@index([status])
+  @@map("data_delete_requests")
+}
+
+// ---------- USER PROFILE CARD ----------
+model UserProfileCard {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardUrl       String?
+  qrCodeUrl     String?
+  customMessage String?  @db.Text
+  backgroundColor String? @default("#1A5276")
+  textColor     String?  @default("#FFFFFF")
+  isPublic      Boolean  @default(true)
+  scanCount     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@map("user_profile_cards")
+}
+
+// ---------- NETWORK SPEED LOGS ----------
+model NetworkSpeedLog {
+  id           String    @id @default(uuid())
+  userId       String?
+  ipAddress    String?
+  downloadSpeed Float?
+  uploadSpeed   Float?
+  latency       Int?
+  connectionType String?
+  isLowBandwidth Boolean @default(false)
+  userAgent    String?
+  createdAt    DateTime  @default(now())
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("network_speed_logs")
+}
+
+// ---------- APP ICON STATES ----------
+model AppIconState {
+  id        String    @id @default(uuid())
+  userId    String?
+  state     String
+  iconUrl   String
+  badgeCount Int      @default(0)
+  isActive  Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  user      User?     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("app_icon_states")
+}
+
+// ---------- LOCATION FUZZ PREFERENCES ----------
+model LocationFuzzPreference {
+  id                     String   @id @default(uuid())
+  userId                 String   @unique
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enableFuzzing          Boolean  @default(true)
+  fuzzRadius             Int      @default(500)
+  showExactAfterViewing  Boolean  @default(true)
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  @@index([userId])
+  @@map("location_fuzz_preferences")
 }

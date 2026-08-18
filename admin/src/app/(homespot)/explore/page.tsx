@@ -47,7 +47,7 @@ export default function ExplorePage() {
                     <List className="w-4 h-4" /> List
                   </button>
                 </div>
-                <Link href="/properties" className="text-sm font-semibold text-homespot-purple inline-flex items-center gap-1">
+                <Link href="/listings" className="text-sm font-semibold text-homespot-purple inline-flex items-center gap-1">
                   All listings <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

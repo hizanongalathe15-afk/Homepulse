@@ -33,13 +33,13 @@ class VideoActions extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         _ActionButton(
-          icon: Icons.bookmark_border_rounded,
+          icon: LucideIcons.bookmark,
           label: 'Save',
           onTap: onSave,
         ),
         const SizedBox(height: 16),
         _ActionButton(
-          icon: Icons.comment_outlined,
+          icon: LucideIcons.message_circle,
           label: 'Comment',
           onTap: onComment,
         ),
