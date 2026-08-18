@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QRGenerator {
-  static const String _propertyPrefix = 'homepulse://property';
-  static const String _neighborhoodPrefix = 'homepulse://neighborhood';
-  static const String _paymentPrefix = 'homepulse://payment';
-  static const String _verificationPrefix = 'homepulse://verify';
-
   static String generateDataUrl({
     required String type,
     required String id,

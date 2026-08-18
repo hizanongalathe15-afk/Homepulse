@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../widgets/app_card.dart';
-import '../../../../widgets/app_toast.dart';
 
 class QRScannerTile extends StatelessWidget {
   const QRScannerTile({super.key});

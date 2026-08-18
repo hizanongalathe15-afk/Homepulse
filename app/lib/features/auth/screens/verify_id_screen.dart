@@ -9,7 +9,6 @@ import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_input.dart';
 import '../../../../widgets/app_toast.dart';
-import '../../../../widgets/loading_spinner.dart';
 
 class VerifyIdScreen extends ConsumerStatefulWidget {
   const VerifyIdScreen({super.key});

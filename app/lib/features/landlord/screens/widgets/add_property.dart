@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../models/property.dart';
-import '../../../../services/property_service.dart' hide propertyServiceProvider;
 import '../../../../state/landlord_provider.dart';
 import '../../../../state/auth_provider.dart';
 import '../../../../widgets/app_input.dart';

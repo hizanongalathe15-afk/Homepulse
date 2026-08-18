@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../models/payment.dart';
 import '../../../../services/payment_service.dart';
 import '../../../../widgets/app_card.dart';
-import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/loading_spinner.dart';
 import '../../../../core/utils/formatters.dart';
 

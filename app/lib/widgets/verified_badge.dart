@@ -16,7 +16,6 @@ class VerifiedBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final effectiveBackgroundColor = backgroundColor;
     final effectiveIconColor = iconColor;
 

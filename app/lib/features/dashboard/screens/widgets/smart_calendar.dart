@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_toast.dart';
-import '../../../../core/utils/formatters.dart';
 
 class SmartCalendar extends ConsumerWidget {
   final String userId;

@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:geolocator/geolocator.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/property.dart';
-import '../../../../services/map_service.dart';
 import '../../../../state/map_provider.dart';
-import '../../../../widgets/app_card.dart';
-import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/app_toast.dart';
 import 'widgets/property_pin.dart';
 import 'widgets/property_card.dart';
-import 'widgets/filter_bar.dart';
 import 'widgets/safety_score_overlay.dart';
 import 'widgets/neighborhood_boundary.dart';
 import 'widgets/weather_overlay.dart';
@@ -31,7 +26,6 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   bool _showWeatherOverlay = false;
   bool _showNeighborhoodBoundary = false;
   Property? _selectedProperty;
-  PropertySearchFilters _filters = const PropertySearchFilters();
 
   @override
   void dispose() {
@@ -43,18 +37,13 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     try {
       final position = await ref.read(mapProvider.notifier).getCurrentLocation();
       _mapController.move(LatLng(position.latitude, position.longitude), 14.0);
-    } on Exception catch (e) {
+    } on Exception {
       AppToast.show(context, 'Could not get location');
     }
   }
 
-  void _onFilterChanged(PropertySearchFilters newFilters) {
-    setState(() => _filters = newFilters);
-  }
-
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final mapAsync = ref.watch(mapProvider);
 
     return Scaffold(
@@ -157,18 +146,11 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                       IconButton(
                         onPressed: _locateUser,
                         icon: const Icon(Icons.my_location, color: AppColors.primary),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-                FilterBar(
-                  onFilterChanged: _onFilterChanged,
-                ),
-              ],
-            ),
-          ),
-          Positioned(
+                 ),
+               ],
+             ),
+           ),
+           Positioned(
             bottom: 16,
             right: 16,
             child: Column(

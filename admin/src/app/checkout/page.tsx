@@ -141,7 +141,7 @@ export default function CheckoutPage() {
                       )}
                     >
                       {step.name}
-                      {status === 'done' && ' ✓'}
+                      {status === 'done' && ' Done'}
                     </span>
                   </div>
                   {idx < steps.length - 1 && (

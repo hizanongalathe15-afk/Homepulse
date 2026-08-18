@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../models/property.dart';
 import '../../../../services/feed_service.dart';
 import '../../../../widgets/app_toast.dart';
-import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/antigravity_scroll.dart';
 import '../../../../widgets/profile_dropdown.dart';
 import '../../../../state/feed_provider.dart';

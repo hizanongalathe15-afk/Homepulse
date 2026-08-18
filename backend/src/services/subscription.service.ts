@@ -134,7 +134,7 @@ export class SubscriptionService {
 
     if (!sub) throw new Error('Subscription not found');
 
-    let newEndDate = new Date(sub.endDate);
+    const newEndDate = new Date(sub.endDate);
     if (sub.plan.billingCycle === 'monthly') {
       newEndDate.setMonth(newEndDate.getMonth() + 1);
     } else if (sub.plan.billingCycle === 'yearly') {

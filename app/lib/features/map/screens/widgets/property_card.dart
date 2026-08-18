@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/property.dart';
-import '../../../../widgets/app_card.dart';
 import '../../../../widgets/rating_stars.dart';
 import '../../../../widgets/property_like_button.dart';
 

@@ -282,7 +282,7 @@ export const COMMUNITY_POSTS = [
     avatar: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Young+african+woman+portrait+casual+friendly+smile+natural+light&image_size=square',
     time: '2 hours ago',
     neighborhood: 'Westlands, Nairobi',
-    text: 'Amazing sunset from my apartment balcony! Love the neighborhood 🌅',
+    text: 'Amazing sunset from my apartment balcony! Love the neighborhood',
     image: 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=Beautiful+sunset+over+city+neighborhood+apartment+balcony+view+warm+orange+purple+sky&image_size=landscape_16_9',
     likes: 124,
     comments: 18,

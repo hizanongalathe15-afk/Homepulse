@@ -18,7 +18,6 @@ class ProfileDropdown extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final theme = Theme.of(context);
     final currentUser = user ?? ref.watch(authProvider).valueOrNull;
 
     if (currentUser == null) {
@@ -45,7 +44,7 @@ class ProfileDropdown extends ConsumerWidget {
           child: Row(
             children: [
               UserAvatar(
-                imageUrl: currentUser.avatarUrl ?? '',
+                imageUrl: currentUser.avatarUrl,
                 fullName: userName,
                 size: 32,
                 backgroundColor: AppColors.primary,
@@ -72,7 +71,7 @@ class ProfileDropdown extends ConsumerWidget {
       offset: const Offset(-12, 56),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: UserAvatar(
-        imageUrl: currentUser.avatarUrl ?? '',
+        imageUrl: currentUser.avatarUrl,
         fullName: userName,
         size: 40,
         backgroundColor: AppColors.primary,

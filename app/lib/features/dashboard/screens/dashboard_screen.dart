@@ -5,7 +5,6 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../models/user.dart';
 import '../../../../state/auth_provider.dart';
 import '../../../../widgets/app_card.dart';
-import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/loading_spinner.dart';
 import '../../../../widgets/user_avatar.dart';
 import '../../../../widgets/verified_badge.dart';

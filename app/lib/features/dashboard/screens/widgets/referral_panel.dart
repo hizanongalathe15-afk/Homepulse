@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../models/referral.dart';
 import '../../../../services/referral_service.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_button.dart';
@@ -16,7 +15,6 @@ class ReferralPanel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final referralsAsync = ref.watch(referralProvider);
-    String? generatedCode;
 
     return AppCard(
       child: Column(

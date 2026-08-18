@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../models/conversation.dart';
 import '../../../../models/chat_message.dart';
-import '../../../../services/chat_service.dart';
 import '../../../../state/chat_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/loading_spinner.dart';
@@ -12,8 +10,6 @@ import '../../../../widgets/app_toast.dart';
 import '../../../../widgets/conversation_action_bar.dart';
 import './widgets/chat_window.dart';
 import './widgets/negotiation_panel.dart';
-import './widgets/qr_share.dart';
-import './widgets/typing_indicator.dart';
 import './widgets/voice_call.dart';
 import './widgets/video_pre_call_verify.dart';
 
@@ -56,8 +52,6 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       final messages = await ref.read(chatProvider.notifier).getMessages(widget.conversationId);
       setState(() => _messages = messages);
       _scrollToBottom();
-    } on Exception catch (e) {
-      AppToast.show(context, 'Failed to load messages');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -70,10 +64,12 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     _messageController.clear();
     try {
       await ref.read(chatProvider.notifier).sendMessage(widget.conversationId, text);
-      await _loadMessages();
-    } on Exception catch (e) {
-      AppToast.show(context, 'Failed to send message');
+    } finally {
+      if (mounted) {
+        AppToast.show(context, 'Failed to send message');
+      }
     }
+    await _loadMessages();
   }
 
   void _scrollToBottom() {

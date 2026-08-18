@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../widgets/app_skeleton.dart';
 
 class VideoSkeleton extends StatelessWidget {
   const VideoSkeleton({super.key});

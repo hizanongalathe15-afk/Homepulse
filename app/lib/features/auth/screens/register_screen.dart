@@ -6,7 +6,6 @@ import '../../../../state/auth_provider.dart';
 import '../../../../widgets/app_button.dart';
 import '../../../../widgets/app_input.dart';
 import '../../../../widgets/app_toast.dart';
-import '../../../../widgets/loading_spinner.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});

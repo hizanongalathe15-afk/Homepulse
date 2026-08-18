@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../state/landlord_provider.dart';
 import '../../../../state/auth_provider.dart';
 import '../../../../state/escrow_provider.dart';
 import '../../../../widgets/app_card.dart';
@@ -9,7 +8,6 @@ import 'add_property.dart';
 import 'property_manager.dart';
 import 'escrow_manager.dart';
 import 'revenue_analytics.dart';
-import 'verification_status.dart';
 import 'qr_code_generator.dart';
 import 'tenant_requests.dart';
 
@@ -19,8 +17,6 @@ class LandlordHomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
-    final landlordId = authState.value?.id ?? '';
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Landlord Dashboard'),

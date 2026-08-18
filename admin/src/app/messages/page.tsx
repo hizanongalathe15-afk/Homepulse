@@ -33,7 +33,7 @@ const NEGOTIATION_MESSAGES: Message[] = [
   { id: '8', sender: 'me', text: 'Would you be open to KES 80,000/month for a 12-month lease?', time: '10:16 AM', read: true },
   { id: '9', sender: 'them', text: "Hmm, 80K is a bit low. The apartment is in a prime location with all amenities included.", time: '10:18 AM' },
   { id: '10', sender: 'them', text: 'Best I can do is KES 82,000/month, and I can throw in one month free parking.', time: '10:19 AM' },
-  { id: '11', sender: 'me', text: 'KES 82,000 with free parking sounds fair. Deal! 👍', time: '10:21 AM', read: true },
+  { id: '11', sender: 'me', text: 'KES 82,000 with free parking sounds fair. Deal!', time: '10:21 AM', read: true },
   { id: '12', sender: 'them', text: 'Excellent! Looking forward to meeting you tomorrow at 11 AM. I\'ll have the lease agreement ready for review.', time: '10:22 AM' },
 ]
 

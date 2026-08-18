@@ -1,7 +1,5 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../models/neighborhood.dart';
 
 class SafetyScoreOverlay extends StatelessWidget {
   const SafetyScoreOverlay({super.key});

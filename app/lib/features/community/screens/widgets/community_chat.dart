@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../models/conversation.dart';
 import '../../../../state/chat_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_input.dart';
@@ -27,17 +25,6 @@ class _CommunityChatState extends ConsumerState<CommunityChat> {
     _messageController.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  Future<void> _sendMessage() async {
-    final content = _messageController.text.trim();
-    if (content.isEmpty || _selectedConversationId == null) return;
-    try {
-      await ref.read(chatProvider.notifier).sendMessage(_selectedConversationId!, content);
-      _messageController.clear();
-    } catch (e) {
-      AppToast.error(context, 'Failed to send message');
-    }
   }
 
   @override

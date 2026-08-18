@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../models/property.dart';
-import '../../../../models/saved_search.dart';
 import '../../../../state/search_provider.dart';
 import '../../../../widgets/app_card.dart';
 import '../../../../widgets/app_toast.dart';
